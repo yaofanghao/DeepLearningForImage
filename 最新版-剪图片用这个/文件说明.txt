@@ -1,0 +1,32 @@
+文件夹内含：
+before-其中有class_name.txt，需检查无误
+output
+jpg 人名 未剪
+jpg1 数字 未剪
+jpg2 数字 第一次剪完
+jpg3 数字 第二次剪完
+jpg4 人名 第二次剪完
+png人名 未剪
+png1 数字 未剪
+png2 数字 第一次剪完
+png3 数字 第二次剪完
+png4 人名 第二次剪完
+其他要用到的py文件
+
+操作步骤：
+1.检查class_name.txt没有写错
+2.json_to_dataset.py ，如果报错可切换环境，可能是labelme或pyqt版本问题
+2.get_jpg_and_png.py
+3.复制jpg到jpg1，png到png1
+4.yinshe.py（存至jpg1）
+5.把jpg1中的name.txt移出
+6.yinshe.py（存至png1）
+7.lastsuanfa2.py（存至jpg2），此时生成了text1.txt
+8.cutpng2.py
+9.astsuanfa5.py（存至jpg3），此时生成了text2.txt
+10.复制jpg3到jpg4
+11.cutpng5.py
+12.复制png3到png4
+12.change_name.py（存至jpg4），需检查name.txt为UTF-8编码格式，每行有两个空格
+13.change_name.py（存至png4）
+14.结束。如需重新进行新一轮处理，需先删除三个txt文件。
