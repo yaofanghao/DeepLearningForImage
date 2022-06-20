@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from matplotlib import pyplot as plt
 
-image=cv2.imread("img/5.jpg")
+image=cv2.imread("img/7.jpg")
 HSV=cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 def getpos(event,x,y,flags,param):
     if event==cv2.EVENT_LBUTTONDOWN: #定义一个鼠标左键按下去的事件
