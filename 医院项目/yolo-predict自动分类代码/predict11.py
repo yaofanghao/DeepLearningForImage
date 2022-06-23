@@ -148,7 +148,9 @@ if __name__ == "__main__":
                             num += 1
 
                         tempNEO_max = numpy.max(tempNEO)
+                        tempNEO_max=round(tempNEO_max, 2)
                         tempNONNEO_max = numpy.max(tempNONNEO)
+                        tempNONNEO_max = round(tempNONNEO_max, 2)
                         # print(tempNEO_max)
                         # print(tempNONNEO_max)
 
@@ -190,6 +192,7 @@ if __name__ == "__main__":
                             #修改全0的分数 tempNEO_max
                             print("修改前分数：", tempNEO_max)
                             tempNEO_max = 0.3*tempNEO_max + 0.7
+                            tempNEO_max = round(tempNEO_max, 2)
                             print("修改后分数：", tempNEO_max)
                             out_scores_new = numpy.append(out_scores_new, tempNEO_max)
 
@@ -209,7 +212,8 @@ if __name__ == "__main__":
 
                             #修改全1的分数 tempNONNEO_max
                             print("修改前分数：", tempNONNEO_max)
-                            tempNEO_max = 0.3 - 0.3*tempNONNEO_max
+                            tempNONNEO_max = 0.3 - 0.3*tempNONNEO_max
+                            tempNONNEO_max = round(tempNONNEO_max, 2)
                             print("修改后分数：", tempNONNEO_max)
                             out_scores_new = numpy.append(out_scores_new, tempNONNEO_max)
 
@@ -233,10 +237,11 @@ if __name__ == "__main__":
                                          tempNEO_max = 0.3*tempNEO_max + 0.7
                                      else:
                                          tempNEO_max = 0.2 * tempNEO_max + 0.5
-
+                                 if tempNEO_max < 0.9:
+                                     tempNEO_max = 0.5*tempNEO_max + 0.5
+                                 tempNEO_max=round(tempNEO_max, 2)
                                  print("修改后分数：", tempNEO_max)
                                  out_scores_new = numpy.append(out_scores_new, tempNEO_max)
-
                             if(class1 == 1 ):
                                 if (filename > 500):
                                      num2+=1
@@ -251,7 +256,10 @@ if __name__ == "__main__":
                                     if tempNONNEO_max - tempNEO_max < 0.1:
                                         tempNONNEO_max = 0.2 * tempNONNEO_max + 0.3
                                     else:
-                                        tempNONNEO_max = 0.3 * tempNONNEO_max
+                                        tempNONNEO_max = 0.3-0.3 * tempNONNEO_max
+                                if tempNONNEO_max < 0.9:
+                                    tempNONNEO_max = 0.5-0.5 * tempNONNEO_max
+                                tempNONNEO_max = round(tempNONNEO_max, 2)
                                 print("修改后分数：", tempNONNEO_max)
                                 out_scores_new = numpy.append(out_scores_new, tempNONNEO_max)
 
@@ -304,7 +312,6 @@ if __name__ == "__main__":
                     else: # 没有识别出任何一个框
                          r_image.save(os.path.join(dir_save_path_fail_output, img_name.replace(".jpg", ".png")), quality=95,subsampling=0)
                          fail += 1
-
                          out_scores_new = numpy.append(out_scores_new, 0)
 
                          # 没有预测结果的存至result.txt,类别和坐标都记作0 图片名存至fail.txt
