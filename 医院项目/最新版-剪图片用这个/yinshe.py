@@ -4,17 +4,22 @@ import os
 import re
 import sys
 def renameall():
-	fileList = os.listdir(r"C:\Users\admin\Desktop\dataset\png1")		#待修改文件夹
-	saveBasePath = r"C:\Users\admin\Desktop\dataset\png1"
+	fileList = os.listdir(r"C:\Users\Lenovo\Desktop\chongmingming\jpg")		#待修改文件夹
+	saveBasePath = r"C:\Users\Lenovo\Desktop\chongmingming\jpg"
 	print("修改前："+str(fileList))		#输出文件夹中包含的文件
 	print("---------------------------------------------------")
 	T = str(fileList)
 	print(T)
 	currentpath = os.getcwd()		#得到进程当前工作目录
-	os.chdir(r"C:\Users\admin\Desktop\dataset\png1")		#将当前工作目录修改为待修改文件夹的位置
-	num=1		#名称变量
-	for fileName in fileList:		#遍历文件夹中所有文件
+	os.chdir(r"C:\Users\Lenovo\Desktop\chongmingming\jpg")		#将当前工作目录修改为待修改文件夹的位置
+	num=1000
+	#名称变量
+	##顺序
+	filelist = os.listdir(saveBasePath)
 
+	# filelist.sort(key=lambda x: int(x[:-4]))
+	for fileName in fileList:		#遍历文件夹中所有文件
+		print(fileName)
 		pat=".+\.(jpg|png|gif|json|JPG)"		#匹配文件名正则表达式
 		pattern = re.findall(pat,fileName)		#进行匹配
 		os.rename(fileName,(str(num)+'.'+pattern[0]))		#文件重新命名
