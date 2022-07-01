@@ -27,7 +27,7 @@ def show_img(path):
 
 
 if __name__ == '__main__':
-    path = "imgFire/4.jpg"
+    path = "imgFire/12.jpg"
     img = cv2.imread(path)
     img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
