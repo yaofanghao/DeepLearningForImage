@@ -1,9 +1,7 @@
 # 开发第一个基于PyQt5的桌面应用
 
 import sys
-
 from PyQt5.QtWidgets import QApplication,QWidget
-
 
 if __name__ == '__main__':
     # 创建QApplication类的实例
