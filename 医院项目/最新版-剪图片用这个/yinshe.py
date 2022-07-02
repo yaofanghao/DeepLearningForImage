@@ -20,7 +20,7 @@ def renameall():
 	# filelist.sort(key=lambda x: int(x[:-4]))
 	for fileName in fileList:		#遍历文件夹中所有文件
 		print(fileName)
-		pat=".+\.(jpg|png|gif|json|JPG)"		#匹配文件名正则表达式
+		pat=".+\.(jpg|png|gif|json|JPG|xml)"		#匹配文件名正则表达式
 		pattern = re.findall(pat,fileName)		#进行匹配
 		os.rename(fileName,(str(num)+'.'+pattern[0]))		#文件重新命名
 
