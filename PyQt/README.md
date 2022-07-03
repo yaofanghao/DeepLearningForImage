@@ -2,8 +2,10 @@
 * 2022.6.23起
 * 进度：
   * 更新：2022.7.2
-  * pyqt5快速开发与实战 3.5起
-  * https://blog.csdn.net/m0_57021623/article/details/123459038 20起
+  * pyqt5快速开发与实战 
+    3.5起
+  * https://blog.csdn.net/m0_57021623/article/details/123459038 
+    33起
 
 ## 参考资料
 
