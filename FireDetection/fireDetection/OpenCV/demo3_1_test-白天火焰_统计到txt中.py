@@ -22,10 +22,10 @@ sl=100
 sh=255
 vl=200
 vh=255
-kernal_size=5 # 开运算核的尺寸
-conturs_ratio = 0.0001 # 初步识别出轮廓占图片总面积的比例
+kernal_size=3 # 开运算核的尺寸
+conturs_ratio = 0.00005 # 初步识别出轮廓占图片总面积的比例
 round_low = 0.2 # 圆形度下限
-cntlen_low = 200 #圆形度上限
+cntlen_low = 150 # 长度下限
 
 ###############################################
 
@@ -108,7 +108,7 @@ if __name__ == '__main__':
                 x, y, w, h = cv2.boundingRect(contours[i])
                 draw_contours = cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 5) # 绘制轮廓的最小外接矩形
 
-                cv2.putText(img,'Warning!',(x, y),cv2.FONT_HERSHEY_SIMPLEX,3,(0,0,255),5)
+                cv2.putText(img,'Warning!',(x, y),cv2.FONT_HERSHEY_SIMPLEX,2,(0,0,255),2)
 
                 print("轮廓" + str(i) + "可能为火焰")
                 print("轮廓" + str(i) + "的面积为:", cv2.contourArea(contours[i]))
@@ -129,80 +129,6 @@ if __name__ == '__main__':
         print("可能为火焰的个数:"+str(num))
         cv2.waitKey()
         cv2.destroyAllWindows()
-
-        # #  背景消除（fmask显示为空白，暂未解决问题）
-        # fgbg = cv2.createBackgroundSubtractorMOG2(detectShadows=False)
-        #
-        # gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        # gray_frame = cv2.GaussianBlur(gray, (5, 5), 5)
-        #
-        # fmask = fgbg.apply(gray_frame)
-        # kernel = np.ones((20, 20), np.uint8)
-        # fmask = cv2.medianBlur(fmask, 3)
-        # fmask = cv2.dilate(fmask, kernel)
-        #
-        # cv2.namedWindow("fmask", 2)
-        # cv2.imshow('fmask', fmask)
-        # cv2.waitKey()
-        # cv2.imwrite(out_path+'4-fmask.jpg', fmask)
-
-
-        # ret, binary = cv2.threshold(gray, 180, 255, cv2.THRESH_BINARY)
-        #
-        # height, width = binary.shape
-        # npframe = np.array(img)
-        # # nphsv = np.array(hsv)
-        # npbinary = np.array(binary)
-        #
-        # # 降噪
-        # dst = cv2.medianBlur(binary, 5)
-        #
-        # # 开运算
-        # kernal2 = np.ones((5, 5), np.uint8)
-        # opening = cv2.morphologyEx(dst, cv2.MORPH_OPEN, kernal2)
-        #
-        # binary_x = 0
-        # while binary_x < height:
-        #     binary_y = 0
-        #     while binary_y < width:
-        #         if (opening[binary_x, binary_y] == 255):
-        #             p = npframe[(binary_x, binary_y)]
-        #
-        #             if p[2] >= p[1] >= p[0]:  # & p2[2] >= 5:
-        #                     binary_y += 1
-        #                     continue
-        #             else:
-        #                 opening[binary_x, binary_y] = 0
-        #         binary_y += 1
-        #     binary_x += 1
-        #
-        # contour_img, contours, hierarchy = cv2.findContours(fmask, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-        # for cnt in contours:
-        #     x, y, w, h = cv2.boundingRect(cnt)
-        #     cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
-        #     smoke=1
-        #     print(smoke)
-        #
-        # contour_img, contours, hierarchy = cv2.findContours(mask, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-        # for cnt in contours:
-        #     x, y, w, h = cv2.boundingRect(cnt)
-        #     cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 2)
-        #     color=1
-        #     print(color)
-        #
-        #
-        # image, contour, hierarchy = cv2.findContours(opening,cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-        # if contour == []:
-        #     print('No contour')
-        # else:
-        #     #    Display outlines in the video window
-        #     cv2.drawContours(img, contour, -1, (0, 0, 255), 2)
-        #     inten=1
-        #     print(inten)
-        #
-        # if smoke==1 and color==1 and inten==1 :
-        #     res=1
-        #     print(res)
 
     if mode == 1:
         cap = cv2.VideoCapture(video_path)
@@ -239,7 +165,7 @@ if __name__ == '__main__':
             num = 0
 
             # 创建txt，火焰信息保存到txt中
-            f = open(os.path.join(os.getcwd() + 'fire_report.txt'), 'a')
+            f = open(os.path.join('fire_report.txt'), 'a')
 
             for i in range(len(contours)):
                 temp = np.zeros(img.shape, np.uint8)
