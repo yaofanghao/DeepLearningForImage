@@ -7,7 +7,8 @@ os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 import os.path as osp
 import paddlex as pdx
 
-img_file = 'img/16.jpg'
+
+img_file = 'imgtest/125.jpg'
 model_dir = 'output/yolov3_darknet53_coco/best_model/'
 save_dir = './predict'
 # 设置置信度阈值

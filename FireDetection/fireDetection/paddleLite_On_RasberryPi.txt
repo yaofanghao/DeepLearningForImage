@@ -10,7 +10,6 @@ https://github.com/PaddlePaddle/Paddle-Lite
 
 //
 yolov3在树莓派的部署
-https://aistudio.baidu.com/aistudio/projectdetail/1227445?channelType=0&channel=0
 
 https://aistudio.baidu.com/aistudio/projectdetail/1059610
 
