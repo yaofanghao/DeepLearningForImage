@@ -82,5 +82,11 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+	
+	output_dir = './output/'
+	if not os.path.exists(output_dir):
+	os.makedirs(output_dir)
+
+	
+	main()
     print('success')
