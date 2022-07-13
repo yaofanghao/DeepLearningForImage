@@ -63,7 +63,7 @@ def main():
             # img_3 = np.fliplr(img_2)  # 左右翻转
             # utils.lblsave(osp.join('E:\标注图\make——dataset\png3', png_name + '.png'), img_1)
             # utils.lblsave(osp.join('E:\标注图\make——dataset\png4', png_name + '.png'), img_2)
-            # utils.lblsave(osp.join('E:\标注图\make——dataset\png5', png_name + '.png'), img_3)
+            # utils.lblsave(osp.join('E:\标注图\make——dataset\png5', png_name + '.p00ng'), img_3)
 
             utils.lblsave(osp.join(out_dir, 'label.png'), lbl)
             PIL.Image.fromarray(lbl_viz).save(osp.join(out_dir, 'label_viz.png'))
@@ -82,11 +82,5 @@ def main():
 
 
 if __name__ == '__main__':
-	
-	output_dir = './output/'
-	if not os.path.exists(output_dir):
-	os.makedirs(output_dir)
-
-	
-	main()
+    main()
     print('success')
