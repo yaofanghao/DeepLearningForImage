@@ -110,8 +110,8 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>370</x>
-     <y>80</y>
+     <x>330</x>
+     <y>40</y>
      <width>201</width>
      <height>50</height>
     </rect>
@@ -132,8 +132,8 @@
   <widget class="QWidget" name="horizontalLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>130</x>
-     <y>140</y>
+     <x>90</x>
+     <y>100</y>
      <width>701</width>
      <height>91</height>
     </rect>
@@ -224,8 +224,8 @@
   <widget class="QWidget" name="gridLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>130</x>
-     <y>250</y>
+     <x>90</x>
+     <y>210</y>
      <width>701</width>
      <height>181</height>
     </rect>
@@ -356,8 +356,8 @@
   <widget class="QLabel" name="labelresult">
    <property name="geometry">
     <rect>
-     <x>130</x>
-     <y>450</y>
+     <x>90</x>
+     <y>410</y>
      <width>171</width>
      <height>20</height>
     </rect>
@@ -372,11 +372,21 @@
     <string>初步检查所见：</string>
    </property>
   </widget>
+  <widget class="QTextEdit" name="textEdit">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>440</y>
+     <width>531</width>
+     <height>81</height>
+    </rect>
+   </property>
+  </widget>
   <widget class="QPushButton" name="pushButton1">
    <property name="geometry">
     <rect>
-     <x>130</x>
-     <y>600</y>
+     <x>120</x>
+     <y>530</y>
      <width>141</width>
      <height>51</height>
     </rect>
@@ -386,6 +396,9 @@
      <family>楷体</family>
      <pointsize>12</pointsize>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(147, 149, 255);</string>
    </property>
    <property name="text">
     <string>返回诊断系统
@@ -395,8 +408,8 @@
   <widget class="QPushButton" name="pushButton2">
    <property name="geometry">
     <rect>
-     <x>300</x>
-     <y>600</y>
+     <x>280</x>
+     <y>530</y>
      <width>141</width>
      <height>51</height>
     </rect>
@@ -406,6 +419,9 @@
      <family>楷体</family>
      <pointsize>12</pointsize>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(80, 170, 53);</string>
    </property>
    <property name="text">
     <string>保存当前信息</string>
@@ -414,8 +430,8 @@
   <widget class="QPushButton" name="pushButton3">
    <property name="geometry">
     <rect>
-     <x>470</x>
-     <y>600</y>
+     <x>440</x>
+     <y>530</y>
      <width>141</width>
      <height>51</height>
     </rect>
@@ -426,39 +442,35 @@
      <pointsize>12</pointsize>
     </font>
    </property>
-   <property name="text">
-    <string>进入内镜检测界面</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pushButton4">
-   <property name="geometry">
-    <rect>
-     <x>650</x>
-     <y>600</y>
-     <width>141</width>
-     <height>51</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>楷体</family>
-     <pointsize>12</pointsize>
-    </font>
+   <property name="styleSheet">
+    <string notr="true">background-color:rgb(85, 170, 255)</string>
    </property>
    <property name="text">
-    <string>模型训练界面</string>
+    <string>开始内镜检测</string>
    </property>
   </widget>
-  <widget class="QTextEdit" name="textEdit">
+  <widget class="QListView" name="listView">
    <property name="geometry">
     <rect>
-     <x>130</x>
-     <y>480</y>
-     <width>531</width>
-     <height>81</height>
+     <x>0</x>
+     <y>0</y>
+     <width>900</width>
+     <height>600</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: qlineargradient(spread:pad, x1:0.483, y1:0, x2:0.511727, y2:1, stop:0.5625 rgba(255, 229, 152, 255), stop:1 rgba(255, 255, 255, 255));</string>
+   </property>
   </widget>
+  <zorder>listView</zorder>
+  <zorder>label</zorder>
+  <zorder>horizontalLayoutWidget</zorder>
+  <zorder>gridLayoutWidget</zorder>
+  <zorder>labelresult</zorder>
+  <zorder>textEdit</zorder>
+  <zorder>pushButton1</zorder>
+  <zorder>pushButton2</zorder>
+  <zorder>pushButton3</zorder>
  </widget>
  <resources/>
  <connections/>

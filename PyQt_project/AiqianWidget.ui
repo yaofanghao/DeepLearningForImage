@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>962</width>
-    <height>717</height>
+    <width>900</width>
+    <height>601</height>
    </rect>
   </property>
   <property name="palette">
@@ -166,6 +166,9 @@
      <pointsize>12</pointsize>
     </font>
    </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(147, 149, 255);</string>
+   </property>
    <property name="text">
     <string>返回诊断系统
 选择页面</string>
@@ -186,6 +189,9 @@
      <pointsize>12</pointsize>
     </font>
    </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(80, 170, 53);</string>
+   </property>
    <property name="text">
     <string>保存报告</string>
    </property>
@@ -204,6 +210,10 @@
      <family>楷体</family>
      <pointsize>12</pointsize>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(255, 170, 0);
+color: rgb(0, 0, 255);</string>
    </property>
    <property name="text">
     <string>退出检测</string>
@@ -365,6 +375,9 @@
      <pointsize>12</pointsize>
     </font>
    </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:rgb(85, 170, 255)</string>
+   </property>
    <property name="text">
     <string>读取图片</string>
    </property>
@@ -384,10 +397,43 @@
      <pointsize>12</pointsize>
     </font>
    </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:rgb(85, 170, 255)</string>
+   </property>
    <property name="text">
     <string>保存图片</string>
    </property>
   </widget>
+  <widget class="QListView" name="listView">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>900</width>
+     <height>600</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: qlineargradient(spread:pad, x1:0.483, y1:0, x2:0.511727, y2:1, stop:0.5625 rgba(255, 229, 152, 255), stop:1 rgba(255, 255, 255, 255));</string>
+   </property>
+  </widget>
+  <zorder>listView</zorder>
+  <zorder>label</zorder>
+  <zorder>label1</zorder>
+  <zorder>pushButton1</zorder>
+  <zorder>pushButton2</zorder>
+  <zorder>pushButton5</zorder>
+  <zorder>lineEdit1</zorder>
+  <zorder>lineEdit2</zorder>
+  <zorder>label2</zorder>
+  <zorder>labelreport</zorder>
+  <zorder>textEditreport</zorder>
+  <zorder>graphicsView</zorder>
+  <zorder>label4</zorder>
+  <zorder>graphicsView2</zorder>
+  <zorder>label3</zorder>
+  <zorder>pushButton4</zorder>
+  <zorder>pushButton3</zorder>
  </widget>
  <resources/>
  <connections/>

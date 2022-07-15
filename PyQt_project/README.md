@@ -11,6 +11,7 @@
 * h5py 3.7.0
 * keras 2.7.0
 * numpy 1.23.1
+* opencv-python 4.5.4.60
 
 # 设计逻辑
 ## main.py 主函数
@@ -23,8 +24,6 @@
 
 ## InfoWidget.py
 病人基本信息界面
-    
-// 暂无此部分与其他模块的联系，暂时未解决
 
 ## AiqianWidget.py 
 癌前病变诊断界面
@@ -35,16 +34,19 @@
 ## EGC_yolo_predict 文件夹
 内含EGC预测模型yolov3的模型、权重
 
+## apprcc.qrc
+存放图片等资源文件链接
+
 ------
 ## 实现功能
 已完成：
 * 按钮实现各界面之间的切换 
 
 未完成：
-* 填写病人信息生成word （可能不需要）
+* 填写病人信息生成word 
 * 读取指定文件夹图片功能
 * 显示预测后的图片
-* 预测后的图片保存至指定文件夹
+* 保存预测后的图片
 * 医生填写的诊断结果生成报告保存至word
 * 界面美化、字体、背景图 
 * 其他功能和细节待补充
@@ -59,3 +61,6 @@
 * pyqt官网 https://www.riverbankcomputing.com/
 * pyqt入门教程 https://blog.csdn.net/m0_57021623/article/details/123459038
 * 界面切换参考自 https://blog.csdn.net/weixin_43734095/article/details/106783108
+* 背景图片设置参考自 https://blog.csdn.net/qq_38161040/article/details/88363916
+* 样式表参考自 https://blog.csdn.net/zhouyingge1104/article/details/95377946
+

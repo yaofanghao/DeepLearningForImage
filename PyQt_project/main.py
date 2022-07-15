@@ -1,46 +1,74 @@
 # main函数功能：
 # 实现各界面之间的跳转、交流
-from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtWidgets import QMessageBox
 import sys
+import cv2
+from PyQt5 import QtCore, QtWidgets
+from PyQt5.QtWidgets import QMessageBox, QDialog, QFileDialog, QPushButton, QVBoxLayout, QHBoxLayout, QLabel, QGraphicsScene, QGraphicsPixmapItem
+from PyQt5.QtGui import QPixmap, QImage
 
 # 导入需要的ui界面
-from InitWidget import Ui_Form as Init_Ui
+from InitWidget import Ui_widget as Init_Ui
 from InfoWidget import Ui_Form as Info_Ui
 from AiqianWidget import Ui_Form as Aiqian_Ui
 from EGCWidget import Ui_Form as EGC_Ui
 
 # 初始界面 InitWidget
 class InitUi(QtWidgets.QMainWindow, Init_Ui):
-    switch_aiqian = QtCore.pyqtSignal()  # 跳转至癌前诊断界面的信号
-    switch_egc = QtCore.pyqtSignal()  # 跳转至早癌诊断界面的信号
+    switch_info = QtCore.pyqtSignal()
     def __init__(self):
         super(InitUi, self).__init__()
         self.setupUi(self)
-        self.pushButton1.clicked.connect(self.goAiqian) # 按下按钮1去癌前诊断界面
-        self.pushButton2.clicked.connect(self.goEGC) # 按下按钮2去早癌诊断界面
-        self.pushButton5.clicked.connect(self.closeEvent)  # 按下按钮3去关闭对话框
-    def goAiqian(self):
-        self.switch_aiqian.emit()
-    def goEGC(self):
-        self.switch_egc.emit()
-    def closeEvent(self):
+        self.pushButton1.clicked.connect(self.goInfo)  # 按下按钮1去患者信息界面
+        self.pushButton2.clicked.connect(self.goInfo)  # 按下按钮2去患者信息界面
+        self.pushButton5.clicked.connect(self.closeDialog)   # 按下按钮5去退出对话框
+    def goInfo(self):
+        self.switch_info.emit()
+    def closeDialog(self):
         reply = QMessageBox.warning(self,"提示","是否确定退出",
                     QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if reply == QMessageBox.Yes:
             print('exit')
             app = QtWidgets.QApplication.instance()
             app.quit()
-            # event.accept()
         else:
             print('keep')
-            # event.ignore()
 
 # 患者信息界面 InfoWidget
 class InfoUi(QtWidgets.QMainWindow, Info_Ui):
+    switch_init = QtCore.pyqtSignal()
+    switch_aiqian = QtCore.pyqtSignal()
+    switch_egc = QtCore.pyqtSignal()
     def __init__(self):
         super(InfoUi, self).__init__()
         self.setupUi(self)
+        self.pushButton1.clicked.connect(self.goInit)  # 按下按钮1去初始界面
+        self.pushButton3.clicked.connect(self.chooseDialog)  # 按下按钮3去诊断系统选择框
+    def goInit(self):
+        self.switch_init.emit()
+    def chooseDialog(self):
+        vbox = QVBoxLayout()
+        hbox = QHBoxLayout()
+        panel = QLabel()
+        panel.setText("请确认您要选择的诊断系统")
+        self.dialog = QDialog()
+        self.aiqianButton = QPushButton("癌前病变诊断")
+        self.egcButton = QPushButton("早癌EGC诊断")
+        self.aiqianButton.clicked.connect(self.goAiqian)
+        self.egcButton.clicked.connect(self.goEGC)
+        self.dialog.setWindowTitle("开始内镜检测")
+        hbox.addWidget(self.aiqianButton)
+        hbox.addWidget(self.egcButton)
+        vbox.addWidget(panel)
+        vbox.addLayout(hbox)
+        self.dialog.setLayout(vbox)
+        self.dialog.setWindowModality(QtCore.Qt.ApplicationModal)  # 该模式下，只有该dialog关闭，才可以关闭父界面
+        self.dialog.exec_()
+    def goAiqian(self):
+        self.switch_aiqian.emit()
+        self.dialog.close()
+    def goEGC(self):
+        self.switch_egc.emit()
+        self.dialog.close()
 
 # AiqianWidget 癌前病变诊断界面
 class AiqianUi(QtWidgets.QMainWindow, Aiqian_Ui):
@@ -48,21 +76,42 @@ class AiqianUi(QtWidgets.QMainWindow, Aiqian_Ui):
     def __init__(self):
         super(AiqianUi, self).__init__()
         self.setupUi(self)
-        self.pushButton1.clicked.connect(self.goInit) # 按下按钮1去初始界面
-        self.pushButton5.clicked.connect(self.closeEvent) # 按下按钮5去关闭对话框
+        self.pushButton1.clicked.connect(self.goInit)  # 按下按钮1去初始界面
+        self.pushButton4.clicked.connect(self.getjpg)  # 按下按钮4读取图片
+        self.pushButton5.clicked.connect(self.closeDialog)  # 按下按钮5去关闭对话框
     def goInit(self):
         self.switch_init.emit()
-    def closeEvent(self):
+    def closeDialog(self):
         reply = QMessageBox.warning(self,"提示","是否确定退出",
                     QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if reply == QMessageBox.Yes:
             print('exit')
             app = QtWidgets.QApplication.instance()
             app.quit()
-            # event.accept()
         else:
             print('keep')
-            # event.ignore()
+    def getjpg(self):
+        jpg_name = QFileDialog.getOpenFileName(self, "Open File", "./", "*.jpg *.png")
+        image_path = jpg_name[0]
+        if (jpg_name[0] == ""):
+            QMessageBox.warning(self, "提示", self.tr("没有选择图片文件！"))
+        else:
+            print(image_path)
+            img = cv2.imread(image_path)  # 读取图像
+            imgrgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # 转换图像通道
+            y, x = img.shape[:-1]
+            self.zoomscale = 1  # 图片放缩尺度
+            frame = QImage(imgrgb, x, y, QImage.Format_RGB888)
+            pix = QPixmap.fromImage(frame)
+            self.item = QGraphicsPixmapItem(pix)  # 创建像素图元
+            self.item.setScale(self.zoomscale)
+            self.scene = QGraphicsScene()  # 创建场景
+            self.scene.clear()
+            # self.scene.addPixmap(self.pix)
+            # self.scene.addItem(self.item)
+            self.graphicsView.setScene(self.scene)
+            self.graphicsView.show()
+            print('success')
 
 # EGCWidget 早癌EGC诊断系统界面
 class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
@@ -70,40 +119,51 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
     def __init__(self):
         super(EGCUi, self).__init__()
         self.setupUi(self)
-        self.pushButton1.clicked.connect(self.goInit) # 按下按钮1去初始界面
-        self.pushButton5.clicked.connect(self.closeEvent) # 按下按钮5去关闭对话框
+        self.pushButton1.clicked.connect(self.goInit)  # 按下按钮1去初始界面
+        self.pushButton5.clicked.connect(self.closeDialog)  # 按下按钮5去关闭对话框
     def goInit(self):
         self.switch_init.emit()
-    def closeEvent(self):
-        reply = QMessageBox.warning(self,"提示","是否确定退出",
+    def closeDialog(self):
+        reply = QMessageBox.warning(self, "提示", "是否确定退出",
                     QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if reply == QMessageBox.Yes:
             print('exit')
             app = QtWidgets.QApplication.instance()
             app.quit()
-            # event.accept()
         else:
             print('keep')
-            # event.ignore()
 
 # 控制器，实现各界面之间的跳转功能
 class Controller:
     def __init__(self):
         pass
-    def showInit(self): # 在InitWidget中，按下不同按钮进入不同预测界面
+        # 对各窗口实例化
         self.initUi = InitUi()
-        self.initUi.switch_aiqian.connect(self.showAiqian)
-        self.initUi.switch_egc.connect(self.showEGC)
-        self.initUi.show()
-    def showAiqian(self):
+        self.info = InfoUi()
         self.aiqian = AiqianUi()
+        self.egc = EGCUi()
+
+    def showInit(self):
+        self.initUi.switch_info.connect(self.showInfo)
+        self.info.close()
+        self.aiqian.close()
+        self.egc.close()
+        self.initUi.show()
+    def showInfo(self):
+        self.info.switch_init.connect(self.showInit)
+        self.info.switch_aiqian.connect(self.showAiqian)
+        self.info.switch_egc.connect(self.showEGC)
+        self.initUi.close()
+        self.info.show()
+    def showAiqian(self):
         self.aiqian.switch_init.connect(self.showInit)
         self.initUi.close()
+        self.info.close()
         self.aiqian.show()
     def showEGC(self):
-        self.egc = EGCUi()
         self.egc.switch_init.connect(self.showInit)
         self.initUi.close()
+        self.info.close()
         self.egc.show()
 
 
