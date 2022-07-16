@@ -155,7 +155,7 @@
    <property name="geometry">
     <rect>
      <x>700</x>
-     <y>240</y>
+     <y>340</y>
      <width>141</width>
      <height>51</height>
     </rect>
@@ -296,16 +296,6 @@ color: rgb(0, 0, 255);</string>
     </rect>
    </property>
   </widget>
-  <widget class="QGraphicsView" name="graphicsView">
-   <property name="geometry">
-    <rect>
-     <x>50</x>
-     <y>120</y>
-     <width>300</width>
-     <height>300</height>
-    </rect>
-   </property>
-  </widget>
   <widget class="QLabel" name="label4">
    <property name="geometry">
     <rect>
@@ -323,19 +313,6 @@ color: rgb(0, 0, 255);</string>
    </property>
    <property name="text">
     <string>图片显示</string>
-   </property>
-   <property name="buddy">
-    <cstring>graphicsView</cstring>
-   </property>
-  </widget>
-  <widget class="QGraphicsView" name="graphicsView2">
-   <property name="geometry">
-    <rect>
-     <x>370</x>
-     <y>120</y>
-     <width>300</width>
-     <height>300</height>
-    </rect>
    </property>
   </widget>
   <widget class="QLabel" name="label3">
@@ -355,9 +332,6 @@ color: rgb(0, 0, 255);</string>
    </property>
    <property name="text">
     <string>预测结果</string>
-   </property>
-   <property name="buddy">
-    <cstring>graphicsView2</cstring>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton4">
@@ -386,7 +360,7 @@ color: rgb(0, 0, 255);</string>
    <property name="geometry">
     <rect>
      <x>700</x>
-     <y>180</y>
+     <y>280</y>
      <width>141</width>
      <height>41</height>
     </rect>
@@ -398,7 +372,7 @@ color: rgb(0, 0, 255);</string>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color:rgb(85, 170, 255)</string>
+    <string notr="true">background-color: rgb(80, 170, 53);</string>
    </property>
    <property name="text">
     <string>保存图片</string>
@@ -417,6 +391,79 @@ color: rgb(0, 0, 255);</string>
     <string notr="true">background-color: qlineargradient(spread:pad, x1:0.483, y1:0, x2:0.511727, y2:1, stop:0.5625 rgba(255, 229, 152, 255), stop:1 rgba(255, 255, 255, 255));</string>
    </property>
   </widget>
+  <widget class="QLabel" name="label5">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>120</y>
+     <width>300</width>
+     <height>300</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="buddy">
+    <cstring>lineEdit5</cstring>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit5">
+   <property name="geometry">
+    <rect>
+     <x>700</x>
+     <y>180</y>
+     <width>141</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="placeholderText">
+    <string>图片所在路径</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label6">
+   <property name="geometry">
+    <rect>
+     <x>370</x>
+     <y>120</y>
+     <width>300</width>
+     <height>300</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="buddy">
+    <cstring>lineEdit5</cstring>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton6">
+   <property name="geometry">
+    <rect>
+     <x>700</x>
+     <y>220</y>
+     <width>141</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>楷体</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:rgb(85, 170, 255)</string>
+   </property>
+   <property name="text">
+    <string>开始检测</string>
+   </property>
+  </widget>
   <zorder>listView</zorder>
   <zorder>label</zorder>
   <zorder>label1</zorder>
@@ -428,12 +475,14 @@ color: rgb(0, 0, 255);</string>
   <zorder>label2</zorder>
   <zorder>labelreport</zorder>
   <zorder>textEditreport</zorder>
-  <zorder>graphicsView</zorder>
   <zorder>label4</zorder>
-  <zorder>graphicsView2</zorder>
   <zorder>label3</zorder>
   <zorder>pushButton4</zorder>
   <zorder>pushButton3</zorder>
+  <zorder>label5</zorder>
+  <zorder>lineEdit5</zorder>
+  <zorder>label6</zorder>
+  <zorder>pushButton6</zorder>
  </widget>
  <resources/>
  <connections/>

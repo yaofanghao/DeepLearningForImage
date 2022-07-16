@@ -57,7 +57,8 @@ if __name__ == "__main__":
                 print('Open Error! Try again!')
                 continue
             else:
-                r_image, out_scores, out_classes = yolo.detect_image(image, crop=crop, count=count)
+                # r_image, out_scores, out_classes = yolo.detect_image(image, crop=crop, count=count)
+                r_image, out_scores, out_classes, top, right, left, bottom = yolo.detect_image(image)
                 r_image.show()
 
     elif mode == "dir_predict":

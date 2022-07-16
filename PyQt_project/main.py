@@ -78,6 +78,7 @@ class AiqianUi(QtWidgets.QMainWindow, Aiqian_Ui):
         self.setupUi(self)
         self.pushButton1.clicked.connect(self.goInit)  # 按下按钮1去初始界面
         self.pushButton4.clicked.connect(self.getjpg)  # 按下按钮4读取图片
+        self.pushButton6.clicked.connect(self.predictjpg) # 按下按钮6预测图片
         self.pushButton5.clicked.connect(self.closeDialog)  # 按下按钮5去关闭对话框
     def goInit(self):
         self.switch_init.emit()
@@ -91,27 +92,57 @@ class AiqianUi(QtWidgets.QMainWindow, Aiqian_Ui):
         else:
             print('keep')
     def getjpg(self):
-        jpg_name = QFileDialog.getOpenFileName(self, "Open File", "./", "*.jpg *.png")
-        image_path = jpg_name[0]
+        global jpg_name # 图片设为全局变量，后续预测中也要用到
+        jpg_name, imgType = QFileDialog.getOpenFileName(self, "选择图片", "./", "*.jpg;;*.png;;All Files(*)")
+        print(jpg_name)
         if (jpg_name[0] == ""):
-            QMessageBox.warning(self, "提示", self.tr("没有选择图片文件！"))
+            QMessageBox.warning(self, "提示", self.tr("没有选择图片！"))
         else:
-            print(image_path)
-            img = cv2.imread(image_path)  # 读取图像
-            imgrgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # 转换图像通道
-            y, x = img.shape[:-1]
-            self.zoomscale = 1  # 图片放缩尺度
-            frame = QImage(imgrgb, x, y, QImage.Format_RGB888)
-            pix = QPixmap.fromImage(frame)
-            self.item = QGraphicsPixmapItem(pix)  # 创建像素图元
-            self.item.setScale(self.zoomscale)
-            self.scene = QGraphicsScene()  # 创建场景
-            self.scene.clear()
-            # self.scene.addPixmap(self.pix)
-            # self.scene.addItem(self.item)
-            self.graphicsView.setScene(self.scene)
-            self.graphicsView.show()
-            print('success')
+            print(jpg_name)
+            # img = cv2.imread(image_path)  # 读取图像
+            # imgrgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # 转换图像通道
+            # y, x = img.shape[:-1]
+            # self.zoomscale = 1  # 图片放缩尺度
+            # frame = QImage(imgrgb, x, y, QImage.Format_RGB888)
+            # pix = QPixmap.fromImage(frame)
+            # self.item = QGraphicsPixmapItem(pix)  # 创建像素图元
+            # self.item.setScale(self.zoomscale)
+            # self.scene = QGraphicsScene()  # 创建场景
+            # self.scene.clear()
+            # # self.scene.addPixmap(self.pix)
+            # # self.scene.addItem(self.item)
+            # self.graphicsView.setScene(self.scene)
+            # self.graphicsView.show()
+            # print('success')
+            #
+            # 7.16 重写代码
+            img = QPixmap(jpg_name).scaled(self.label5.width(), self.label5.height())
+            self.label5.setPixmap(img)  # 显示读取图片到界面上
+            self.lineEdit5.setText(jpg_name)
+    def predictjpg(self):
+        # 2022.7.16
+        # 此为测试版的predict代码，测试qt能否成功运行
+        # 后续根据实际需要全部修改替换
+        import tensorflow as tf
+        from PIL import Image
+        from yolo_predict3 import YOLO
+
+        gpus = tf.config.experimental.list_physical_devices(device_type='GPU')
+        for gpu in gpus:
+            tf.config.experimental.set_memory_growth(gpu, True)
+        yolo = YOLO()
+        while True:
+            # img = input('Input image filename:')
+            try:
+                image = Image.open(jpg_name)
+            except:
+                print('Open Error! Try again!')
+                continue
+            else:
+                r_image, out_scores, out_classes, top, right, left, bottom = yolo.detect_image(image)  # r_image 是预测生成图片
+                # r_image.show()
+                img_out = QPixmap(r_image).scaled(self.label6.width(), self.label6.height())
+                self.label6.setPixmap(img_out)  # 显示预测图片到界面上
 
 # EGCWidget 早癌EGC诊断系统界面
 class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
