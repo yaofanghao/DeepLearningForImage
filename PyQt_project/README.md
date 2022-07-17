@@ -33,9 +33,6 @@
 ## EGCWidget.py
 早癌EGC诊断系统界面
 
-## EGC_yolo_predict 文件夹
-内含EGC预测模型yolov3的模型、权重
-
 ## apprcc.qrc
 存放图片等资源文件链接
 
@@ -46,10 +43,11 @@
 
 未完成：
 * 填写病人信息生成word 
-* 读取指定文件夹图片功能
-    * 选择单张图片预测
+* 读取指定文件夹图片功能、
+    * 预测时的进度条显示 -7.17完成，实现过程不太好
+    * 选择单张图片预测 -7.17完成，实现过程不太好
     * 选择文件夹图片批量预测
-* 显示预测后的图片
+* 显示预测后的图片 -7.17完成，实现过程不太好
 * 保存预测后的图片
 * 医生填写的诊断结果生成报告保存至word
 * 界面美化、字体、背景图 
@@ -67,4 +65,6 @@
 * 界面切换参考自 https://blog.csdn.net/weixin_43734095/article/details/106783108
 * 背景图片设置参考自 https://blog.csdn.net/qq_38161040/article/details/88363916
 * 样式表参考自 https://blog.csdn.net/zhouyingge1104/article/details/95377946
-* 保存图片参考自 http://t.csdn.cn/S4cR
+* 保存图片参考自 https://blog.csdn.net/m0_47682721/article/details/123928585
+* 进度条对话框参考自 https://blog.csdn.net/yurensan/article/details/121025642
+

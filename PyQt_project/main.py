@@ -2,8 +2,9 @@
 # 实现各界面之间的跳转、交流
 import sys
 import cv2
+import os
 from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtWidgets import QMessageBox, QDialog, QFileDialog, QPushButton, QVBoxLayout, QHBoxLayout, QLabel, QGraphicsScene, QGraphicsPixmapItem
+from PyQt5.QtWidgets import QMessageBox, QDialog, QFileDialog, QPushButton, QVBoxLayout, QHBoxLayout, QLabel, QProgressDialog, QGraphicsScene, QGraphicsPixmapItem
 from PyQt5.QtGui import QPixmap, QImage
 
 # 导入需要的ui界面
@@ -127,6 +128,12 @@ class AiqianUi(QtWidgets.QMainWindow, Aiqian_Ui):
         from PIL import Image
         from yolo_predict3 import YOLO
 
+        # 进度条
+        elapsed_time = 100000
+        self.pbar = QProgressDialog("诊断中", "取消", 0, elapsed_time, self)
+        self.pbar.setWindowTitle("进度提示")
+        self.pbar.show()
+
         gpus = tf.config.experimental.list_physical_devices(device_type='GPU')
         for gpu in gpus:
             tf.config.experimental.set_memory_growth(gpu, True)
@@ -139,10 +146,22 @@ class AiqianUi(QtWidgets.QMainWindow, Aiqian_Ui):
                 print('Open Error! Try again!')
                 continue
             else:
+
+                for i in range(elapsed_time):
+                    self.pbar.setValue(i)
+                    QtCore.QCoreApplication.processEvents()
+                    if self.pbar.wasCanceled():
+                        break
                 r_image, out_scores, out_classes, top, right, left, bottom = yolo.detect_image(image)  # r_image 是预测生成图片
-                # r_image.show()
-                img_out = QPixmap(r_image).scaled(self.label6.width(), self.label6.height())
+                # 目前办法：暂时保存再读取
+                # cv2.imwrite(os.getcwd()+"\1_out.jpg", r_image)
+                r_image.save(jpg_name.replace(".jpg", ".png"))
+                img_out = QPixmap(jpg_name.replace(".jpg", ".png")).scaled(self.label6.width(),self.label6.height())
                 self.label6.setPixmap(img_out)  # 显示预测图片到界面上
+
+                self.pbar.setValue(elapsed_time) # 进度条加满
+
+                break
 
 # EGCWidget 早癌EGC诊断系统界面
 class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
