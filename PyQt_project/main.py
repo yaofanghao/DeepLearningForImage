@@ -43,6 +43,7 @@ class InfoUi(QtWidgets.QMainWindow, Info_Ui):
         super(InfoUi, self).__init__()
         self.setupUi(self)
         self.pushButton1.clicked.connect(self.goInit)  # 按下按钮1去初始界面
+        self.pushButton2.clicked.connect(self.saveInfo)  # 按下按钮2保存患者信息
         self.pushButton3.clicked.connect(self.chooseDialog)  # 按下按钮3去诊断系统选择框
     def goInit(self):
         self.switch_init.emit()
@@ -70,6 +71,49 @@ class InfoUi(QtWidgets.QMainWindow, Info_Ui):
     def goEGC(self):
         self.switch_egc.emit()
         self.dialog.close()
+    def saveInfo(self):
+        menzhenhao = self.lineEdit1.text()
+        zhuyuanhao = self.lineEdit2.text()
+        binglihao = self.lineEdit3.text()
+        jianchahao = self.lineEdit4.text()
+        name = self.lineEdit5.text()
+        sex = self.lineEdit6.text()
+        age = self.lineEdit7.text()
+        ke = self.lineEdit8.text()
+        chuang = self.lineEdit9.text()
+        origin = self.lineEdit10.text()
+        chubujiancha = self.textEdit.toPlainText()
+        filepath, type = QFileDialog.getSaveFileName(self, "文件保存", "./" ,'txt(*.txt)')
+        print(filepath)
+        with open(filepath,'w') as file: # 保存患者信息到txt
+            file.write("门诊号："+str(menzhenhao))
+            file.write('\r')
+            file.write("住院号："+str(zhuyuanhao))
+            file.write('\r')
+            file.write("病历号："+str(binglihao))
+            file.write('\r')
+            file.write("检查号："+str(jianchahao))
+            file.write('\r')
+            file.write("姓名："+str(name))
+            file.write('\r')
+            file.write("性别："+str(sex))
+            file.write('\r')
+            file.write("年龄："+str(age))
+            file.write('\r')
+            file.write("科别："+str(ke))
+            file.write('\r')
+            file.write("床号："+str(chuang))
+            file.write('\r')
+            file.write("来源："+str(origin))
+            file.write('\r')
+            file.write("初步检查所见：\r"+str(chubujiancha))
+            file.write("\r---------end---------")
+            file.write('\r')
+
+
+
+
+
 
 # AiqianWidget 癌前病变诊断界面
 class AiqianUi(QtWidgets.QMainWindow, Aiqian_Ui):
@@ -146,15 +190,13 @@ class AiqianUi(QtWidgets.QMainWindow, Aiqian_Ui):
                 print('Open Error! Try again!')
                 continue
             else:
-
-                for i in range(elapsed_time):
+                for i in range(0.9*elapsed_time):  # 进度条显示进度
                     self.pbar.setValue(i)
                     QtCore.QCoreApplication.processEvents()
                     if self.pbar.wasCanceled():
                         break
                 r_image, out_scores, out_classes, top, right, left, bottom = yolo.detect_image(image)  # r_image 是预测生成图片
-                # 目前办法：暂时保存再读取
-                # cv2.imwrite(os.getcwd()+"\1_out.jpg", r_image)
+                # 目前实现的办法：先保存再读取
                 r_image.save(jpg_name.replace(".jpg", ".png"))
                 img_out = QPixmap(jpg_name.replace(".jpg", ".png")).scaled(self.label6.width(),self.label6.height())
                 self.label6.setPixmap(img_out)  # 显示预测图片到界面上
@@ -222,6 +264,5 @@ if __name__ == '__main__':
 
     controller = Controller()
     controller.showInit()  # 启动初始界面为InitWidget
-
 
     sys.exit(app.exec_())

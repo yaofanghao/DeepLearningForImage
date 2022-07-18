@@ -150,10 +150,16 @@
       <property name="text">
        <string>门诊号</string>
       </property>
+      <property name="buddy">
+       <cstring>lineEdit1</cstring>
+      </property>
      </widget>
     </item>
     <item>
      <widget class="QLineEdit" name="lineEdit1">
+      <property name="text">
+       <string>1</string>
+      </property>
       <property name="placeholderText">
        <string/>
       </property>
@@ -170,10 +176,16 @@
       <property name="text">
        <string>住院号</string>
       </property>
+      <property name="buddy">
+       <cstring>lineEdit2</cstring>
+      </property>
      </widget>
     </item>
     <item>
      <widget class="QLineEdit" name="lineEdit2">
+      <property name="text">
+       <string>2</string>
+      </property>
       <property name="placeholderText">
        <string/>
       </property>
@@ -190,10 +202,16 @@
       <property name="text">
        <string>病历号</string>
       </property>
+      <property name="buddy">
+       <cstring>lineEdit3</cstring>
+      </property>
      </widget>
     </item>
     <item>
      <widget class="QLineEdit" name="lineEdit3">
+      <property name="text">
+       <string>33</string>
+      </property>
       <property name="placeholderText">
        <string/>
       </property>
@@ -210,10 +228,16 @@
       <property name="text">
        <string>检查号</string>
       </property>
+      <property name="buddy">
+       <cstring>lineEdit4</cstring>
+      </property>
      </widget>
     </item>
     <item>
      <widget class="QLineEdit" name="lineEdit4">
+      <property name="text">
+       <string>44</string>
+      </property>
       <property name="placeholderText">
        <string/>
       </property>
@@ -233,6 +257,9 @@
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="3">
      <widget class="QLineEdit" name="lineEdit6">
+      <property name="text">
+       <string>男</string>
+      </property>
       <property name="placeholderText">
        <string/>
       </property>
@@ -249,6 +276,9 @@
       <property name="text">
        <string>姓名</string>
       </property>
+      <property name="buddy">
+       <cstring>lineEdit5</cstring>
+      </property>
      </widget>
     </item>
     <item row="0" column="2">
@@ -262,10 +292,16 @@
       <property name="text">
        <string>性别</string>
       </property>
+      <property name="buddy">
+       <cstring>lineEdit6</cstring>
+      </property>
      </widget>
     </item>
     <item row="0" column="1">
      <widget class="QLineEdit" name="lineEdit5">
+      <property name="text">
+       <string>你好123</string>
+      </property>
       <property name="placeholderText">
        <string/>
       </property>
@@ -282,10 +318,16 @@
       <property name="text">
        <string>年龄</string>
       </property>
+      <property name="buddy">
+       <cstring>lineEdit7</cstring>
+      </property>
      </widget>
     </item>
     <item row="0" column="5">
      <widget class="QLineEdit" name="lineEdit7">
+      <property name="text">
+       <string>12</string>
+      </property>
       <property name="placeholderText">
        <string/>
       </property>
@@ -304,13 +346,6 @@
       </property>
      </widget>
     </item>
-    <item row="1" column="1">
-     <widget class="QLineEdit" name="lineEdit_9">
-      <property name="placeholderText">
-       <string/>
-      </property>
-     </widget>
-    </item>
     <item row="1" column="2">
      <widget class="QLabel" name="label9">
       <property name="font">
@@ -322,10 +357,16 @@
       <property name="text">
        <string>床号</string>
       </property>
+      <property name="buddy">
+       <cstring>lineEdit9</cstring>
+      </property>
      </widget>
     </item>
     <item row="1" column="3">
      <widget class="QLineEdit" name="lineEdit9">
+      <property name="text">
+       <string>abc123</string>
+      </property>
       <property name="placeholderText">
        <string/>
       </property>
@@ -342,10 +383,26 @@
       <property name="text">
        <string>来源</string>
       </property>
+      <property name="buddy">
+       <cstring>lineEdit10</cstring>
+      </property>
      </widget>
     </item>
     <item row="1" column="5">
      <widget class="QLineEdit" name="lineEdit10">
+      <property name="text">
+       <string>123来源</string>
+      </property>
+      <property name="placeholderText">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLineEdit" name="lineEdit8">
+      <property name="text">
+       <string>abc123科</string>
+      </property>
       <property name="placeholderText">
        <string/>
       </property>
@@ -371,6 +428,9 @@
    <property name="text">
     <string>初步检查所见：</string>
    </property>
+   <property name="buddy">
+    <cstring>textEdit</cstring>
+   </property>
   </widget>
   <widget class="QTextEdit" name="textEdit">
    <property name="geometry">
@@ -380,6 +440,18 @@
      <width>531</width>
      <height>81</height>
     </rect>
+   </property>
+   <property name="html">
+    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'SimSun'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;123&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;test&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;abc&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;你好&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;end&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton1">

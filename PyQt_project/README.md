@@ -4,7 +4,7 @@
 * 2022.7.14-
 
 开发环境：
-* PyCharm Community Edition 2020.3.2 @yaofanghao
+* PyCharm Community Edition 2020.3.2 / Qt Designer @yaofanghao
 * Python 3.8.13
 * PyQt 5.15.4
 * Tensorflow 2.7.0
@@ -42,7 +42,7 @@
 * 按钮实现各界面之间的切换 -7.15完成
 
 未完成：
-* 填写病人信息生成word 
+* 填写病人信息生成word -7.18暂时完成保存到txt
 * 读取指定文件夹图片功能、
     * 预测时的进度条显示 -7.17完成，实现过程不太好
     * 选择单张图片预测 -7.17完成，实现过程不太好
