@@ -110,15 +110,14 @@ class InfoUi(QtWidgets.QMainWindow, Info_Ui):
             file.write("\r---------end---------")
             file.write('\r')
 
-
 # AiqianWidget 癌前病变诊断界面
 class AiqianUi(QtWidgets.QMainWindow, Aiqian_Ui):
     switch_init = QtCore.pyqtSignal()
     def __init__(self):
         super(AiqianUi, self).__init__()
         self.setupUi(self)
-        self.pushButton1.clicked.connect(self.goInit)  # 按下按钮1去初始界面
-        self.pushButton5.clicked.connect(self.closeDialog)  # 按下按钮5去关闭对话框
+        self.pushButton6.clicked.connect(self.goInit)  # 去初始界面
+        self.pushButton8.clicked.connect(self.closeDialog)  # 关闭对话框
     def goInit(self):
         self.switch_init.emit()
     def closeDialog(self):
@@ -131,7 +130,6 @@ class AiqianUi(QtWidgets.QMainWindow, Aiqian_Ui):
         else:
             print('keep')
 
-
 # EGCWidget 早癌EGC诊断系统界面
 class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
     switch_init = QtCore.pyqtSignal()
@@ -142,10 +140,15 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
         self.file_paths = []  # 文件列表
         self.file_index = 0	  # 文件索引
 
-        self.pushButton1.clicked.connect(self.goInit)  # 按下按钮1去初始界面
-        self.pushButton4.clicked.connect(self.getjpg)  # 按下按钮4读取图片
-        self.pushButton6.clicked.connect(self.predictjpg) # 按下按钮6预测图片
-        self.pushButton5.clicked.connect(self.closeDialog)  # 按下按钮5去关闭对话框
+        self.pushButton1.clicked.connect(self.on_btnImportFolder_clicked) #导入文件夹
+        self.pushButton2.clicked.connect(self.on_btnFolderNext_clicked) #下一个
+        self.pushButton3.clicked.connect(self.on_btnFolderPrevious_clicked) #上一个
+        self.pushButton4.clicked.connect(self.predictjpg) #开始检测
+
+        self.pushButton6.clicked.connect(self.goInit)  # 去初始界面
+
+        self.pushButton8.clicked.connect(self.closeDialog)  # 关闭对话框
+
     def goInit(self):
         self.switch_init.emit()
     def closeDialog(self):
@@ -157,34 +160,65 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
             app.quit()
         else:
             print('keep')
-    def getjpg(self):
-        global jpg_name # 图片设为全局变量，后续预测中也要用到
-        jpg_name, imgType = QFileDialog.getOpenFileName(self, "选择图片", "./", "*.jpg;;*.png;;All Files(*)")
-        print(jpg_name)
-        if (jpg_name[0] == ""):
-            QMessageBox.warning(self, "提示", self.tr("没有选择图片！"))
-        else:
-            print(jpg_name)
-            # img = cv2.imread(image_path)  # 读取图像
-            # imgrgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # 转换图像通道
-            # y, x = img.shape[:-1]
-            # self.zoomscale = 1  # 图片放缩尺度
-            # frame = QImage(imgrgb, x, y, QImage.Format_RGB888)
-            # pix = QPixmap.fromImage(frame)
-            # self.item = QGraphicsPixmapItem(pix)  # 创建像素图元
-            # self.item.setScale(self.zoomscale)
-            # self.scene = QGraphicsScene()  # 创建场景
-            # self.scene.clear()
-            # # self.scene.addPixmap(self.pix)
-            # # self.scene.addItem(self.item)
-            # self.graphicsView.setScene(self.scene)
-            # self.graphicsView.show()
-            # print('success')
-            #
-            # 7.16 重写代码
-            img = QPixmap(jpg_name).scaled(self.label5.width(), self.label5.height())
-            self.label5.setPixmap(img)  # 显示读取图片到界面上
-            self.lineEdit5.setText(jpg_name)
+
+    # 7.21
+        # 导入文件夹
+    # @pyqtSlot()
+    def on_btnImportFolder_clicked(self):
+        global cur_path  # 当前图片路径
+
+        cur_dir = QtCore.QDir.currentPath()  # 获取当前文件夹路径
+        # 选择文件夹
+        dir_path = QFileDialog.getExistingDirectory(self, '打开文件夹', cur_dir)
+        # 读取文件夹文件
+        self.file_paths.clear()
+        for root, dirs, files in os.walk(dir_path, topdown=False):
+            for file in files:
+                self.file_paths.append(os.path.join(root, file))
+        print(self.file_paths)
+        if len(self.file_paths) <= 0:
+            return
+        # 获取第一个文件
+        self.file_index = 0
+        cur_path = self.file_paths[self.file_index]
+        print(cur_path)
+        img = QPixmap(cur_path).scaled(self.label5.width(), self.label5.height())
+        self.label5.setPixmap(img)  # 显示读取图片到界面上
+        self.lineEdit5.setText(cur_path)
+
+    # 下一个文件
+    # @pyqtSlot()
+    def on_btnFolderNext_clicked(self):
+        # 文件索引累加 1
+        self.file_index += 1
+        if self.file_index >= len(self.file_paths):
+            QMessageBox.warning(self, "提示", self.tr("已经是最后一个！"))
+            self.file_index = len(self.file_paths) - 1
+        if len(self.file_paths) <= 0 or self.file_index >= len(self.file_paths):
+            return
+        cur_path = self.file_paths[self.file_index]
+        print(cur_path)
+        img = QPixmap(cur_path).scaled(self.label5.width(), self.label5.height())
+        self.label5.setPixmap(img)  # 显示读取图片到界面上
+        self.lineEdit5.setText(cur_path)
+
+    # 上一个文件
+    # @pyqtSlot()
+    def on_btnFolderPrevious_clicked(self):
+        # 文件索引减 1
+        self.file_index -= 1
+        if self.file_index < 0:
+            QMessageBox.warning(self, "提示", self.tr("已经是第一个！"))
+            self.file_index = 0
+        if len(self.file_paths) <= 0 or self.file_index >= len(self.file_paths):
+            return
+        # 当前路径
+        cur_path = self.file_paths[self.file_index]
+        print(cur_path)
+        img = QPixmap(cur_path).scaled(self.label5.width(), self.label5.height())
+        self.label5.setPixmap(img)  # 显示读取图片到界面上
+        self.lineEdit5.setText(cur_path)
+
     def predictjpg(self):
         # 2022.7.16
         # 此为测试版的predict代码，测试qt能否成功运行
@@ -204,22 +238,21 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
             tf.config.experimental.set_memory_growth(gpu, True)
         yolo = YOLO()
         while True:
-            # img = input('Input image filename:')
             try:
-                image = Image.open(jpg_name)
+                image = Image.open(self.file_paths[self.file_index])
             except:
                 print('Open Error! Try again!')
                 continue
             else:
-                for i in range(0.9*elapsed_time):  # 进度条显示进度
+                for i in range(elapsed_time):  # 进度条显示进度
                     self.pbar.setValue(i)
                     QtCore.QCoreApplication.processEvents()
                     if self.pbar.wasCanceled():
                         break
                 r_image, out_scores, out_classes, top, right, left, bottom = yolo.detect_image(image)  # r_image 是预测生成图片
                 # 目前实现的办法：先保存再读取
-                r_image.save(jpg_name.replace(".jpg", ".png"))
-                img_out = QPixmap(jpg_name.replace(".jpg", ".png")).scaled(self.label6.width(),self.label6.height())
+                r_image.save(self.file_paths[self.file_index].replace(".jpg", ".png"))
+                img_out = QPixmap(self.file_paths[self.file_index].replace(".jpg", ".png")).scaled(self.label6.width(),self.label6.height())
                 self.label6.setPixmap(img_out)  # 显示预测图片到界面上
 
                 self.pbar.setValue(elapsed_time) # 进度条加满

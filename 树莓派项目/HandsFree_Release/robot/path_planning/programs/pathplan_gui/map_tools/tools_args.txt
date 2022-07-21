@@ -1,0 +1,18 @@
+--------------- 2014-04-21 11:14:57 ---------------
+./tools.e -act convert_img2map 
+
+--------------- 2014-04-21 11:16:49 ---------------
+./tools.e -act convert_img2map 
+
+--------------- 2014-04-21 11:27:53 ---------------
+./tools.e -act convert_img2map 
+
+--------------- 2014-04-21 11:29:27 ---------------
+./tools.e -act convert_img2map 
+
+--------------- 2014-04-21 11:30:07 ---------------
+./tools.e -act convert_img2map 
+
+--------------- 2014-04-21 21:00:40 ---------------
+./tools.e -act convert_img2map -fn_in ../figure/complex_maze_small.png -fn_out ../figure/complex_maze_small.dat 
+
