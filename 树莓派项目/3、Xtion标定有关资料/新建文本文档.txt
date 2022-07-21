@@ -1,0 +1,9 @@
+用于校准 Primesense 传感器并将校准文件写入 InfiniTAM 格式的工具
+https://github.com/carlren/OpenNICalibTool
+标定时遇到的问题
+https://blog.csdn.net/yldmkx/article/details/99762360
+其他参考资料（注意版本）
+https://blog.csdn.net/hzwwpgmwy/article/details/81869472
+https://github.com/leaveitout/asus_xtion_intrinsic_calibration
+https://blog.csdn.net/weixin_41054584/article/details/83002813
+https://blog.csdn.net/yldmkx/article/details/99762360
