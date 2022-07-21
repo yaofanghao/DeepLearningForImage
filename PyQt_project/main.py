@@ -111,10 +111,6 @@ class InfoUi(QtWidgets.QMainWindow, Info_Ui):
             file.write('\r')
 
 
-
-
-
-
 # AiqianWidget 癌前病变诊断界面
 class AiqianUi(QtWidgets.QMainWindow, Aiqian_Ui):
     switch_init = QtCore.pyqtSignal()
@@ -122,13 +118,38 @@ class AiqianUi(QtWidgets.QMainWindow, Aiqian_Ui):
         super(AiqianUi, self).__init__()
         self.setupUi(self)
         self.pushButton1.clicked.connect(self.goInit)  # 按下按钮1去初始界面
+        self.pushButton5.clicked.connect(self.closeDialog)  # 按下按钮5去关闭对话框
+    def goInit(self):
+        self.switch_init.emit()
+    def closeDialog(self):
+        reply = QMessageBox.warning(self,"提示","是否确定退出",
+                    QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        if reply == QMessageBox.Yes:
+            print('exit')
+            app = QtWidgets.QApplication.instance()
+            app.quit()
+        else:
+            print('keep')
+
+
+# EGCWidget 早癌EGC诊断系统界面
+class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
+    switch_init = QtCore.pyqtSignal()
+    def __init__(self):
+        super(EGCUi, self).__init__()
+        self.setupUi(self)
+
+        self.file_paths = []  # 文件列表
+        self.file_index = 0	  # 文件索引
+
+        self.pushButton1.clicked.connect(self.goInit)  # 按下按钮1去初始界面
         self.pushButton4.clicked.connect(self.getjpg)  # 按下按钮4读取图片
         self.pushButton6.clicked.connect(self.predictjpg) # 按下按钮6预测图片
         self.pushButton5.clicked.connect(self.closeDialog)  # 按下按钮5去关闭对话框
     def goInit(self):
         self.switch_init.emit()
     def closeDialog(self):
-        reply = QMessageBox.warning(self,"提示","是否确定退出",
+        reply = QMessageBox.warning(self, "提示", "是否确定退出",
                     QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if reply == QMessageBox.Yes:
             print('exit')
@@ -204,26 +225,6 @@ class AiqianUi(QtWidgets.QMainWindow, Aiqian_Ui):
                 self.pbar.setValue(elapsed_time) # 进度条加满
 
                 break
-
-# EGCWidget 早癌EGC诊断系统界面
-class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
-    switch_init = QtCore.pyqtSignal()
-    def __init__(self):
-        super(EGCUi, self).__init__()
-        self.setupUi(self)
-        self.pushButton1.clicked.connect(self.goInit)  # 按下按钮1去初始界面
-        self.pushButton5.clicked.connect(self.closeDialog)  # 按下按钮5去关闭对话框
-    def goInit(self):
-        self.switch_init.emit()
-    def closeDialog(self):
-        reply = QMessageBox.warning(self, "提示", "是否确定退出",
-                    QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-        if reply == QMessageBox.Yes:
-            print('exit')
-            app = QtWidgets.QApplication.instance()
-            app.quit()
-        else:
-            print('keep')
 
 # 控制器，实现各界面之间的跳转功能
 class Controller:
