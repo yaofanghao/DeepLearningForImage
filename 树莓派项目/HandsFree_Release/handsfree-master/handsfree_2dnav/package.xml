@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package>
+  <name>handsfree_2dnav</name>
+  <version>0.1.0</version>
+  <description>The handsfree_2dnav package for handsfree navigation application config 
+  </description>
+
+  <maintainer email="hands_free@126.com">HandsFree</maintainer>
+  <license>BSD</license>
+  <url type="website">http://wiki.hfreetech.org</url>
+  <url type="bugtracker">https://github.com/HANDS-FREE/handsfree/issues</url>
+  <author email="315261982@qq.com">WenKe Ma</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <export>
+
+  </export>
+</package>
