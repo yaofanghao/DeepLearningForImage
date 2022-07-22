@@ -43,8 +43,20 @@ class InfoUi(QtWidgets.QMainWindow, Info_Ui):
         super(InfoUi, self).__init__()
         self.setupUi(self)
         self.pushButton1.clicked.connect(self.goInit)  # 按下按钮1去初始界面
-        self.pushButton2.clicked.connect(self.saveInfo)  # 按下按钮2保存患者信息
+        self.pushButton2.clicked.connect(self.saveInfo)  # 按下按钮2确认保存信息，用于后续报告生成
         self.pushButton3.clicked.connect(self.chooseDialog)  # 按下按钮3去诊断系统选择框
+        # 因为下面这些信息后续生成报告要用到，所以在这里添加值，方便别的类调用
+        self.menzhenhao = self.lineEdit1.text()
+        self.zhuyuanhao = self.lineEdit2.text()
+        self.binglihao = self.lineEdit3.text()
+        self.jianchahao = self.lineEdit4.text()
+        self.name = self.lineEdit5.text()
+        self.sex = self.lineEdit6.text()
+        self.age = self.lineEdit7.text()
+        self.ke = self.lineEdit8.text()
+        self.chuang = self.lineEdit9.text()
+        self.origin = self.lineEdit10.text()
+        self.chubujiancha = self.textEdit.toPlainText()
     def goInit(self):
         self.switch_init.emit()
     def chooseDialog(self):
@@ -72,43 +84,7 @@ class InfoUi(QtWidgets.QMainWindow, Info_Ui):
         self.switch_egc.emit()
         self.dialog.close()
     def saveInfo(self):
-        menzhenhao = self.lineEdit1.text()
-        zhuyuanhao = self.lineEdit2.text()
-        binglihao = self.lineEdit3.text()
-        jianchahao = self.lineEdit4.text()
-        name = self.lineEdit5.text()
-        sex = self.lineEdit6.text()
-        age = self.lineEdit7.text()
-        ke = self.lineEdit8.text()
-        chuang = self.lineEdit9.text()
-        origin = self.lineEdit10.text()
-        chubujiancha = self.textEdit.toPlainText()
-        filepath, type = QFileDialog.getSaveFileName(self, "文件保存", "./" ,'txt(*.txt)')
-        print(filepath)
-        with open(filepath,'w') as file: # 保存患者信息到txt
-            file.write("门诊号："+str(menzhenhao))
-            file.write('\r')
-            file.write("住院号："+str(zhuyuanhao))
-            file.write('\r')
-            file.write("病历号："+str(binglihao))
-            file.write('\r')
-            file.write("检查号："+str(jianchahao))
-            file.write('\r')
-            file.write("姓名："+str(name))
-            file.write('\r')
-            file.write("性别："+str(sex))
-            file.write('\r')
-            file.write("年龄："+str(age))
-            file.write('\r')
-            file.write("科别："+str(ke))
-            file.write('\r')
-            file.write("床号："+str(chuang))
-            file.write('\r')
-            file.write("来源："+str(origin))
-            file.write('\r')
-            file.write("初步检查所见：\r"+str(chubujiancha))
-            file.write("\r---------end---------")
-            file.write('\r')
+        QMessageBox.about(self, "提示", self.tr("信息保存成功！"))
 
 # AiqianWidget 癌前病变诊断界面
 class AiqianUi(QtWidgets.QMainWindow, Aiqian_Ui):
@@ -140,18 +116,23 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
         self.file_paths = []  # 文件列表
         self.file_index = 0	  # 文件索引
 
-        self.now = QtCore.QTime.currentTime()  # 获取当前日期
-        self.lineEdit2.setText(self.now.toString(QtCore.Qt.ISODate))  # 显示到界面
+        self.output_dir = './img_out/'
+        if not os.path.exists(self.output_dir):
+            os.makedirs(self.output_dir)
+        self.output_pdf_dir = './img_out_report/'
+        if not os.path.exists(self.output_pdf_dir):
+            os.makedirs(self.output_pdf_dir)
 
-        self.pushButton1.clicked.connect(self.on_btnImportFolder_clicked) #导入文件夹
-        self.pushButton2.clicked.connect(self.on_btnFolderNext_clicked) #下一个
-        self.pushButton3.clicked.connect(self.on_btnFolderPrevious_clicked) #上一个
-        self.pushButton4.clicked.connect(self.predictjpg) #开始检测
-
+        self.now = QtCore.QDate.currentDate()  # 获取当前日期
+        self.lineEdit2.setText(self.now.toString(QtCore.Qt.ISODate))  # 显示时间到界面
+        self.pushButton1.clicked.connect(self.on_btnImportFolder_clicked)  # 导入文件夹
+        self.pushButton2.clicked.connect(self.on_btnFolderNext_clicked)  # 下一个
+        self.pushButton3.clicked.connect(self.on_btnFolderPrevious_clicked)  # 上一个
+        self.pushButton4.clicked.connect(self.predictJpg)  # 开始检测
+        self.pushButton5.clicked.connect(self.saveJpg)  # 保存图片
         self.pushButton6.clicked.connect(self.goInit)  # 去初始界面
-        self.pushButton7.clicked.connect(self.genPdf)  # 生成pdf报告
+        self.pushButton7.clicked.connect(self.saveReport)  # 生成pdf报告
         self.pushButton8.clicked.connect(self.closeDialog)  # 关闭对话框
-
     def goInit(self):
         self.switch_init.emit()
     def closeDialog(self):
@@ -163,12 +144,8 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
             app.quit()
         else:
             print('keep')
-
-    # 7.21
-        # 导入文件夹
+    # 导入文件夹
     def on_btnImportFolder_clicked(self):
-        global cur_path  # 当前图片路径
-
         cur_dir = QtCore.QDir.currentPath()  # 获取当前文件夹路径
         # 选择文件夹
         dir_path = QFileDialog.getExistingDirectory(self, '打开文件夹', cur_dir)
@@ -182,11 +159,10 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
             return
         self.file_index = 0  # 获取第一个文件
         cur_path = self.file_paths[self.file_index]
-        print(cur_path)
+        filepath, filename = os.path.split(cur_path)  # 分离文件路径和名称
         img = QPixmap(cur_path).scaled(self.label5.width(), self.label5.height())
         self.label5.setPixmap(img)  # 显示读取图片到界面上
-        self.lineEdit5.setText(cur_path)
-
+        self.lineEdit5.setText(filename)
     # 下一个文件
     def on_btnFolderNext_clicked(self):
         self.file_index += 1  # 文件索引累加 1
@@ -196,11 +172,10 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
         if len(self.file_paths) <= 0 or self.file_index >= len(self.file_paths):
             return
         cur_path = self.file_paths[self.file_index]
-        print(cur_path)
+        filepath, filename = os.path.split(cur_path)  # 分离文件路径和名称
         img = QPixmap(cur_path).scaled(self.label5.width(), self.label5.height())
         self.label5.setPixmap(img)  # 显示读取图片到界面上
-        self.lineEdit5.setText(cur_path)
-
+        self.lineEdit5.setText(filename)
     # 上一个文件
     def on_btnFolderPrevious_clicked(self):
         self.file_index -= 1  # 文件索引减 1
@@ -209,26 +184,28 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
             self.file_index = 0
         if len(self.file_paths) <= 0 or self.file_index >= len(self.file_paths):
             return
-        # 当前路径
         cur_path = self.file_paths[self.file_index]
-        print(cur_path)
+        filepath, filename = os.path.split(cur_path)  # 分离文件路径和名称
         img = QPixmap(cur_path).scaled(self.label5.width(), self.label5.height())
         self.label5.setPixmap(img)  # 显示读取图片到界面上
-        self.lineEdit5.setText(cur_path)
-
-    def predictjpg(self):
+        self.lineEdit5.setText(filename)
+    def predictJpg(self):
         # 2022.7.16
         # 此为测试版的predict代码，测试能否成功运行
         # 后续根据实际需要全部修改替换
         import tensorflow as tf
         from PIL import Image
         from yolo_predict3 import YOLO
-
         # 进度条
         elapsed_time = 100000
         self.pbar = QProgressDialog("诊断中", "取消", 0, elapsed_time, self)
         self.pbar.setWindowTitle("进度提示")
         self.pbar.show()
+        for i in range(elapsed_time-10000):  # 进度条显示进度
+            self.pbar.setValue(i)
+            QtCore.QCoreApplication.processEvents()
+            if self.pbar.wasCanceled():
+                break
 
         gpus = tf.config.experimental.list_physical_devices(device_type='GPU')
         for gpu in gpus:
@@ -241,28 +218,41 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
                 print('Open Error! Try again!')
                 continue
             else:
-                for i in range(elapsed_time):  # 进度条显示进度
-                    self.pbar.setValue(i)
-                    QtCore.QCoreApplication.processEvents()
-                    if self.pbar.wasCanceled():
-                        break
                 r_image, out_scores, out_classes, top, right, left, bottom = yolo.detect_image(image)  # r_image 是预测生成图片
                 # 目前实现的办法：先保存再读取
-                r_image.save(self.file_paths[self.file_index].replace(".jpg", ".png"))
-                img_out = QPixmap(self.file_paths[self.file_index].replace(".jpg", ".png")).scaled(self.label6.width(),self.label6.height())
+                cur_path = self.file_paths[self.file_index]
+                filepath, filename = os.path.split(cur_path)  # 分离文件路径和名称
+                dst = os.path.join(self.output_dir,filename.replace(".jpg", ".png"))
+                r_image.save(dst)
+                img_out = QPixmap(dst).scaled(self.label6.width(),self.label6.height())
                 self.label6.setPixmap(img_out)  # 显示预测图片到界面上
-
                 self.pbar.setValue(elapsed_time) # 进度条加满
-
                 break
-    def genPdf(self):
+    def saveJpg(self):
+        QMessageBox.about(self, "提示", self.tr("图片保存成功！保存至"))
+    def saveReport(self):
         from reportlab.pdfbase import pdfmetrics  # 注册字体
         from reportlab.pdfbase.ttfonts import TTFont  # 字体类
         from reportlab.pdfgen import canvas  # 创建pdf文件
-
         # 7.22 未完成
+        cur_path = self.file_paths[self.file_index]
+        filepath, filename = os.path.split(cur_path)  # 分离文件路径和名称
+        # 1 注册字体(提前准备好字体文件, 如果同一个文件需要多种字体可以注册多个)
+        pdfmetrics.registerFont(TTFont('font1', os.getcwd()+str('\\pdf\\yangziti.ttf')))   # TTFont(字体名,字体文件路径)
+        #2.创建空白pdf文件
+        dst = os.path.join(self.output_pdf_dir, filename.replace(".jpg", ".pdf"))
+        pdf_file = canvas.Canvas(dst)
+        #3.写字体
+        pdf_file.setFont("yang",40)  #设置字体
+        #设置文字颜色
+        # r g b 范围（0（0）-1（255） ）  最后透明度
+        pdf_file.setFillColorRGB(1,0,0,1)
+        # 渲染文字
+        pdf_file.drawString(100,100,"yang")
 
-
+        #保存
+        pdf_file.save()
+        QMessageBox.about(self, "提示", self.tr("报告保存成功！"))
 
 # 控制器，实现各界面之间的跳转功能
 class Controller:

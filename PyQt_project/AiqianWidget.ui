@@ -375,7 +375,7 @@ color: rgb(0, 0, 255);</string>
     <string notr="true">background-color: rgb(80, 170, 53);</string>
    </property>
    <property name="text">
-    <string>保存图片</string>
+    <string>显示诊断结果</string>
    </property>
   </widget>
   <widget class="QListView" name="listView">
@@ -458,7 +458,7 @@ color: rgb(0, 0, 255);</string>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color:rgb(85, 170, 255)</string>
+    <string notr="true">background-color: rgb(80, 170, 53);</string>
    </property>
    <property name="text">
     <string>开始检测</string>
