@@ -129,13 +129,13 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
         self.pushButton2.clicked.connect(self.on_btnFolderNext_clicked)  # 下一个
         self.pushButton3.clicked.connect(self.on_btnFolderPrevious_clicked)  # 上一个
         self.pushButton4.clicked.connect(self.predictJpg)  # 开始检测
-        self.pushButton5.clicked.connect(self.saveJpg)  # 保存图片
+        self.pushButton5.clicked.connect(self.saveJpg)  # 显示并保存图片
         self.pushButton6.clicked.connect(self.goInit)  # 去初始界面
         self.pushButton7.clicked.connect(self.saveReport)  # 生成pdf报告
         self.pushButton8.clicked.connect(self.closeDialog)  # 关闭对话框
     def goInit(self):
         self.switch_init.emit()
-    def closeDialog(self):
+    def closeDialog(self):  # 导入文件夹
         reply = QMessageBox.warning(self, "提示", "是否确定退出",
                     QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if reply == QMessageBox.Yes:
@@ -144,7 +144,6 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
             app.quit()
         else:
             print('keep')
-    # 导入文件夹
     def on_btnImportFolder_clicked(self):
         cur_dir = QtCore.QDir.currentPath()  # 获取当前文件夹路径
         # 选择文件夹
@@ -154,7 +153,6 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
         for root, dirs, files in os.walk(dir_path, topdown=False):
             for file in files:
                 self.file_paths.append(os.path.join(root, file))
-        print(self.file_paths)
         if len(self.file_paths) <= 0:
             return
         self.file_index = 0  # 获取第一个文件
@@ -163,8 +161,7 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
         img = QPixmap(cur_path).scaled(self.label5.width(), self.label5.height())
         self.label5.setPixmap(img)  # 显示读取图片到界面上
         self.lineEdit5.setText(filename)
-    # 下一个文件
-    def on_btnFolderNext_clicked(self):
+    def on_btnFolderNext_clicked(self):  # 下一个文件
         self.file_index += 1  # 文件索引累加 1
         if self.file_index >= len(self.file_paths):
             QMessageBox.warning(self, "提示", self.tr("已经是最后一个！"))
@@ -176,8 +173,11 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
         img = QPixmap(cur_path).scaled(self.label5.width(), self.label5.height())
         self.label5.setPixmap(img)  # 显示读取图片到界面上
         self.lineEdit5.setText(filename)
-    # 上一个文件
-    def on_btnFolderPrevious_clicked(self):
+
+        img_out = QPixmap(os.path.join(self.output_dir,filename.replace(".jpg", ".png"))).scaled(self.label6.width(), self.label6.height())
+        self.label6.setPixmap(img_out)  # 显示预测图片到界面上
+
+    def on_btnFolderPrevious_clicked(self):  # 下一个文件
         self.file_index -= 1  # 文件索引减 1
         if self.file_index < 0:
             QMessageBox.warning(self, "提示", self.tr("已经是第一个！"))
@@ -189,6 +189,10 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
         img = QPixmap(cur_path).scaled(self.label5.width(), self.label5.height())
         self.label5.setPixmap(img)  # 显示读取图片到界面上
         self.lineEdit5.setText(filename)
+
+        img_out = QPixmap(os.path.join(self.output_dir,filename.replace(".jpg", ".png"))).scaled(self.label6.width(), self.label6.height())
+        self.label6.setPixmap(img_out)  # 显示预测图片到界面上
+
     def predictJpg(self):
         # 2022.7.16
         # 此为测试版的predict代码，测试能否成功运行
@@ -211,25 +215,29 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
         for gpu in gpus:
             tf.config.experimental.set_memory_growth(gpu, True)
         yolo = YOLO()
-        while True:
-            try:
-                image = Image.open(self.file_paths[self.file_index])
-            except:
-                print('Open Error! Try again!')
-                continue
-            else:
-                r_image, out_scores, out_classes, top, right, left, bottom = yolo.detect_image(image)  # r_image 是预测生成图片
-                # 目前实现的办法：先保存再读取
-                cur_path = self.file_paths[self.file_index]
-                filepath, filename = os.path.split(cur_path)  # 分离文件路径和名称
-                dst = os.path.join(self.output_dir,filename.replace(".jpg", ".png"))
-                r_image.save(dst)
-                img_out = QPixmap(dst).scaled(self.label6.width(),self.label6.height())
-                self.label6.setPixmap(img_out)  # 显示预测图片到界面上
-                self.pbar.setValue(elapsed_time) # 进度条加满
-                break
-    def saveJpg(self):
-        QMessageBox.about(self, "提示", self.tr("图片保存成功！保存至"))
+
+        for image_num in self.file_paths:
+            image = Image.open(image_num)
+            print(image_num)
+            r_image, out_scores, out_classes, top, right, left, bottom = yolo.detect_image(image)  # r_image 是预测生成图片
+            # 目前实现的办法：先保存再读取
+            # cur_path = self.file_paths[self.file_index]
+            filepath, filename = os.path.split(image_num)  # 分离文件路径和名称
+            dst = os.path.join(self.output_dir,filename.replace(".jpg", ".png"))
+            r_image.save(dst)  # 保存预测图片
+
+        self.pbar.setValue(elapsed_time) # 进度条加满
+        # break
+        QMessageBox.about(self, "提示", self.tr("图片检测完成"))
+
+    def saveJpg(self):  # 显示图片
+        cur_path = self.file_paths[self.file_index]
+        filepath, filename = os.path.split(cur_path)  # 分离文件路径和名称
+        img_out = QPixmap(os.path.join(self.output_dir,filename.replace(".jpg", ".png"))).scaled(self.label6.width(), self.label6.height())
+        self.label6.setPixmap(img_out)  # 显示预测图片到界面上
+
+        QMessageBox.about(self, "提示", self.tr("图片已保存！"))
+
     def saveReport(self):
         from reportlab.pdfbase import pdfmetrics  # 注册字体
         from reportlab.pdfbase.ttfonts import TTFont  # 字体类
