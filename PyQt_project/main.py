@@ -140,13 +140,16 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
         self.file_paths = []  # 文件列表
         self.file_index = 0	  # 文件索引
 
+        self.now = QtCore.QTime.currentTime()  # 获取当前日期
+        self.lineEdit2.setText(self.now.toString(QtCore.Qt.ISODate))  # 显示到界面
+
         self.pushButton1.clicked.connect(self.on_btnImportFolder_clicked) #导入文件夹
         self.pushButton2.clicked.connect(self.on_btnFolderNext_clicked) #下一个
         self.pushButton3.clicked.connect(self.on_btnFolderPrevious_clicked) #上一个
         self.pushButton4.clicked.connect(self.predictjpg) #开始检测
 
         self.pushButton6.clicked.connect(self.goInit)  # 去初始界面
-
+        self.pushButton7.clicked.connect(self.genPdf)  # 生成pdf报告
         self.pushButton8.clicked.connect(self.closeDialog)  # 关闭对话框
 
     def goInit(self):
@@ -163,7 +166,6 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
 
     # 7.21
         # 导入文件夹
-    # @pyqtSlot()
     def on_btnImportFolder_clicked(self):
         global cur_path  # 当前图片路径
 
@@ -178,8 +180,7 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
         print(self.file_paths)
         if len(self.file_paths) <= 0:
             return
-        # 获取第一个文件
-        self.file_index = 0
+        self.file_index = 0  # 获取第一个文件
         cur_path = self.file_paths[self.file_index]
         print(cur_path)
         img = QPixmap(cur_path).scaled(self.label5.width(), self.label5.height())
@@ -187,10 +188,8 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
         self.lineEdit5.setText(cur_path)
 
     # 下一个文件
-    # @pyqtSlot()
     def on_btnFolderNext_clicked(self):
-        # 文件索引累加 1
-        self.file_index += 1
+        self.file_index += 1  # 文件索引累加 1
         if self.file_index >= len(self.file_paths):
             QMessageBox.warning(self, "提示", self.tr("已经是最后一个！"))
             self.file_index = len(self.file_paths) - 1
@@ -203,10 +202,8 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
         self.lineEdit5.setText(cur_path)
 
     # 上一个文件
-    # @pyqtSlot()
     def on_btnFolderPrevious_clicked(self):
-        # 文件索引减 1
-        self.file_index -= 1
+        self.file_index -= 1  # 文件索引减 1
         if self.file_index < 0:
             QMessageBox.warning(self, "提示", self.tr("已经是第一个！"))
             self.file_index = 0
@@ -221,7 +218,7 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
 
     def predictjpg(self):
         # 2022.7.16
-        # 此为测试版的predict代码，测试qt能否成功运行
+        # 此为测试版的predict代码，测试能否成功运行
         # 后续根据实际需要全部修改替换
         import tensorflow as tf
         from PIL import Image
@@ -258,6 +255,14 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
                 self.pbar.setValue(elapsed_time) # 进度条加满
 
                 break
+    def genPdf(self):
+        from reportlab.pdfbase import pdfmetrics  # 注册字体
+        from reportlab.pdfbase.ttfonts import TTFont  # 字体类
+        from reportlab.pdfgen import canvas  # 创建pdf文件
+
+        # 7.22 未完成
+
+
 
 # 控制器，实现各界面之间的跳转功能
 class Controller:
