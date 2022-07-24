@@ -196,7 +196,8 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
         # 后续根据实际需要全部修改替换
         import tensorflow as tf
         from PIL import Image
-        from yolo_predict3 import YOLO
+        from predict11 import predict11_single
+        # from yolo_predict3 import YOLO
         # 进度条
         elapsed_time = len(self.file_paths)  # 进度条按比例划分为图片个数
         self.pbar = QProgressDialog("诊断中", "取消", 0, elapsed_time, self)
@@ -207,18 +208,22 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
         gpus = tf.config.experimental.list_physical_devices(device_type='GPU')
         for gpu in gpus:
             tf.config.experimental.set_memory_growth(gpu, True)
-        yolo = YOLO()
 
         flag = 0
         for image_num in self.file_paths:
             image = Image.open(image_num)
             print(image_num)
-            r_image, out_scores, out_classes, top, right, left, bottom = yolo.detect_image(image)  # r_image 是预测生成图片
+
+            r_image,new_scores = predict11_single(image, image_num)
+            #返回新的画框图和新的置信度，并实现了分类至NEO\NONNEO等
+            print('success')
+
+            # r_image, out_scores, out_classes, top, right, left, bottom = yolo.detect_image(image)  # r_image 是预测生成图片
             # 目前实现的办法：先保存再读取
             # cur_path = self.file_paths[self.file_index]
             filepath, filename = os.path.split(image_num)  # 分离文件路径和名称
             dst = os.path.join(self.output_dir,filename.replace(".jpg", ".png"))
-            r_image.save(dst)  # 保存预测图片
+            r_image.save(dst)  # 保存预测图片至img_out
             flag += 1
             self.pbar.setValue(flag) # 进度条每处理完一张图片加一份
             QtCore.QCoreApplication.processEvents()
@@ -235,7 +240,7 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
         img_out = QPixmap(os.path.join(self.output_dir,filename.replace(".jpg", ".png"))).scaled(self.label6.width(), self.label6.height())
         self.label6.setPixmap(img_out)  # 显示预测图片到界面上
 
-        QMessageBox.about(self, "提示", self.tr("图片已保存！"))
+        QMessageBox.about(self, "提示", self.tr("图片已保存，分类至NEO和NONNEO文件夹！"))
 
     def saveReport(self):
         from reportlab.pdfbase import pdfmetrics  # 注册字体

@@ -129,28 +129,6 @@
     <enum>Qt::AutoText</enum>
    </property>
   </widget>
-  <widget class="QLabel" name="label1">
-   <property name="geometry">
-    <rect>
-     <x>50</x>
-     <y>440</y>
-     <width>101</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>楷体</family>
-     <pointsize>14</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>报告医师</string>
-   </property>
-   <property name="buddy">
-    <cstring>lineEdit1</cstring>
-   </property>
-  </widget>
   <widget class="QPushButton" name="pushButton6">
    <property name="geometry">
     <rect>
@@ -219,20 +197,10 @@ color: rgb(0, 0, 255);</string>
     <string>退出检测</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit1">
-   <property name="geometry">
-    <rect>
-     <x>150</x>
-     <y>440</y>
-     <width>113</width>
-     <height>20</height>
-    </rect>
-   </property>
-  </widget>
   <widget class="QLineEdit" name="lineEdit2">
    <property name="geometry">
     <rect>
-     <x>430</x>
+     <x>120</x>
      <y>440</y>
      <width>113</width>
      <height>20</height>
@@ -245,7 +213,7 @@ color: rgb(0, 0, 255);</string>
   <widget class="QLabel" name="label2">
    <property name="geometry">
     <rect>
-     <x>360</x>
+     <x>50</x>
      <y>440</y>
      <width>71</width>
      <height>20</height>
@@ -508,13 +476,46 @@ color: rgb(0, 0, 255);</string>
     <string>上一个</string>
    </property>
   </widget>
+  <widget class="QLabel" name="label1">
+   <property name="geometry">
+    <rect>
+     <x>360</x>
+     <y>440</y>
+     <width>101</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>楷体</family>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>预测置信度</string>
+   </property>
+   <property name="buddy">
+    <cstring>lineEdit2</cstring>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit2_2">
+   <property name="geometry">
+    <rect>
+     <x>470</x>
+     <y>440</y>
+     <width>113</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
   <zorder>listView</zorder>
   <zorder>label</zorder>
-  <zorder>label1</zorder>
   <zorder>pushButton6</zorder>
   <zorder>pushButton7</zorder>
   <zorder>pushButton8</zorder>
-  <zorder>lineEdit1</zorder>
   <zorder>lineEdit2</zorder>
   <zorder>label2</zorder>
   <zorder>labelreport</zorder>
@@ -529,6 +530,8 @@ color: rgb(0, 0, 255);</string>
   <zorder>pushButton4</zorder>
   <zorder>pushButton2</zorder>
   <zorder>pushButton3</zorder>
+  <zorder>label1</zorder>
+  <zorder>lineEdit2_2</zorder>
  </widget>
  <resources/>
  <connections/>
