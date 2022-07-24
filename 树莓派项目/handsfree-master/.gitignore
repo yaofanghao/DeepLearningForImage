@@ -1,0 +1,7 @@
+*.user
+*~
+*.pyc
+handsfree_dataset/rosbags/*.bag
+handsfree_dataset/videos/*.mp4
+
+

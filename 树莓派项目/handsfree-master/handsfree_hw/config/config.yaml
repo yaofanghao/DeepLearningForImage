@@ -1,0 +1,22 @@
+mobile_base:
+  # Publish all joint states -----------------------------------
+  joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 20  
+
+  mobile_base_controller:
+    type: base_simple_controller/BaseSimpleController
+    wheel1: 'wheel1_joint'
+    wheel2: 'wheel2_joint'
+    wheel3: 'wheel3_joint'
+    wheel4: 'wheel4_joint'
+
+  pitch_position_controller:
+    type: position_controllers/JointPositionController
+    joint: pitch_joint
+
+  yaw_position_controller:
+    type: position_controllers/JointPositionController
+    joint: yaw_joint
+
+
