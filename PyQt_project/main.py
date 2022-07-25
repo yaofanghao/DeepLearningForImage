@@ -115,6 +115,8 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
 
         self.file_paths = []  # 文件列表
         self.file_index = 0	  # 文件索引
+        self.scores = []  # 置信度分数列表
+
 
         self.output_dir = './img_out/'
         if not os.path.exists(self.output_dir):
@@ -214,11 +216,11 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
             image = Image.open(image_num)
             print(image_num)
 
-            r_image,new_scores = predict11_single(image, image_num)
-            #返回新的画框图和新的置信度，并实现了分类至NEO\NONNEO等
+            # 关键部分！返回新的画框图和新的置信度，并实现了分类至NEO\NONNEO等：
+            r_image, new_scores = predict11_single(image, image_num)
+            self.scores.append(new_scores)  # 把每张图置信度结果存放至scores列表中
             print('success')
 
-            # r_image, out_scores, out_classes, top, right, left, bottom = yolo.detect_image(image)  # r_image 是预测生成图片
             # 目前实现的办法：先保存再读取
             # cur_path = self.file_paths[self.file_index]
             filepath, filename = os.path.split(image_num)  # 分离文件路径和名称
@@ -239,7 +241,9 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
         filepath, filename = os.path.split(cur_path)  # 分离文件路径和名称
         img_out = QPixmap(os.path.join(self.output_dir,filename.replace(".jpg", ".png"))).scaled(self.label6.width(), self.label6.height())
         self.label6.setPixmap(img_out)  # 显示预测图片到界面上
-
+        print(self.file_index)
+        print(self.scores)
+        self.lineEdit3.setText(str(self.scores[self.file_index]))  # 显示置信度分数到界面上
         QMessageBox.about(self, "提示", self.tr("图片已保存，分类至NEO和NONNEO文件夹！"))
 
     def saveReport(self):

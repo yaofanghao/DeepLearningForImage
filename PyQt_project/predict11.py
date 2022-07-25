@@ -204,7 +204,6 @@ def draw_new_scores(image,out_scores_max,left,top,right,bottom):
 def predict11_single(image,img_name):
     yolo = YOLO()
 
-    dir_origin_path = "img/"
     dir_save_path = "img_out"
     # -----------------------------------#
     # !!! 唯一需要手动设置的地方：confidence_num
@@ -357,8 +356,8 @@ def predict11_single(image,img_name):
         confidence_down = confidence_down + 0.1
         confidence_up = confidence_down + 0.1
 
-if __name__ == "__main__":
-    image_path = '1.jpg'
-    image = Image.open(image_path)
-    predict11_single(image,image_path)
-    print('success')
+# if __name__ == "__main__":
+#     image_path = '1.jpg'
+#     image = Image.open(image_path)
+#     predict11_single(image,image_path)
+#     print('success')
