@@ -1,6 +1,0 @@
-mobile_base:
-  # Publish all joint states -----------------------------------
-  joint_state_controller:
-    type: joint_state_controller/JointStateController
-    publish_rate: 20  
-

@@ -1,9 +1,0 @@
-<!-- -->
-
-<!--　PS3遥控器遥控机器人节点-->
-
-<launch>
-
-  <include file="$(find handsfree_teleop)/launch/ps3_teleop.launch" />
-
-</launch>

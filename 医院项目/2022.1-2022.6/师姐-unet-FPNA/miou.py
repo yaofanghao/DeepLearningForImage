@@ -1,5 +1,6 @@
 import argparse
 import json
+import os.path
 from os.path import join
 
 import numpy as np
@@ -68,10 +69,26 @@ def compute_mIoU(gt_dir, pred_dir, png_name_list, num_classes, name_classes):
         # ------------------------------------------------#
         hist += fast_hist(label.flatten(), pred.flatten(), num_classes)
         # 每计算10张就输出一下目前已计算的图片中所有类别平均的mIoU值
-        if ind > 0 and ind % 10 == 0:
-            print('{:d} / {:d}: mIou-{:0.2f}; mPA-{:0.2f}'.format(ind, len(gt_imgs),
+        if ind > 0:
+            per_iou = per_class_iu(fast_hist(label.flatten(), pred.flatten(), num_classes))
+            per_pa = per_class_PA(fast_hist(label.flatten(), pred.flatten(), num_classes))
+            print(per_iou)
+            print('----')
+            print(per_pa)
+            f_iou = open(os.path.join(os.getcwd(), 'iou_txt'), 'a')
+            f_iou.write((str(png_name_list[ind])) + '\t\t\t' + 'backgournd-IOU:'+str(per_iou[0])+\
+                 '\t\t\t' + 'NEO-IOU:' + str(per_iou[1]))
+            f_iou.write('\r')
+            f_iou.close()
+
+
+            if ind % 10 == 0:
+                print('{:d} / {:d}: mIou-{:0.2f}; mPA-{:0.2f}'.format(ind, len(gt_imgs),
                                                                   100 * np.nanmean(per_class_iu(hist)),
                                                                   100 * np.nanmean(per_class_PA(hist))))
+
+
+
     # ------------------------------------------------#
     #   计算所有验证集图片的逐类别mIoU值
     # ------------------------------------------------#
@@ -99,9 +116,9 @@ if __name__ == "__main__":
     #   分类个数+1
     #   2+1
     # ------------------------------#
-    num_classes = 4
+    num_classes = 2
     # --------------------------------------------#
     #   区分的种类，和json_to_dataset里面的一样
     # --------------------------------------------#
-    name_classes = ["background", "LGIN", "IM", "CG"]
+    name_classes = ["background", "NEO"]
     compute_mIoU(gt_dir, pred_dir, png_name_list, num_classes, name_classes)  # 执行计算mIoU的函数
