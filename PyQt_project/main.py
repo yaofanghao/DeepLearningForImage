@@ -56,6 +56,7 @@ class InfoUi(QtWidgets.QMainWindow, Info_Ui):
         self.ke = self.lineEdit8.text()
         self.chuang = self.lineEdit9.text()
         self.origin = self.lineEdit10.text()
+        self.baogaoyishi = self.lineEdit11.text()
         self.chubujiancha = self.textEdit.toPlainText()
     def goInit(self):
         self.switch_init.emit()
@@ -115,8 +116,6 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
 
         self.file_paths = []  # 文件列表
         self.file_index = 0	  # 文件索引
-        self.scores = []  # 置信度分数列表
-
 
         self.output_dir = './img_out/'
         if not os.path.exists(self.output_dir):
@@ -135,6 +134,7 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
         self.pushButton6.clicked.connect(self.goInit)  # 去初始界面
         self.pushButton7.clicked.connect(self.saveReport)  # 生成pdf报告
         self.pushButton8.clicked.connect(self.closeDialog)  # 关闭对话框
+        self.chubuzhenduan = self.textEditreport.toPlainText()
     def goInit(self):
         self.switch_init.emit()
     def closeDialog(self):  # 导入文件夹
@@ -159,6 +159,7 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
             return
         self.file_index = 0  # 获取第一个文件
         cur_path = self.file_paths[self.file_index]
+        self.scores = [0 for _ in range(len(self.file_paths))]  # 创建置信度分数列表，暂时全为0
         filepath, filename = os.path.split(cur_path)  # 分离文件路径和名称
         img = QPixmap(cur_path).scaled(self.label5.width(), self.label5.height())
         self.label5.setPixmap(img)  # 显示读取图片到界面上
@@ -175,6 +176,7 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
         img = QPixmap(cur_path).scaled(self.label5.width(), self.label5.height())
         self.label5.setPixmap(img)  # 显示读取图片到界面上
         self.lineEdit5.setText(filename)
+        self.lineEdit3.setText(str(self.scores[self.file_index]))  # 显示置信度分数到界面上
         img_out = QPixmap(os.path.join(self.output_dir,filename.replace(".jpg", ".png"))).scaled(self.label6.width(), self.label6.height())
         self.label6.setPixmap(img_out)  # 显示预测图片到界面上
     def on_btnFolderPrevious_clicked(self):  # 下一个文件
@@ -189,6 +191,7 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
         img = QPixmap(cur_path).scaled(self.label5.width(), self.label5.height())
         self.label5.setPixmap(img)  # 显示读取图片到界面上
         self.lineEdit5.setText(filename)
+        self.lineEdit3.setText(str(self.scores[self.file_index]))  # 显示置信度分数到界面上
         img_out = QPixmap(os.path.join(self.output_dir,filename.replace(".jpg", ".png"))).scaled(self.label6.width(), self.label6.height())
         self.label6.setPixmap(img_out)  # 显示预测图片到界面上
 
@@ -210,17 +213,14 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
         gpus = tf.config.experimental.list_physical_devices(device_type='GPU')
         for gpu in gpus:
             tf.config.experimental.set_memory_growth(gpu, True)
-
         flag = 0
         for image_num in self.file_paths:
             image = Image.open(image_num)
             print(image_num)
-
             # 关键部分！返回新的画框图和新的置信度，并实现了分类至NEO\NONNEO等：
             r_image, new_scores = predict11_single(image, image_num)
-            self.scores.append(new_scores)  # 把每张图置信度结果存放至scores列表中
+            self.scores[flag] = new_scores  # 把每张图置信度结果存放至scores列表中
             print('success')
-
             # 目前实现的办法：先保存再读取
             # cur_path = self.file_paths[self.file_index]
             filepath, filename = os.path.split(image_num)  # 分离文件路径和名称
@@ -231,7 +231,6 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
             QtCore.QCoreApplication.processEvents()
             if self.pbar.wasCanceled():
                 break
-
         self.pbar.setValue(elapsed_time) # 进度条加满
         # break
         QMessageBox.about(self, "提示", self.tr("图片检测完成"))
@@ -247,6 +246,7 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
         QMessageBox.about(self, "提示", self.tr("图片已保存，分类至NEO和NONNEO文件夹！"))
 
     def saveReport(self):
+        from reportlab.lib.pagesizes import A4
         from reportlab.pdfbase import pdfmetrics  # 注册字体
         from reportlab.pdfbase.ttfonts import TTFont  # 字体类
         from reportlab.pdfgen import canvas  # 创建pdf文件
@@ -257,14 +257,29 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
         pdfmetrics.registerFont(TTFont('font1', os.getcwd()+str('\\pdf\\yangziti.ttf')))   # TTFont(字体名,字体文件路径)
         #2.创建空白pdf文件
         dst = os.path.join(self.output_pdf_dir, filename.replace(".jpg", ".pdf"))
-        pdf_file = canvas.Canvas(dst)
-        #3.写字体
-        pdf_file.setFont("yang",40)  #设置字体
-        #设置文字颜色
-        # r g b 范围（0（0）-1（255） ）  最后透明度
-        pdf_file.setFillColorRGB(1,0,0,1)
-        # 渲染文字
-        pdf_file.drawString(100,100,"yang")
+        pdf_file = canvas.Canvas(dst,pagesize=A4)
+        pdf_file.setFont("font1",20)  #设置字体和大小
+        pdf_file.setFillColorRGB(0,0,0,1)
+        w,h = A4
+        read_infoui = InfoUi()  # 读取填写信息界面的内容
+        read_egc = EGCUi()
+        pdf_file.drawString(50, h - 50, "门诊号："+str(read_infoui.menzhenhao)+"    "+"住院号："+str(read_infoui.zhuyuanhao)+\
+                            "    "+"病历号：" + str(read_infoui.binglihao)+"    "+"检查号：" + str(read_infoui.jianchahao))
+        pdf_file.drawString(50, h - 100, "-----------------------------------------------------")
+        pdf_file.drawString(50, h - 150, "姓名：" + str(read_infoui.name)+"    "+ "性别：" + str(read_infoui.sex)+\
+                            "    "+"年龄：" + str(read_infoui.age))
+        pdf_file.drawString(50, h - 200, "科别：" + str(read_infoui.ke)+"    "+ "床号：" + str(read_infoui.chuang)+\
+                            "    "+"来源：" + str(read_infoui.origin))
+        pdf_file.drawString(50, h - 250, "-----------------------------------------------------")
+        pdf_file.drawString(50, h - 300,"初步检查所见："+str(read_infoui.chubujiancha))
+        pdf_file.drawString(50, h - 500, "-----------------------------------------------------")
+        pdf_file.drawString(50, h - 550,"初步诊断所见："+str(read_egc.chubuzhenduan))
+        pdf_file.drawString(50, h - 600,"置信度分数："+str(read_egc.lineEdit3.text()))
+        pdf_file.drawString(50, h - 650, "报告医师：" + str(read_infoui.baogaoyishi))
+
+        # pdf_file.drawString(100,100,"yang")
+
+
 
         #保存
         pdf_file.save()

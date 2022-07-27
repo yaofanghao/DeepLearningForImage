@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>900</width>
-    <height>600</height>
+    <width>1000</width>
+    <height>700</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -118,8 +118,8 @@ background-color: rgb(255, 253, 190);</string>
   <widget class="QPushButton" name="pushButton5">
    <property name="geometry">
     <rect>
-     <x>720</x>
-     <y>530</y>
+     <x>800</x>
+     <y>550</y>
      <width>141</width>
      <height>41</height>
     </rect>
@@ -143,8 +143,8 @@ color: rgb(0, 0, 255);</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>900</width>
-     <height>600</height>
+     <width>1000</width>
+     <height>700</height>
     </rect>
    </property>
    <property name="styleSheet">

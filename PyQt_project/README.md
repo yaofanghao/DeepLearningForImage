@@ -14,6 +14,7 @@
 * numpy 1.23.1
 * opencv-python 4.5.4.60
 * tqdm 4.64.0
+* reportlab 3.6.11
 
 # 设计逻辑
 ## main.py 主函数

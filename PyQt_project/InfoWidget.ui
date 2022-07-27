@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>900</width>
-    <height>600</height>
+    <width>1000</width>
+    <height>700</height>
    </rect>
   </property>
   <property name="palette">
@@ -110,7 +110,7 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>330</x>
+     <x>390</x>
      <y>40</y>
      <width>201</width>
      <height>50</height>
@@ -132,7 +132,7 @@
   <widget class="QWidget" name="horizontalLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>90</x>
+     <x>140</x>
      <y>100</y>
      <width>701</width>
      <height>71</height>
@@ -248,7 +248,7 @@
   <widget class="QWidget" name="gridLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>90</x>
+     <x>140</x>
      <y>190</y>
      <width>701</width>
      <height>141</height>
@@ -389,7 +389,11 @@
      </widget>
     </item>
     <item row="3" column="1">
-     <widget class="QLineEdit" name="lineEdit11"/>
+     <widget class="QLineEdit" name="lineEdit11">
+      <property name="text">
+       <string>yang</string>
+      </property>
+     </widget>
     </item>
     <item row="0" column="3">
      <widget class="QLineEdit" name="lineEdit6">
@@ -432,7 +436,7 @@
   <widget class="QLabel" name="labelresult">
    <property name="geometry">
     <rect>
-     <x>90</x>
+     <x>140</x>
      <y>350</y>
      <width>171</width>
      <height>20</height>
@@ -454,10 +458,10 @@
   <widget class="QTextEdit" name="textEdit">
    <property name="geometry">
     <rect>
-     <x>90</x>
+     <x>140</x>
      <y>390</y>
-     <width>531</width>
-     <height>131</height>
+     <width>711</width>
+     <height>161</height>
     </rect>
    </property>
    <property name="html">
@@ -476,8 +480,8 @@ p, li { white-space: pre-wrap; }
   <widget class="QPushButton" name="pushButton1">
    <property name="geometry">
     <rect>
-     <x>120</x>
-     <y>530</y>
+     <x>280</x>
+     <y>580</y>
      <width>141</width>
      <height>51</height>
     </rect>
@@ -499,8 +503,8 @@ p, li { white-space: pre-wrap; }
   <widget class="QPushButton" name="pushButton2">
    <property name="geometry">
     <rect>
-     <x>280</x>
-     <y>530</y>
+     <x>440</x>
+     <y>580</y>
      <width>141</width>
      <height>51</height>
     </rect>
@@ -521,8 +525,8 @@ p, li { white-space: pre-wrap; }
   <widget class="QPushButton" name="pushButton3">
    <property name="geometry">
     <rect>
-     <x>440</x>
-     <y>530</y>
+     <x>600</x>
+     <y>580</y>
      <width>141</width>
      <height>51</height>
     </rect>
@@ -543,10 +547,10 @@ p, li { white-space: pre-wrap; }
   <widget class="QListView" name="listView">
    <property name="geometry">
     <rect>
-     <x>0</x>
+     <x>10</x>
      <y>0</y>
-     <width>900</width>
-     <height>600</height>
+     <width>1000</width>
+     <height>700</height>
     </rect>
    </property>
    <property name="styleSheet">

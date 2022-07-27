@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>900</width>
-    <height>600</height>
+    <width>1000</width>
+    <height>700</height>
    </rect>
   </property>
   <property name="palette">
@@ -132,8 +132,8 @@
   <widget class="QPushButton" name="pushButton6">
    <property name="geometry">
     <rect>
-     <x>710</x>
-     <y>440</y>
+     <x>810</x>
+     <y>420</y>
      <width>141</width>
      <height>51</height>
     </rect>
@@ -155,8 +155,8 @@
   <widget class="QPushButton" name="pushButton7">
    <property name="geometry">
     <rect>
-     <x>550</x>
-     <y>490</y>
+     <x>640</x>
+     <y>590</y>
      <width>141</width>
      <height>41</height>
     </rect>
@@ -177,8 +177,8 @@
   <widget class="QPushButton" name="pushButton8">
    <property name="geometry">
     <rect>
-     <x>550</x>
-     <y>540</y>
+     <x>810</x>
+     <y>590</y>
      <width>141</width>
      <height>41</height>
     </rect>
@@ -200,9 +200,9 @@ color: rgb(0, 0, 255);</string>
   <widget class="QLineEdit" name="lineEdit2">
    <property name="geometry">
     <rect>
-     <x>120</x>
-     <y>440</y>
-     <width>113</width>
+     <x>130</x>
+     <y>490</y>
+     <width>101</width>
      <height>20</height>
     </rect>
    </property>
@@ -213,8 +213,8 @@ color: rgb(0, 0, 255);</string>
   <widget class="QLabel" name="label2">
    <property name="geometry">
     <rect>
-     <x>50</x>
-     <y>440</y>
+     <x>60</x>
+     <y>490</y>
      <width>71</width>
      <height>20</height>
     </rect>
@@ -235,8 +235,8 @@ color: rgb(0, 0, 255);</string>
   <widget class="QLabel" name="labelreport">
    <property name="geometry">
     <rect>
-     <x>50</x>
-     <y>480</y>
+     <x>60</x>
+     <y>530</y>
      <width>181</width>
      <height>20</height>
     </rect>
@@ -257,10 +257,10 @@ color: rgb(0, 0, 255);</string>
   <widget class="QTextEdit" name="textEditreport">
    <property name="geometry">
     <rect>
-     <x>50</x>
-     <y>510</y>
-     <width>481</width>
-     <height>71</height>
+     <x>60</x>
+     <y>560</y>
+     <width>551</width>
+     <height>111</height>
     </rect>
    </property>
   </widget>
@@ -286,7 +286,7 @@ color: rgb(0, 0, 255);</string>
   <widget class="QLabel" name="label3">
    <property name="geometry">
     <rect>
-     <x>370</x>
+     <x>420</x>
      <y>89</y>
      <width>101</width>
      <height>20</height>
@@ -305,8 +305,8 @@ color: rgb(0, 0, 255);</string>
   <widget class="QPushButton" name="pushButton1">
    <property name="geometry">
     <rect>
-     <x>710</x>
-     <y>110</y>
+     <x>810</x>
+     <y>120</y>
      <width>141</width>
      <height>41</height>
     </rect>
@@ -327,8 +327,8 @@ color: rgb(0, 0, 255);</string>
   <widget class="QPushButton" name="pushButton5">
    <property name="geometry">
     <rect>
-     <x>710</x>
-     <y>380</y>
+     <x>810</x>
+     <y>360</y>
      <width>141</width>
      <height>41</height>
     </rect>
@@ -351,8 +351,8 @@ color: rgb(0, 0, 255);</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>900</width>
-     <height>600</height>
+     <width>1000</width>
+     <height>700</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -364,8 +364,8 @@ color: rgb(0, 0, 255);</string>
     <rect>
      <x>50</x>
      <y>120</y>
-     <width>300</width>
-     <height>300</height>
+     <width>350</width>
+     <height>350</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -381,9 +381,9 @@ color: rgb(0, 0, 255);</string>
   <widget class="QLineEdit" name="lineEdit5">
    <property name="geometry">
     <rect>
-     <x>710</x>
-     <y>170</y>
-     <width>141</width>
+     <x>400</x>
+     <y>490</y>
+     <width>121</width>
      <height>20</height>
     </rect>
    </property>
@@ -394,10 +394,10 @@ color: rgb(0, 0, 255);</string>
   <widget class="QLabel" name="label6">
    <property name="geometry">
     <rect>
-     <x>370</x>
+     <x>420</x>
      <y>120</y>
-     <width>300</width>
-     <height>300</height>
+     <width>350</width>
+     <height>350</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -413,8 +413,8 @@ color: rgb(0, 0, 255);</string>
   <widget class="QPushButton" name="pushButton4">
    <property name="geometry">
     <rect>
-     <x>710</x>
-     <y>320</y>
+     <x>810</x>
+     <y>300</y>
      <width>141</width>
      <height>41</height>
     </rect>
@@ -435,8 +435,8 @@ color: rgb(0, 0, 255);</string>
   <widget class="QPushButton" name="pushButton2">
    <property name="geometry">
     <rect>
-     <x>710</x>
-     <y>200</y>
+     <x>810</x>
+     <y>180</y>
      <width>141</width>
      <height>41</height>
     </rect>
@@ -457,8 +457,8 @@ color: rgb(0, 0, 255);</string>
   <widget class="QPushButton" name="pushButton3">
    <property name="geometry">
     <rect>
-     <x>710</x>
-     <y>260</y>
+     <x>810</x>
+     <y>240</y>
      <width>141</width>
      <height>41</height>
     </rect>
@@ -479,8 +479,8 @@ color: rgb(0, 0, 255);</string>
   <widget class="QLabel" name="label1">
    <property name="geometry">
     <rect>
-     <x>360</x>
-     <y>440</y>
+     <x>590</x>
+     <y>490</y>
      <width>101</width>
      <height>20</height>
     </rect>
@@ -501,14 +501,36 @@ color: rgb(0, 0, 255);</string>
   <widget class="QLineEdit" name="lineEdit3">
    <property name="geometry">
     <rect>
-     <x>470</x>
-     <y>440</y>
-     <width>113</width>
+     <x>700</x>
+     <y>490</y>
+     <width>71</width>
      <height>20</height>
     </rect>
    </property>
    <property name="text">
     <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label7">
+   <property name="geometry">
+    <rect>
+     <x>310</x>
+     <y>490</y>
+     <width>81</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>楷体</family>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>图片名称</string>
+   </property>
+   <property name="buddy">
+    <cstring>lineEdit2</cstring>
    </property>
   </widget>
   <zorder>listView</zorder>
@@ -532,6 +554,7 @@ color: rgb(0, 0, 255);</string>
   <zorder>pushButton3</zorder>
   <zorder>label1</zorder>
   <zorder>lineEdit3</zorder>
+  <zorder>label7</zorder>
  </widget>
  <resources/>
  <connections/>
