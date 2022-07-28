@@ -45,7 +45,6 @@ class InfoUi(QtWidgets.QMainWindow, Info_Ui):
         self.pushButton1.clicked.connect(self.goInit)  # 按下按钮1去初始界面
         self.pushButton2.clicked.connect(self.saveInfo)  # 按下按钮2确认保存信息，用于后续报告生成
         self.pushButton3.clicked.connect(self.chooseDialog)  # 按下按钮3去诊断系统选择框
-        # 因为下面这些信息后续生成报告要用到，所以在这里添加值，方便别的类调用
         self.menzhenhao = self.lineEdit1.text()
         self.zhuyuanhao = self.lineEdit2.text()
         self.binglihao = self.lineEdit3.text()
@@ -58,6 +57,7 @@ class InfoUi(QtWidgets.QMainWindow, Info_Ui):
         self.origin = self.lineEdit10.text()
         self.baogaoyishi = self.lineEdit11.text()
         self.chubujiancha = self.textEdit.toPlainText()
+        print(str(self.menzhenhao))
     def goInit(self):
         self.switch_init.emit()
     def chooseDialog(self):
@@ -85,6 +85,20 @@ class InfoUi(QtWidgets.QMainWindow, Info_Ui):
         self.switch_egc.emit()
         self.dialog.close()
     def saveInfo(self):
+        # 更新值
+        self.menzhenhao = self.lineEdit1.text()
+        self.zhuyuanhao = self.lineEdit2.text()
+        self.binglihao = self.lineEdit3.text()
+        self.jianchahao = self.lineEdit4.text()
+        self.name = self.lineEdit5.text()
+        self.sex = self.lineEdit6.text()
+        self.age = self.lineEdit7.text()
+        self.ke = self.lineEdit8.text()
+        self.chuang = self.lineEdit9.text()
+        self.origin = self.lineEdit10.text()
+        self.baogaoyishi = self.lineEdit11.text()
+        self.chubujiancha = self.textEdit.toPlainText()
+        print(str(self.menzhenhao))
         QMessageBox.about(self, "提示", self.tr("信息保存成功！"))
 
 # AiqianWidget 癌前病变诊断界面
@@ -250,40 +264,40 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
         from reportlab.pdfbase import pdfmetrics  # 注册字体
         from reportlab.pdfbase.ttfonts import TTFont  # 字体类
         from reportlab.pdfgen import canvas  # 创建pdf文件
-        # 7.22 未完成
-        cur_path = self.file_paths[self.file_index]
-        filepath, filename = os.path.split(cur_path)  # 分离文件路径和名称
-        # 1 注册字体(提前准备好字体文件, 如果同一个文件需要多种字体可以注册多个)
-        pdfmetrics.registerFont(TTFont('font1', os.getcwd()+str('\\pdf\\yangziti.ttf')))   # TTFont(字体名,字体文件路径)
-        #2.创建空白pdf文件
-        dst = os.path.join(self.output_pdf_dir, filename.replace(".jpg", ".pdf"))
-        pdf_file = canvas.Canvas(dst,pagesize=A4)
-        pdf_file.setFont("font1",20)  #设置字体和大小
-        pdf_file.setFillColorRGB(0,0,0,1)
-        w,h = A4
+        # cur_path = self.file_paths[self.file_index]
+        # filepath, filename = os.path.split(cur_path)  # 分离文件路径和名称
+        # # 1 注册字体(提前准备好字体文件, 如果同一个文件需要多种字体可以注册多个)
+        # pdfmetrics.registerFont(TTFont('font1', os.getcwd()+str('\\pdf\\yangziti.ttf')))   # TTFont(字体名,字体文件路径)
+        # #2.创建空白pdf文件
+        # dst = os.path.join(self.output_pdf_dir, filename.replace(".jpg", ".pdf"))
+        # pdf_file = canvas.Canvas(dst,pagesize=A4)
+        # pdf_file.setFont("font1",20)  #设置字体和大小
+        # pdf_file.setFillColorRGB(0,0,0,1)
+        # w,h = A4
         read_infoui = InfoUi()  # 读取填写信息界面的内容
-        read_egc = EGCUi()
-        pdf_file.drawString(50, h - 50, "门诊号："+str(read_infoui.menzhenhao)+"    "+"住院号："+str(read_infoui.zhuyuanhao)+\
-                            "    "+"病历号：" + str(read_infoui.binglihao)+"    "+"检查号：" + str(read_infoui.jianchahao))
-        pdf_file.drawString(50, h - 100, "-----------------------------------------------------")
-        pdf_file.drawString(50, h - 150, "姓名：" + str(read_infoui.name)+"    "+ "性别：" + str(read_infoui.sex)+\
-                            "    "+"年龄：" + str(read_infoui.age))
-        pdf_file.drawString(50, h - 200, "科别：" + str(read_infoui.ke)+"    "+ "床号：" + str(read_infoui.chuang)+\
-                            "    "+"来源：" + str(read_infoui.origin))
-        pdf_file.drawString(50, h - 250, "-----------------------------------------------------")
-        pdf_file.drawString(50, h - 300,"初步检查所见："+str(read_infoui.chubujiancha))
-        pdf_file.drawString(50, h - 500, "-----------------------------------------------------")
-        pdf_file.drawString(50, h - 550,"初步诊断所见："+str(read_egc.chubuzhenduan))
-        pdf_file.drawString(50, h - 600,"置信度分数："+str(read_egc.lineEdit3.text()))
-        pdf_file.drawString(50, h - 650, "报告医师：" + str(read_infoui.baogaoyishi))
-
-        # pdf_file.drawString(100,100,"yang")
-
-
-
-        #保存
-        pdf_file.save()
-        QMessageBox.about(self, "提示", self.tr("报告保存成功！"))
+        # read_egc = EGCUi()
+        # pdf_file.drawString(50, h - 50, "门诊号："+str(read_infoui.menzhenhao)+"    "+"住院号："+str(read_infoui.zhuyuanhao)+\
+        #                     "    "+"病历号：" + str(read_infoui.binglihao)+"    "+"检查号：" + str(read_infoui.jianchahao))
+        # pdf_file.drawString(50, h - 100, "-----------------------------------------------------")
+        # pdf_file.drawString(50, h - 150, "姓名：" + str(read_infoui.name)+"    "+ "性别：" + str(read_infoui.sex)+\
+        #                     "    "+"年龄：" + str(read_infoui.age))
+        # pdf_file.drawString(50, h - 200, "科别：" + str(read_infoui.ke)+"    "+ "床号：" + str(read_infoui.chuang)+\
+        #                     "    "+"来源：" + str(read_infoui.origin))
+        # pdf_file.drawString(50, h - 250, "-----------------------------------------------------")
+        # pdf_file.drawString(50, h - 300,"初步检查所见："+str(read_infoui.chubujiancha))
+        # pdf_file.drawString(50, h - 500, "-----------------------------------------------------")
+        # pdf_file.drawString(50, h - 550,"初步诊断所见："+str(read_egc.chubuzhenduan))
+        # pdf_file.drawString(50, h - 600,"置信度分数："+str(read_egc.lineEdit3.text()))
+        # pdf_file.drawString(50, h - 650, "报告医师：" + str(read_infoui.baogaoyishi))
+        #
+        # # pdf_file.drawString(100,100,"yang")
+        #
+        print(str(read_infoui.lineEdit1.text()))
+        #
+        #
+        # #保存
+        # pdf_file.save()
+        # QMessageBox.about(self, "提示", self.tr("报告保存成功！"))
 
 # 控制器，实现各界面之间的跳转功能
 class Controller:
