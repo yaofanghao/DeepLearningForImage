@@ -115,7 +115,7 @@ background-color: rgb(255, 253, 190);</string>
     <string>确定</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton5">
+  <widget class="QPushButton" name="pushButton3">
    <property name="geometry">
     <rect>
      <x>800</x>
@@ -152,7 +152,7 @@ color: rgb(0, 0, 255);</string>
    </property>
   </widget>
   <zorder>listView</zorder>
-  <zorder>pushButton5</zorder>
+  <zorder>pushButton3</zorder>
   <zorder>label1</zorder>
   <zorder>label2</zorder>
   <zorder>pushButton2</zorder>

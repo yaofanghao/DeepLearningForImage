@@ -15,15 +15,19 @@ from EGCWidget import Ui_Form as EGC_Ui
 
 # 初始界面 InitWidget
 class InitUi(QtWidgets.QMainWindow, Init_Ui):
-    switch_info = QtCore.pyqtSignal()
+    switch_aiqian = QtCore.pyqtSignal()
+    switch_egc = QtCore.pyqtSignal()
+
     def __init__(self):
         super(InitUi, self).__init__()
         self.setupUi(self)
-        self.pushButton1.clicked.connect(self.goInfo)  # 按下按钮1去患者信息界面
-        self.pushButton2.clicked.connect(self.goInfo)  # 按下按钮2去患者信息界面
-        self.pushButton5.clicked.connect(self.closeDialog)   # 按下按钮5去退出对话框
-    def goInfo(self):
-        self.switch_info.emit()
+        self.pushButton1.clicked.connect(self.goAiqian)  # 按下按钮1去癌前
+        self.pushButton2.clicked.connect(self.goEGC)  # 按下按钮2去EGC
+        self.pushButton3.clicked.connect(self.closeDialog)   # 按下按钮3退出对话框
+    def goAiqian(self):
+        self.switch_aiqian.emit()
+    def goEGC(self):
+        self.switch_egc.emit()
     def closeDialog(self):
         reply = QMessageBox.warning(self,"提示","是否确定退出",
                     QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
@@ -34,76 +38,10 @@ class InitUi(QtWidgets.QMainWindow, Init_Ui):
         else:
             print('keep')
 
-# 患者信息界面 InfoWidget
-class InfoUi(QtWidgets.QMainWindow, Info_Ui):
-    switch_init = QtCore.pyqtSignal()
-    switch_aiqian = QtCore.pyqtSignal()
-    switch_egc = QtCore.pyqtSignal()
-    def __init__(self):
-        super(InfoUi, self).__init__()
-        self.setupUi(self)
-        self.pushButton1.clicked.connect(self.goInit)  # 按下按钮1去初始界面
-        self.pushButton2.clicked.connect(self.saveInfo)  # 按下按钮2确认保存信息，用于后续报告生成
-        self.pushButton3.clicked.connect(self.chooseDialog)  # 按下按钮3去诊断系统选择框
-        self.menzhenhao = self.lineEdit1.text()
-        self.zhuyuanhao = self.lineEdit2.text()
-        self.binglihao = self.lineEdit3.text()
-        self.jianchahao = self.lineEdit4.text()
-        self.name = self.lineEdit5.text()
-        self.sex = self.lineEdit6.text()
-        self.age = self.lineEdit7.text()
-        self.ke = self.lineEdit8.text()
-        self.chuang = self.lineEdit9.text()
-        self.origin = self.lineEdit10.text()
-        self.baogaoyishi = self.lineEdit11.text()
-        self.chubujiancha = self.textEdit.toPlainText()
-        print(str(self.menzhenhao))
-    def goInit(self):
-        self.switch_init.emit()
-    def chooseDialog(self):
-        vbox = QVBoxLayout()
-        hbox = QHBoxLayout()
-        panel = QLabel()
-        panel.setText("请确认您要选择的诊断系统")
-        self.dialog = QDialog()
-        self.aiqianButton = QPushButton("癌前病变诊断")
-        self.egcButton = QPushButton("早癌EGC诊断")
-        self.aiqianButton.clicked.connect(self.goAiqian)
-        self.egcButton.clicked.connect(self.goEGC)
-        self.dialog.setWindowTitle("开始内镜检测")
-        hbox.addWidget(self.aiqianButton)
-        hbox.addWidget(self.egcButton)
-        vbox.addWidget(panel)
-        vbox.addLayout(hbox)
-        self.dialog.setLayout(vbox)
-        self.dialog.setWindowModality(QtCore.Qt.ApplicationModal)  # 该模式下，只有该dialog关闭，才可以关闭父界面
-        self.dialog.exec_()
-    def goAiqian(self):
-        self.switch_aiqian.emit()
-        self.dialog.close()
-    def goEGC(self):
-        self.switch_egc.emit()
-        self.dialog.close()
-    def saveInfo(self):
-        # 更新值
-        self.menzhenhao = self.lineEdit1.text()
-        self.zhuyuanhao = self.lineEdit2.text()
-        self.binglihao = self.lineEdit3.text()
-        self.jianchahao = self.lineEdit4.text()
-        self.name = self.lineEdit5.text()
-        self.sex = self.lineEdit6.text()
-        self.age = self.lineEdit7.text()
-        self.ke = self.lineEdit8.text()
-        self.chuang = self.lineEdit9.text()
-        self.origin = self.lineEdit10.text()
-        self.baogaoyishi = self.lineEdit11.text()
-        self.chubujiancha = self.textEdit.toPlainText()
-        print(str(self.menzhenhao))
-        QMessageBox.about(self, "提示", self.tr("信息保存成功！"))
-
 # AiqianWidget 癌前病变诊断界面
 class AiqianUi(QtWidgets.QMainWindow, Aiqian_Ui):
     switch_init = QtCore.pyqtSignal()
+    switch_info = QtCore.pyqtSignal()
     def __init__(self):
         super(AiqianUi, self).__init__()
         self.setupUi(self)
@@ -124,6 +62,7 @@ class AiqianUi(QtWidgets.QMainWindow, Aiqian_Ui):
 # EGCWidget 早癌EGC诊断系统界面
 class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
     switch_init = QtCore.pyqtSignal()
+    switch_info = QtCore.pyqtSignal()
     def __init__(self):
         super(EGCUi, self).__init__()
         self.setupUi(self)
@@ -134,9 +73,6 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
         self.output_dir = './img_out/'
         if not os.path.exists(self.output_dir):
             os.makedirs(self.output_dir)
-        self.output_pdf_dir = './img_out_report/'
-        if not os.path.exists(self.output_pdf_dir):
-            os.makedirs(self.output_pdf_dir)
 
         self.now = QtCore.QDate.currentDate()  # 获取当前日期
         self.lineEdit2.setText(self.now.toString(QtCore.Qt.ISODate))  # 显示时间到界面
@@ -146,12 +82,11 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
         self.pushButton4.clicked.connect(self.predictJpg)  # 开始检测
         self.pushButton5.clicked.connect(self.saveJpg)  # 显示并保存图片
         self.pushButton6.clicked.connect(self.goInit)  # 去初始界面
-        self.pushButton7.clicked.connect(self.saveReport)  # 生成pdf报告
+        self.pushButton7.clicked.connect(self.writeReport)  # 去填写报告界面
         self.pushButton8.clicked.connect(self.closeDialog)  # 关闭对话框
-        self.chubuzhenduan = self.textEditreport.toPlainText()
     def goInit(self):
         self.switch_init.emit()
-    def closeDialog(self):  # 导入文件夹
+    def closeDialog(self):
         reply = QMessageBox.warning(self, "提示", "是否确定退出",
                     QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if reply == QMessageBox.Yes:
@@ -208,21 +143,18 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
         self.lineEdit3.setText(str(self.scores[self.file_index]))  # 显示置信度分数到界面上
         img_out = QPixmap(os.path.join(self.output_dir,filename.replace(".jpg", ".png"))).scaled(self.label6.width(), self.label6.height())
         self.label6.setPixmap(img_out)  # 显示预测图片到界面上
-
     def predictJpg(self):
-        # 2022.7.16
         # 此为测试版的predict代码，测试能否成功运行
         # 后续根据实际需要全部修改替换
         import tensorflow as tf
         from PIL import Image
         from predict11 import predict11_single
-        # from yolo_predict3 import YOLO
         # 进度条
         elapsed_time = len(self.file_paths)  # 进度条按比例划分为图片个数
         self.pbar = QProgressDialog("诊断中", "取消", 0, elapsed_time, self)
         self.pbar.setWindowTitle("进度提示")
         self.pbar.show()
-        self.pbar.setValue(0)
+        self.pbar.setValue(1)
 
         gpus = tf.config.experimental.list_physical_devices(device_type='GPU')
         for gpu in gpus:
@@ -248,7 +180,6 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
         self.pbar.setValue(elapsed_time) # 进度条加满
         # break
         QMessageBox.about(self, "提示", self.tr("图片检测完成"))
-
     def saveJpg(self):  # 显示图片
         cur_path = self.file_paths[self.file_index]
         filepath, filename = os.path.split(cur_path)  # 分离文件路径和名称
@@ -258,85 +189,148 @@ class EGCUi(QtWidgets.QMainWindow, EGC_Ui):
         print(self.scores)
         self.lineEdit3.setText(str(self.scores[self.file_index]))  # 显示置信度分数到界面上
         QMessageBox.about(self, "提示", self.tr("图片已保存，分类至NEO和NONNEO文件夹！"))
+    def writeReport(self):
+        self.switch_info.emit()  # 进入报告填写界面InfoWidget
 
-    def saveReport(self):
+# 诊断报告填写 InfoWidget
+class InfoUi(QtWidgets.QMainWindow, Info_Ui):
+    def __init__(self):
+        super(InfoUi, self).__init__()
+        self.setupUi(self)
+        self.pushButton1.clicked.connect(self.saveInfo)  # 按下按钮1去保存信息
+        self.pushButton2.clicked.connect(self.genReport)  # 按下按钮2保存pdf
+        self.pushButton3.clicked.connect(self.closeDialog)  # 关闭对话框
+        self.output_pdf_dir = './img_out_report/'
+        if not os.path.exists(self.output_pdf_dir):
+            os.makedirs(self.output_pdf_dir)
+
+        self.now = QtCore.QDate.currentDate()  # 获取当前日期
+        self.lineEdit12.setText(self.now.toString(QtCore.Qt.ISODate))
+        self.menzhenhao = self.lineEdit1.text()
+        self.zhuyuanhao = self.lineEdit2.text()
+        self.binglihao = self.lineEdit3.text()
+        self.jianchahao = self.lineEdit4.text()
+        self.name = self.lineEdit5.text()
+        self.sex = self.lineEdit6.text()
+        self.age = self.lineEdit7.text()
+        self.ke = self.lineEdit8.text()
+        self.chuang = self.lineEdit9.text()
+        self.origin = self.lineEdit10.text()
+        self.baogaoyishi = self.lineEdit11.text()
+        self.chubuzhenduan = self.textEdit.toPlainText()
+        print(self.chubuzhenduan)
+    def closeDialog(self):
+        reply = QMessageBox.warning(self, "提示", "是否确定退出",
+                    QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        if reply == QMessageBox.Yes:
+            print('exit')
+            app = QtWidgets.QApplication.instance()
+            app.quit()
+        else:
+            print('keep')
+    def saveInfo(self):
+        print(self.textEdit.toPlainText())
+        QMessageBox.about(self, "提示", self.tr("信息保存成功！"))
+
+    def genReport(self):
         from reportlab.lib.pagesizes import A4
         from reportlab.pdfbase import pdfmetrics  # 注册字体
         from reportlab.pdfbase.ttfonts import TTFont  # 字体类
         from reportlab.pdfgen import canvas  # 创建pdf文件
-        # cur_path = self.file_paths[self.file_index]
-        # filepath, filename = os.path.split(cur_path)  # 分离文件路径和名称
-        # # 1 注册字体(提前准备好字体文件, 如果同一个文件需要多种字体可以注册多个)
-        # pdfmetrics.registerFont(TTFont('font1', os.getcwd()+str('\\pdf\\yangziti.ttf')))   # TTFont(字体名,字体文件路径)
-        # #2.创建空白pdf文件
-        # dst = os.path.join(self.output_pdf_dir, filename.replace(".jpg", ".pdf"))
-        # pdf_file = canvas.Canvas(dst,pagesize=A4)
-        # pdf_file.setFont("font1",20)  #设置字体和大小
-        # pdf_file.setFillColorRGB(0,0,0,1)
-        # w,h = A4
-        read_infoui = InfoUi()  # 读取填写信息界面的内容
-        # read_egc = EGCUi()
-        # pdf_file.drawString(50, h - 50, "门诊号："+str(read_infoui.menzhenhao)+"    "+"住院号："+str(read_infoui.zhuyuanhao)+\
-        #                     "    "+"病历号：" + str(read_infoui.binglihao)+"    "+"检查号：" + str(read_infoui.jianchahao))
-        # pdf_file.drawString(50, h - 100, "-----------------------------------------------------")
-        # pdf_file.drawString(50, h - 150, "姓名：" + str(read_infoui.name)+"    "+ "性别：" + str(read_infoui.sex)+\
-        #                     "    "+"年龄：" + str(read_infoui.age))
-        # pdf_file.drawString(50, h - 200, "科别：" + str(read_infoui.ke)+"    "+ "床号：" + str(read_infoui.chuang)+\
-        #                     "    "+"来源：" + str(read_infoui.origin))
-        # pdf_file.drawString(50, h - 250, "-----------------------------------------------------")
-        # pdf_file.drawString(50, h - 300,"初步检查所见："+str(read_infoui.chubujiancha))
-        # pdf_file.drawString(50, h - 500, "-----------------------------------------------------")
-        # pdf_file.drawString(50, h - 550,"初步诊断所见："+str(read_egc.chubuzhenduan))
-        # pdf_file.drawString(50, h - 600,"置信度分数："+str(read_egc.lineEdit3.text()))
-        # pdf_file.drawString(50, h - 650, "报告医师：" + str(read_infoui.baogaoyishi))
-        #
-        # # pdf_file.drawString(100,100,"yang")
-        #
-        print(str(read_infoui.lineEdit1.text()))
-        #
-        #
-        # #保存
-        # pdf_file.save()
-        # QMessageBox.about(self, "提示", self.tr("报告保存成功！"))
+        # 1 注册字体(提前准备好字体文件, 如果同一个文件需要多种字体可以注册多个)
+        pdfmetrics.registerFont(TTFont('font1', os.getcwd()+str('\\pdf\\yangziti.ttf')))   # TTFont(字体名,字体文件路径)
+        #2.创建空白pdf文件
+        self.filename, type = QFileDialog.getSaveFileName(self,'save file',self.output_pdf_dir, "ALL (*.pdf)")
+        dst = os.path.join(self.output_pdf_dir, self.filename.replace(".jpg", ".pdf"))
+
+        pdf_file = canvas.Canvas(dst,pagesize=A4)
+        pdf_file.setFont("font1",20)  #设置字体和大小
+        pdf_file.setFillColorRGB(0,0,0,1)
+        w,h = A4
+
+        menzhenhao = self.lineEdit1.text()
+        zhuyuanhao = self.lineEdit2.text()
+        binglihao = self.lineEdit3.text()
+        jianchahao = self.lineEdit4.text()
+        name = self.lineEdit5.text()
+        sex = self.lineEdit6.text()
+        age = self.lineEdit7.text()
+        ke = self.lineEdit8.text()
+        chuang = self.lineEdit9.text()
+        origin = self.lineEdit10.text()
+        baogaoyishi = self.lineEdit11.text()
+        chubuzhenduan = self.textEdit.toPlainText()
+        date = self.lineEdit12.text()
+
+        pdf_file.drawString(50, h - 50, "门诊号："+str(menzhenhao)+"    "+"住院号："+str(zhuyuanhao)+\
+                            "    "+"病历号：" + str(binglihao)+"    "+"检查号：" + str(jianchahao))
+        pdf_file.drawString(50, h - 100, "-----------------------------------------------------")
+        pdf_file.drawString(50, h - 150, "姓名：" + str(name)+"    "+ "性别：" + str(sex)+\
+                            "    "+"年龄：" + str(age))
+        pdf_file.drawString(50, h - 200, "科别：" + str(ke)+"    "+ "床号：" + str(chuang)+\
+                            "    "+"来源：" + str(origin))
+        pdf_file.drawString(50, h - 250, "-----------------------------------------------------")
+        pdf_file.drawString(50, h - 300,"初步诊断所见："+str(chubuzhenduan))
+        pdf_file.drawString(50, h - 500, "-----------------------------------------------------")
+        pdf_file.drawString(50, h - 550,"报告医师：" + str(baogaoyishi))
+        pdf_file.drawString(50, h - 600, "日期："+str(date))
+
+        print(chubuzhenduan)
+
+        pdf_file.save()
+
+
+        QMessageBox.about(self, "提示", self.tr("报告保存成功！"))
+
+
 
 # 控制器，实现各界面之间的跳转功能
 class Controller:
     def __init__(self):
-        pass
         # 对各窗口实例化
         self.initUi = InitUi()
-        self.info = InfoUi()
         self.aiqian = AiqianUi()
         self.egc = EGCUi()
+        self.info = InfoUi()
 
     def showInit(self):
-        self.initUi.switch_info.connect(self.showInfo)
+        self.initUi.switch_aiqian.connect(self.showAiqian)
+        self.initUi.switch_egc.connect(self.showEGC)
         self.info.close()
         self.aiqian.close()
         self.egc.close()
         self.initUi.show()
     def showInfo(self):
-        self.info.switch_init.connect(self.showInit)
-        self.info.switch_aiqian.connect(self.showAiqian)
-        self.info.switch_egc.connect(self.showEGC)
         self.initUi.close()
+        # self.aiqian.close()
+        # self.egc.close()
         self.info.show()
     def showAiqian(self):
         self.aiqian.switch_init.connect(self.showInit)
+        self.aiqian.switch_info.connect(self.showInfo)
         self.initUi.close()
         self.info.close()
+        self.egc.close()
         self.aiqian.show()
     def showEGC(self):
         self.egc.switch_init.connect(self.showInit)
+        self.egc.switch_info.connect(self.showInfo)
         self.initUi.close()
         self.info.close()
+        self.egc.close()
         self.egc.show()
-
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
 
     controller = Controller()
     controller.showInit()  # 启动初始界面为InitWidget
+    #
+    #
+    # w = QtWidgets.QWidget()
+    #
+    # ui = main2.Test()
+    #
+    # ui.setUI(w)
 
     sys.exit(app.exec_())

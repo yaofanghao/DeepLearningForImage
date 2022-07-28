@@ -2,6 +2,7 @@
 
 开发时间：
 * 2022.7.14-
+* 7.28 进行了重大修改
 
 开发环境：
 * PyCharm Community Edition 2020.3.2 / Qt Designer @yaofanghao
@@ -74,4 +75,4 @@
 * 保存图片参考自 https://blog.csdn.net/m0_47682721/article/details/123928585
 * 进度条对话框参考自 https://blog.csdn.net/yurensan/article/details/121025642
 * 打开文件夹并读取文件列表参考自 https://blog.csdn.net/weixin_45875105/article/details/113185870
-* 多窗口数据传递参考自 https://zhuanlan.zhihu.com/p/527515001
+* 多窗口数据传递参考自 https://blog.csdn.net/jdl1206/article/details/121619463

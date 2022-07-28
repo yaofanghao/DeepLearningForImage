@@ -123,7 +123,7 @@
     </font>
    </property>
    <property name="text">
-    <string>患者基本信息</string>
+    <string>诊断报告填写</string>
    </property>
    <property name="textFormat">
     <enum>Qt::AutoText</enum>
@@ -144,7 +144,7 @@
       <property name="font">
        <font>
         <family>楷体</family>
-        <pointsize>12</pointsize>
+        <pointsize>14</pointsize>
        </font>
       </property>
       <property name="text">
@@ -170,7 +170,7 @@
       <property name="font">
        <font>
         <family>楷体</family>
-        <pointsize>12</pointsize>
+        <pointsize>14</pointsize>
        </font>
       </property>
       <property name="text">
@@ -196,7 +196,7 @@
       <property name="font">
        <font>
         <family>楷体</family>
-        <pointsize>12</pointsize>
+        <pointsize>14</pointsize>
        </font>
       </property>
       <property name="text">
@@ -222,7 +222,7 @@
       <property name="font">
        <font>
         <family>楷体</family>
-        <pointsize>12</pointsize>
+        <pointsize>14</pointsize>
        </font>
       </property>
       <property name="text">
@@ -251,7 +251,7 @@
      <x>140</x>
      <y>190</y>
      <width>701</width>
-     <height>141</height>
+     <height>171</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
@@ -260,7 +260,7 @@
       <property name="font">
        <font>
         <family>楷体</family>
-        <pointsize>12</pointsize>
+        <pointsize>14</pointsize>
        </font>
       </property>
       <property name="text">
@@ -276,7 +276,7 @@
       <property name="font">
        <font>
         <family>楷体</family>
-        <pointsize>12</pointsize>
+        <pointsize>14</pointsize>
        </font>
       </property>
       <property name="text">
@@ -289,7 +289,7 @@
       <property name="font">
        <font>
         <family>楷体</family>
-        <pointsize>12</pointsize>
+        <pointsize>14</pointsize>
        </font>
       </property>
       <property name="text">
@@ -315,7 +315,7 @@
       <property name="font">
        <font>
         <family>楷体</family>
-        <pointsize>12</pointsize>
+        <pointsize>14</pointsize>
        </font>
       </property>
       <property name="text">
@@ -341,7 +341,7 @@
       <property name="font">
        <font>
         <family>楷体</family>
-        <pointsize>12</pointsize>
+        <pointsize>14</pointsize>
        </font>
       </property>
       <property name="text">
@@ -367,7 +367,7 @@
       <property name="font">
        <font>
         <family>楷体</family>
-        <pointsize>12</pointsize>
+        <pointsize>14</pointsize>
        </font>
       </property>
       <property name="text">
@@ -416,7 +416,7 @@
      </widget>
     </item>
     <item row="3" column="0">
-     <widget class="QLabel" name="label1_2">
+     <widget class="QLabel" name="label11">
       <property name="font">
        <font>
         <family>楷体</family>
@@ -437,7 +437,7 @@
    <property name="geometry">
     <rect>
      <x>140</x>
-     <y>350</y>
+     <y>390</y>
      <width>171</width>
      <height>20</height>
     </rect>
@@ -449,7 +449,7 @@
     </font>
    </property>
    <property name="text">
-    <string>初步检查所见：</string>
+    <string>初步诊断报告：</string>
    </property>
    <property name="buddy">
     <cstring>textEdit</cstring>
@@ -459,52 +459,36 @@
    <property name="geometry">
     <rect>
      <x>140</x>
-     <y>390</y>
+     <y>430</y>
      <width>711</width>
      <height>161</height>
-    </rect>
-   </property>
-   <property name="html">
-    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'SimSun'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;123&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;test&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;abc&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;你好&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;end&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pushButton1">
-   <property name="geometry">
-    <rect>
-     <x>280</x>
-     <y>580</y>
-     <width>141</width>
-     <height>51</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>楷体</family>
-     <pointsize>12</pointsize>
+     <pointsize>14</pointsize>
     </font>
    </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgb(147, 149, 255);</string>
-   </property>
-   <property name="text">
-    <string>返回诊断系统
-选择页面</string>
+   <property name="html">
+    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'楷体'; font-size:14pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'SimSun';&quot;&gt;123&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'SimSun';&quot;&gt;test&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'SimSun';&quot;&gt;abc&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'SimSun';&quot;&gt;ok&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'SimSun';&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'SimSun';&quot;&gt;你好&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'SimSun';&quot;&gt;end&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton2">
+  <widget class="QPushButton" name="pushButton1">
    <property name="geometry">
     <rect>
-     <x>440</x>
-     <y>580</y>
+     <x>300</x>
+     <y>610</y>
      <width>141</width>
      <height>51</height>
     </rect>
@@ -522,11 +506,11 @@ p, li { white-space: pre-wrap; }
     <string>保存当前信息</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton3">
+  <widget class="QPushButton" name="pushButton2">
    <property name="geometry">
     <rect>
-     <x>600</x>
-     <y>580</y>
+     <x>520</x>
+     <y>610</y>
      <width>141</width>
      <height>51</height>
     </rect>
@@ -541,13 +525,13 @@ p, li { white-space: pre-wrap; }
     <string notr="true">background-color:rgb(85, 170, 255)</string>
    </property>
    <property name="text">
-    <string>开始内镜检测</string>
+    <string>生成诊断报告</string>
    </property>
   </widget>
   <widget class="QListView" name="listView">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>0</x>
      <y>0</y>
      <width>1000</width>
      <height>700</height>
@@ -555,6 +539,64 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="styleSheet">
     <string notr="true">background-color: qlineargradient(spread:pad, x1:0.483, y1:0, x2:0.511727, y2:1, stop:0.5625 rgba(255, 229, 152, 255), stop:1 rgba(255, 255, 255, 255));</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit12">
+   <property name="geometry">
+    <rect>
+     <x>730</x>
+     <y>390</y>
+     <width>121</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label2_2">
+   <property name="geometry">
+    <rect>
+     <x>650</x>
+     <y>390</y>
+     <width>71</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>楷体</family>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>日期</string>
+   </property>
+   <property name="buddy">
+    <cstring>lineEdit2</cstring>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton3">
+   <property name="geometry">
+    <rect>
+     <x>830</x>
+     <y>640</y>
+     <width>141</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>楷体</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(255, 170, 0);
+color: rgb(0, 0, 255);</string>
+   </property>
+   <property name="text">
+    <string>退出检测</string>
    </property>
   </widget>
   <zorder>listView</zorder>
@@ -565,6 +607,8 @@ p, li { white-space: pre-wrap; }
   <zorder>textEdit</zorder>
   <zorder>pushButton1</zorder>
   <zorder>pushButton2</zorder>
+  <zorder>lineEdit12</zorder>
+  <zorder>label2_2</zorder>
   <zorder>pushButton3</zorder>
  </widget>
  <resources/>
