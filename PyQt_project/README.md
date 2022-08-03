@@ -1,8 +1,9 @@
 # 项目-基于PyQt的人工智能诊断系统软件设计
 
-开发时间：
+完成时间：
 * 2022.7.14-
-* 7.28- 进行了重大修改
+* 7.28 进行了重大修改
+* 8.2- 打包成exe
 
 开发环境：
 * PyCharm Community Edition 2020.3.2 / Qt Designer @yaofanghao
@@ -76,3 +77,4 @@
 * 进度条对话框参考自 https://blog.csdn.net/yurensan/article/details/121025642
 * 打开文件夹并读取文件列表参考自 https://blog.csdn.net/weixin_45875105/article/details/113185870
 * 多窗口数据传递参考自 https://blog.csdn.net/jdl1206/article/details/121619463
+* pyinstaller打包和spec配置参考自 https://blog.csdn.net/qq_38856833/article/details/115287480?spm=1001.2101.3001.6650.10&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-10-115287480-blog-93868769.pc_relevant_multi_platform_whitelistv3&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-10-115287480-blog-93868769.pc_relevant_multi_platform_whitelistv3&utm_relevant_index=12

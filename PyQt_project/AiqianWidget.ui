@@ -102,7 +102,7 @@
    </palette>
   </property>
   <property name="windowTitle">
-   <string>EGC病变诊断</string>
+   <string>癌前病变诊断</string>
   </property>
   <property name="autoFillBackground">
    <bool>false</bool>

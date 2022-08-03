@@ -14,7 +14,7 @@
   * 涉及敏感内容不提交至仓库
 
 * handson-ml2-master
-  * Aurelien Geron的/机器学习实战/
+  * Aurelien Geron的/机器学习实战
   * 书中对应参考代码
 
 * PyQt
@@ -22,11 +22,7 @@
   * Qt的学习日记、代码
   
 * FireDetection
-  * 火焰检测项目代码demo
-
-* 树莓派项目
-  * 参考资料
-  * 待补充-基于树莓派的OpenCV和深度学习图像处理
+  * 火焰检测项目代码demo 已不再更新，转移至cpp/OpenCV仓库中，用c++实现
   
 * 异源_配准
   * 参考资料

@@ -209,7 +209,7 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "EGC病变诊断"))
+        Form.setWindowTitle(_translate("Form", "癌前病变诊断"))
         self.label.setText(_translate("Form", "ME-NBI内镜图检测"))
         self.pushButton6.setText(_translate("Form", "返回诊断系统\n"
 "选择页面"))
