@@ -1,7 +1,7 @@
 import cv2
 import os
 
-video_name = 'video3'
+video_name = '2'
 
 output_dir = 'img/'
 
