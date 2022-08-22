@@ -1,3 +1,4 @@
+# https://www.bilibili.com/video/BV1q64y1X7GY
 import os
 import re
 import sys
@@ -14,7 +15,7 @@ assert tf.version.VERSION >= "2.4.0", "version of tf must greater/equal than 2.4
 
 
 def main():
-    data_root = "/data/flower_photos"  # get data root path
+    data_root = "/data/flower_photos"  # get data root path 
 
     if not os.path.exists("./save_weights"):
         os.makedirs("./save_weights")
@@ -37,7 +38,7 @@ def main():
     model = create_model(num_classes=num_classes, has_logits=False)
     model.build((1, 224, 224, 3))
 
-    # 下载我提前转好的预训练权重
+    # 下载提前转好的预训练权重
     # 链接: https://pan.baidu.com/s/1ro-6bebc8zroYfupn-7jVQ  密码: s9d9
     # load weights
     pre_weights_path = './ViT-B_16.h5'
@@ -152,7 +153,6 @@ def main():
             best_val_acc = val_accuracy.result()
             save_name = "./save_weights/model.ckpt"
             model.save_weights(save_name, save_format="tf")
-
 
 if __name__ == '__main__':
     main()
