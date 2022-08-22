@@ -1,5 +1,0 @@
-tkinter
-pillow
-time
-psutil
-socket

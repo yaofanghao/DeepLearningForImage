@@ -1,3 +1,0 @@
-pyttsx3
-PyPDF2
-tkinter
