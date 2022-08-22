@@ -96,7 +96,7 @@ def main(args):
         collate_fn=train_dataset.collate_fn)
 
     print("Creating model")
-    # create model num_classes equal background + 80 classes
+    # create model num_classes equal background + classes
     model = create_model(num_classes=args.num_classes + 1, load_pretrain_weights=args.pretrain)
     model.to(device)
 
@@ -248,7 +248,7 @@ if __name__ == "__main__":
     # 基于上次的训练结果接着训练
     parser.add_argument('--resume', default='', help='resume from checkpoint')
     parser.add_argument('--aspect-ratio-group-factor', default=3, type=int)
-    parser.add_argument('--test-only', action="store_tyre", help="test only")
+    parser.add_argument('--test-only', action="store_true", help="test only")
 
     # 开启的进程数(注意不是线程)
     parser.add_argument('--world-size', default=4, type=int,

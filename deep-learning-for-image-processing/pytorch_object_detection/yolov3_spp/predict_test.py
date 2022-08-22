@@ -6,6 +6,7 @@ import torch
 import cv2
 import numpy as np
 from matplotlib import pyplot as plt
+from PIL import Image
 
 from build_utils import img_utils, torch_utils, utils
 from models import Darknet
@@ -23,10 +24,10 @@ def main():
     assert os.path.exists(json_path), "json file {} dose not exist.".format(json_path)
     assert os.path.exists(img_path), "image file {} dose not exist.".format(img_path)
 
-    json_file = open(json_path, 'r')
-    class_dict = json.load(json_file)
-    json_file.close()
-    category_index = {v: k for k, v in class_dict.items()}
+    with open(json_path, 'r') as f:
+        class_dict = json.load(f)
+
+    category_index = {str(v): str(k) for k, v in class_dict.items()}
 
     input_size = (img_size, img_size)
 
@@ -75,12 +76,13 @@ def main():
         scores = pred[:, 4].detach().cpu().numpy()
         classes = pred[:, 5].detach().cpu().numpy().astype(np.int) + 1
 
-        plot_img = draw_objs(img_o[:, :, ::-1],
+        pil_img = Image.fromarray(img_o[:, :, ::-1])
+        plot_img = draw_objs(pil_img,
                              bboxes,
                              classes,
                              scores,
                              category_index=category_index,
-                             box_thresh=0.5,
+                             box_thresh=0.2,
                              line_thickness=3,
                              font='arial.ttf',
                              font_size=20)

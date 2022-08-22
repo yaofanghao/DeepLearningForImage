@@ -11,7 +11,11 @@ class VOCDataSet(Dataset):
 
     def __init__(self, voc_root, year="2012", transforms=None, txt_name: str = "train.txt"):
         assert year in ["2007", "2012"], "year must be in ['2007', '2012']"
-        self.root = os.path.join(voc_root, "VOCdevkit", f"VOC{year}")
+        # 增加容错能力
+        if "VOCdevkit" in voc_root:
+            self.root = os.path.join(voc_root, f"VOC{year}")
+        else:
+            self.root = os.path.join(voc_root, "VOCdevkit", f"VOC{year}")
         self.img_root = os.path.join(self.root, "JPEGImages")
         self.annotations_root = os.path.join(self.root, "Annotations")
 
@@ -180,7 +184,7 @@ class VOCDataSet(Dataset):
         return tuple(zip(*batch))
 
 # import transforms
-# from draw_box_utils import draw_box
+# from draw_box_utils import draw_objs
 # from PIL import Image
 # import json
 # import matplotlib.pyplot as plt
@@ -192,7 +196,7 @@ class VOCDataSet(Dataset):
 # try:
 #     json_file = open('./pascal_voc_classes.json', 'r')
 #     class_dict = json.load(json_file)
-#     category_index = {v: k for k, v in class_dict.items()}
+#     category_index = {str(v): str(k) for k, v in class_dict.items()}
 # except Exception as e:
 #     print(e)
 #     exit(-1)
@@ -209,12 +213,14 @@ class VOCDataSet(Dataset):
 # for index in random.sample(range(0, len(train_data_set)), k=5):
 #     img, target = train_data_set[index]
 #     img = ts.ToPILImage()(img)
-#     draw_box(img,
-#              target["boxes"].numpy(),
-#              target["labels"].numpy(),
-#              [1 for i in range(len(target["labels"].numpy()))],
-#              category_index,
-#              thresh=0.5,
-#              line_thickness=5)
-#     plt.imshow(img)
+#     plot_img = draw_objs(img,
+#                          target["boxes"].numpy(),
+#                          target["labels"].numpy(),
+#                          np.ones(target["labels"].shape[0]),
+#                          category_index=category_index,
+#                          box_thresh=0.5,
+#                          line_thickness=3,
+#                          font='arial.ttf',
+#                          font_size=20)
+#     plt.imshow(plot_img)
 #     plt.show()

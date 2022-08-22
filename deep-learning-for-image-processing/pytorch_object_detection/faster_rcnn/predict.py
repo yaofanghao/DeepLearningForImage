@@ -52,9 +52,9 @@ def main():
     model = create_model(num_classes=21)
 
     # load train weights
-    train_weights = "./save_weights/model.pth"
-    assert os.path.exists(train_weights), "{} file dose not exist.".format(train_weights)
-    model.load_state_dict(torch.load(train_weights, map_location='cpu')["model"])
+    weights_path = "./save_weights/model.pth"
+    assert os.path.exists(weights_path), "{} file dose not exist.".format(weights_path)
+    model.load_state_dict(torch.load(weights_path, map_location='cpu')["model"])
     model.to(device)
 
     # read class_indict
@@ -63,7 +63,7 @@ def main():
     with open(label_json_path, 'r') as f:
         class_dict = json.load(f)
 
-    category_index = {v: k for k, v in class_dict.items()}
+    category_index = {str(v): str(k) for k, v in class_dict.items()}
 
     # load image
     original_img = Image.open("./test.jpg")
@@ -110,4 +110,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

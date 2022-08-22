@@ -30,7 +30,7 @@ def _onnx_paste_mask_in_image(mask, box, im_h, im_w):
     y_0 = torch.max(torch.cat((box[1].unsqueeze(0), zero)))
     y_1 = torch.min(torch.cat((box[3].unsqueeze(0) + one, im_h.unsqueeze(0))))
 
-    unpaded_im_mask = mask[(y_0 - box[1]) : (y_1 - box[1]), (x_0 - box[0]) : (x_1 - box[0])]
+    unpaded_im_mask = mask[(y_0 - box[1]): (y_1 - box[1]), (x_0 - box[0]): (x_1 - box[0])]
 
     # TODO : replace below with a dynamic padding when support is added in ONNX
 
@@ -181,6 +181,8 @@ def expand_masks(mask, padding):
 
 def paste_mask_in_image(mask, box, im_h, im_w):
     # type: (Tensor, Tensor, int, int) -> Tensor
+
+    # refer to: https://github.com/pytorch/vision/issues/5845
     TO_REMOVE = 1
     w = int(box[2] - box[0] + TO_REMOVE)
     h = int(box[3] - box[1] + TO_REMOVE)
@@ -189,24 +191,29 @@ def paste_mask_in_image(mask, box, im_h, im_w):
 
     # Set shape to [batch, C, H, W]
     # 因为后续的bilinear操作只支持4-D的Tensor
-    mask = mask.expand((1, 1, -1, -1))
+    mask = mask.expand((1, 1, -1, -1))  # -1 means not changing the size of that dimension
 
     # Resize mask
     mask = F.interpolate(mask, size=(h, w), mode='bilinear', align_corners=False)
     mask = mask[0][0]  # [batch, C, H, W] -> [H, W]
 
     im_mask = torch.zeros((im_h, im_w), dtype=mask.dtype, device=mask.device)
+    # 填入原图的目标区域(防止越界)
     x_0 = max(box[0], 0)
     x_1 = min(box[2] + 1, im_w)
     y_0 = max(box[1], 0)
     y_1 = min(box[3] + 1, im_h)
 
+    # 将resize后的mask填入对应目标区域
     im_mask[y_0:y_1, x_0:x_1] = mask[(y_0 - box[1]):(y_1 - box[1]), (x_0 - box[0]):(x_1 - box[0])]
     return im_mask
 
 
 def paste_masks_in_image(masks, boxes, img_shape, padding=1):
     # type: (Tensor, Tensor, Tuple[int, int], int) -> Tensor
+
+    # pytorch官方说对mask进行expand能够略微提升mAP
+    # refer to: https://github.com/pytorch/vision/issues/5845
     masks, scale = expand_masks(masks, padding=padding)
     boxes = expand_boxes(boxes, scale).to(dtype=torch.int64)
     im_h, im_w = img_shape
@@ -217,7 +224,7 @@ def paste_masks_in_image(masks, boxes, img_shape, padding=1):
         )[:, None]
     res = [paste_mask_in_image(m[0], b, im_h, im_w) for m, b in zip(masks, boxes)]
     if len(res) > 0:
-        ret = torch.stack(res, dim=0)[:, None]
+        ret = torch.stack(res, dim=0)[:, None]  # [num_obj, 1, H, W]
     else:
         ret = masks.new_empty((0, 1, im_h, im_w))
     return ret
@@ -402,6 +409,7 @@ class GeneralizedRCNNTransform(nn.Module):
             result[i]["boxes"] = boxes
             if "masks" in pred:
                 masks = pred["masks"]
+                # 将mask映射回原图尺度
                 masks = paste_masks_in_image(masks, boxes, o_im_s)
                 result[i]["masks"] = masks
 
@@ -430,8 +438,8 @@ class GeneralizedRCNNTransform(nn.Module):
             if image.dim() != 3:
                 raise ValueError("images is expected to be a list of 3d tensors "
                                  "of shape [C, H, W], got {}".format(image.shape))
-            image = self.normalize(image)                # 对图像进行标准化处理
-            image, target_index = self.resize(image, target_index)   # 对图像和对应的bboxes缩放到指定范围
+            image = self.normalize(image)  # 对图像进行标准化处理
+            image, target_index = self.resize(image, target_index)  # 对图像和对应的bboxes缩放到指定范围
             images[i] = image
             if targets is not None and target_index is not None:
                 targets[i] = target_index

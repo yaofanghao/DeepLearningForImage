@@ -33,6 +33,9 @@
 - BEiT: BERT Pre-Training of Image Transformers [https://arxiv.org/abs/2106.08254](https://arxiv.org/abs/2106.08254)
 - MAE(Masked Autoencoders Are Scalable Vision Learners) [https://arxiv.org/abs/2111.06377](https://arxiv.org/abs/2111.06377)
 - ConvNeXt(A ConvNet for the 2020s) [https://arxiv.org/abs/2201.03545](https://arxiv.org/abs/2201.03545)
+- MobileViT V1 [https://arxiv.org/abs/2110.02178](https://arxiv.org/abs/2110.02178)
+- MobileViT V2(Separable Self-attention for Mobile Vision Transformers) [https://arxiv.org/abs/2206.02680](https://arxiv.org/abs/2206.02680)
+- MobileOne(An Improved One millisecond Mobile Backbone) [https://arxiv.org/abs/2206.04040](https://arxiv.org/abs/2206.04040)
 
 
 ## 目标检测(Object Detection)
@@ -50,21 +53,35 @@
 - YOLOv3 [https://arxiv.org/abs/1804.02767](https://arxiv.org/abs/1804.02767)
 - YOLOv4 [https://arxiv.org/abs/2004.10934](https://arxiv.org/abs/2004.10934)
 - YOLOX(Exceeding YOLO Series in 2021) [https://arxiv.org/abs/2107.08430](https://arxiv.org/abs/2107.08430)
+- YOLOv7 [https://arxiv.org/abs/2207.02696](https://arxiv.org/abs/2207.02696)
 - PP-YOLO [https://arxiv.org/abs/2007.12099](https://arxiv.org/abs/2007.12099)
 - PP-YOLOv2 [https://arxiv.org/abs/2104.10419](https://arxiv.org/abs/2104.10419)
 - CornerNet [https://arxiv.org/abs/1808.01244](https://arxiv.org/abs/1808.01244)
-- FCOS [https://arxiv.org/abs/1904.01355](https://arxiv.org/abs/1904.01355)
+- FCOS(Old) [https://arxiv.org/abs/1904.01355](https://arxiv.org/abs/1904.01355)
+- FCOS(New) [https://arxiv.org/abs/2006.09214](https://arxiv.org/abs/2006.09214)
 - CenterNet [https://arxiv.org/abs/1904.07850](https://arxiv.org/abs/1904.07850)
 
 
-## 图像分割(Segmentation)
+## 语义分割(Semantic Segmentation)
 - FCN(Fully Convolutional Networks for Semantic Segmentation) [https://arxiv.org/abs/1411.4038](https://arxiv.org/abs/1411.4038)
 - UNet(U-Net: Convolutional Networks for Biomedical Image Segmentation) [https://arxiv.org/abs/1505.04597](https://arxiv.org/abs/1505.04597)
 - DeepLabv1(Semantic Image Segmentation with Deep Convolutional Nets and Fully Connected CRFs) [https://arxiv.org/abs/1412.7062](https://arxiv.org/abs/1412.7062)
 - DeepLabv2(Semantic Image Segmentation with Deep Convolutional Nets, Atrous Convolution, and Fully Connected CRFs) [https://arxiv.org/abs/1606.00915](https://arxiv.org/abs/1606.00915)
 - DeepLabv3(Rethinking Atrous Convolution for Semantic Image Segmentation) [https://arxiv.org/abs/1706.05587](https://arxiv.org/abs/1706.05587)
 - DeepLabv3+(Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation) [https://arxiv.org/abs/1802.02611](https://arxiv.org/abs/1802.02611)
+- SegFormer [https://arxiv.org/abs/2105.15203](https://arxiv.org/abs/2105.15203)
+
+
+## 显著性目标检测(Salient Object Detection)
+- U2Net [https://arxiv.org/abs/2005.09007](https://arxiv.org/abs/2005.09007)
+
+
+## 实例分割(Instance Segmentation)
 - Mask R-CNN [https://arxiv.org/abs/1703.06870](https://arxiv.org/abs/1703.06870)
+
+
+## 关键点检测(Keypoint Detection)
+- HRNet(Deep High-Resolution Representation Learning for Human Pose Estimation) [https://arxiv.org/abs/1902.09212](https://arxiv.org/abs/1902.09212)
 
 
 ## 自然语言处理
