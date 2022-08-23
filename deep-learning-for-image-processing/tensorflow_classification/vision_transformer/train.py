@@ -15,14 +15,14 @@ assert tf.version.VERSION >= "2.4.0", "version of tf must greater/equal than 2.4
 
 
 def main():
-    data_root = "/data/flower_photos"  # get data root path 
+    data_root = "./data"  # get data root path
 
     if not os.path.exists("./save_weights"):
         os.makedirs("./save_weights")
 
     batch_size = 8
-    epochs = 10
-    num_classes = 5
+    epochs = 100
+    num_classes = 2
     freeze_layers = True
     initial_lr = 0.001
     weight_decay = 1e-4
