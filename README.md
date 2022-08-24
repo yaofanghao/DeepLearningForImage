@@ -7,7 +7,11 @@
 * ImageSegmentation
   * 一些跑通的模型和代码
   * 不一定是语义分割任务
-  
+
+* Transformer
+  * Transformer系列模型
+  * 更新中 ViT DETR 
+
 * 医院项目
   * 参考资料
   * 项目相关代码
@@ -27,8 +31,5 @@
 * 异源_配准
   * 参考资料
   * 可能需要用于医院项目的代码
-  
-* deep-learning-for-image-processing
-  * clone自某up主，作为参考资料
   
 * 其他常用脚本、示例、参考书
