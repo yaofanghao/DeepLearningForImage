@@ -1,8 +1,10 @@
 import cv2
-from cvzone.HandTrackingModule import HandDetector
+# from cvzone.HandTrackingModule import HandDetector
+from HandTrackingModule import handDetector
+
 import math
 import numpy as np
-import cvzone
+# import cvzone
 
 # Webcam
 cap = cv2.VideoCapture(0)
@@ -10,7 +12,7 @@ cap.set(3, 1280)
 cap.set(4, 720)
 
 # Hand Detector
-detector = HandDetector(detectionCon=0.8, maxHands=1)
+detector = handDetector(detectionCon=0.8, maxHands=1)
 
 # Find Function
 # x is the raw distance y is the value in cm
@@ -36,7 +38,8 @@ while True:
         # print(distanceCM, distance)
 
         cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 255), 3)
-        cvzone.putTextRect(img, f'{int(distanceCM)} cm', (x+5, y-10))
+        # cvzone.putTextRect(img, f'{int(distanceCM)} cm', (x+5, y-10))
+        cv2.putText(img, f'{int(distanceCM)} cm', (x+5, y-10))
 
     cv2.imshow("Image", img)
     cv2.waitKey(1)
