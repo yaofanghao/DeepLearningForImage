@@ -9,7 +9,7 @@ def renameall():
 
 	fileList.sort(key=lambda x: int(x.split('.')[0]))
 
-	print("修改前："+str(fileList))		#输出文件夹中包含的文件
+	print("修改前："+str(fileList))		
 	print("---------------------------------------------------")
 	T = str(fileList)
 	print(T)
@@ -28,15 +28,10 @@ def renameall():
 		ftrainval.write(fileName)
 		ftrainval.write("\r")
 
-
 		#print("---------------------------------------------------")
 		#print(fileName)
 
 		print(num)
 		num = num+1		#改变编号，继续下一项
 
-	#print("---------------------------------------------------")
-	#os.chdir(currentpath)		#改回程序运行前的工作目录
-	#sys.stdin.flush()		#刷新
-	#print("修改后："+str(os.listdir(r"C:\Users\Lenovo\Desktop\1月2号\测试映射\图片测试\图\修改后jpg")))		#输出修改后文件夹中包含的文件
 renameall()

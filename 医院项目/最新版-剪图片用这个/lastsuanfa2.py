@@ -4,9 +4,8 @@ import cv2
 import numpy as np
 import os
 
-# 设置图片路径，该路径下包含了14张jpg格式的照片，名字依次为0.jpg, 1.jpg, 2.jpg,...,14.jpg
+# 设置图片路径
 DATADIR = r"C:\Users\admin\Desktop\dataset\jpg1"
-#DATADIR1 = "C:\\Users\\Lenovo\\Desktop\\cut2\\png"
 
 # 使用os.path模块的join方法生成路径'''
 path = os.path.join(DATADIR)
@@ -76,8 +75,6 @@ for i in img_list:
     # coding=gbk
 
     # C:\\Users\\Lenovo\\Desktop\\cut\\jpg\\image74.jpg"
-
-
 
     ###        边缘检测得出x，y坐标
     Ymax = 200
@@ -168,15 +165,6 @@ for i in img_list:
     #cv2.imwrite('juxing.jpg', mat_img)
     #cv2.waitKey(0)
 
-    """
-    img = cv2.imread('window1.jpg')
-
-    cropped = img[Ymin:Ymax, Xmin:Xmax]   # 裁剪坐标为[y0:y1, x0:x1]
-    cv2.namedWindow('cut1',cv2.WINDOW_NORMAL)
-    cv2.imshow("cut1",cropped)
-    ##剪png
-    cv2.imwrite("cut1.jpg", cropped)
-    """
     ##剪原图jpg
     img = cv2.imread(pathjpg)
 
@@ -187,22 +175,11 @@ for i in img_list:
     #cv2.namedWindow('cut1',cv2.WINDOW_NORMAL)
     #cv2.imshow("cut1",cropped)
 
-    ##剪png
-    """
-    cv2.imwrite("cut1.jpg", cropped)
-
-    img = cv2.imread("image1.png")
-
-    cropped = img[Ymin:Ymax, Xmin:Xmax]  # 裁剪坐标为[y0:y1, x0:x1]
-    cv2.imshow("cut2",cropped)
-    cv2.imwrite("cut2.jpg", cropped)
-    """
     img_name = str(ind) + '.jpg'
 
     ind = ind + 1
     # '''生成图片存储的目标路径'''
     save_path = "C:\\Users\\admin\\Desktop\\dataset\\jpg2\\" + str(ind) + '.jpg'
-
 
 
     # '''调用cv.2的imwrite函数保存图片'''
