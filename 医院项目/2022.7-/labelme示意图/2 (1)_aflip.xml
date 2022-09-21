@@ -1,0 +1,26 @@
+<annotation>
+	<folder>&#38750;&#32959;&#30244;2</folder>
+	<filename>2 (1)_aflip.jpg</filename>
+	<path>C:\Users\liuleheng\Desktop\train\&#35757;&#32451;&#38598;\&#38750;&#32959;&#30244;2\&#26575;&#24935;&#29618;.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>566</width>
+		<height>484</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>NONNEO</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>57</xmin>
+			<ymin>24</ymin>
+			<xmax>466</xmax>
+			<ymax>421</ymax>
+		</bndbox>
+	</object>
+</annotation>

@@ -13,7 +13,7 @@ for gpu in gpus:
 
 # 根据修改后的置信度画图，7.23 修改中
 def draw_new_scores(out_scores_max,left,top,right,bottom):
-    label = '{:.2f}'.format(out_scores_max)
+    label = '{:.4f}'.format(out_scores_max)
     draw = ImageDraw.Draw(image)
     font = ImageFont.truetype(font='model_data/simhei.ttf',
                               size=np.floor(3e-2 * image.size[1] + 2).astype('int32'))
@@ -98,13 +98,13 @@ if __name__ == "__main__":
                         num += 1
 
                     tempNEO_max = numpy.max(tempNEO)
-                    tempNEO_max=round(tempNEO_max, 2)
+                    tempNEO_max=round(tempNEO_max, 4)
                     tempNONNEO_max = numpy.max(tempNONNEO)
-                    tempNONNEO_max = round(tempNONNEO_max, 2)
+                    tempNONNEO_max = round(tempNONNEO_max, 4)
 
                     locat = out_scores.numpy().argmax(axis=None, out=None)  # 找最大值位置
                     out_scores_max = out_scores.numpy().max()
-                    out_scores_max =round(out_scores_max,2)   # 小数点后2位
+                    out_scores_max =round(out_scores_max,4)   # 小数点后2位
                     a = out_classes.numpy()
                     class1 = a[locat]  # 最大值位置的类别
 
@@ -121,7 +121,7 @@ if __name__ == "__main__":
                         #修改全0的分数 tempNEO_max
                         print("修改前分数：", tempNEO_max)
                         tempNEO_max = 0.3*tempNEO_max + 0.7
-                        tempNEO_max = round(tempNEO_max, 2)
+                        tempNEO_max = round(tempNEO_max, 4)
                         print("修改后分数：", tempNEO_max)
                         out_scores_new = numpy.append(out_scores_new, tempNEO_max)
 
@@ -136,7 +136,7 @@ if __name__ == "__main__":
                         #修改全1的分数 tempNONNEO_max
                         print("修改前分数：", tempNONNEO_max)
                         tempNONNEO_max = 0.3 - 0.3*tempNONNEO_max
-                        tempNONNEO_max = round(tempNONNEO_max, 2)
+                        tempNONNEO_max = round(tempNONNEO_max, 4)
                         print("修改后分数：", tempNONNEO_max)
                         out_scores_new = numpy.append(out_scores_new, tempNONNEO_max)
 
@@ -162,7 +162,7 @@ if __name__ == "__main__":
                                      tempNEO_max = 0.2 * tempNEO_max + 0.5
                              if tempNEO_max < 0.9:
                                  tempNEO_max = 0.5*tempNEO_max + 0.5
-                             tempNEO_max=round(tempNEO_max, 2)
+                             tempNEO_max=round(tempNEO_max, 4)
                              print("修改后分数：", tempNEO_max)
                              out_scores_new = numpy.append(out_scores_new, tempNEO_max)
 
@@ -185,7 +185,7 @@ if __name__ == "__main__":
                                     tempNONNEO_max = 0.3-0.3 * tempNONNEO_max
                             if tempNONNEO_max < 0.9:
                                 tempNONNEO_max = 0.5-0.5 * tempNONNEO_max
-                            tempNONNEO_max = round(tempNONNEO_max, 2)
+                            tempNONNEO_max = round(tempNONNEO_max, 4)
                             print("修改后分数：", tempNONNEO_max)
                             out_scores_new = numpy.append(out_scores_new, tempNONNEO_max)
 
