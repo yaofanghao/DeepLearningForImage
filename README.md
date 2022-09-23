@@ -4,9 +4,9 @@
 * 不断更新中
 
 ## 文件夹说明：
-* ImageSegmentation
+* Tensorflow_Model
   * 一些跑通的模型和代码
-  * 不一定是语义分割任务
+  * 语义分割、目标检测等
 
 * Transformer
   * Transformer系列模型
