@@ -2,15 +2,15 @@ https://tf-explain.readthedocs.io/en/latest/methods.html#grad-cam
 
 https://keras.io/examples/vision/grad_cam/
 
-https://github.com/insikk/Grad-CAM-tensorflow
-
 https://blog.csdn.net/chenvvei/article/details/116087445
 
 https://github.com/jacobgil/keras-grad-cam
 
 https://github.com/withtimesgo1115/gradCAM-YOLOv3-pytorch
 
-https://github.com/Zetane/viewer
+https://github.com/utkuozbulak/pytorch-cnn-visualizations
+
+https://github.com/gkeechin/vizgradcam
 
 **----------------------
 
