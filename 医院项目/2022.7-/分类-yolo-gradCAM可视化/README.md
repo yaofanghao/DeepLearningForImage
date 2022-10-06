@@ -10,8 +10,6 @@ https://github.com/withtimesgo1115/gradCAM-YOLOv3-pytorch
 
 https://github.com/utkuozbulak/pytorch-cnn-visualizations
 
-https://github.com/gkeechin/vizgradcam
-
 **----------------------
 
 from tf_explain.callbacks.grad_cam import GradCAMCallback
