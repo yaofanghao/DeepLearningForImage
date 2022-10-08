@@ -225,7 +225,7 @@ class YOLO(object):
 
         return image
 
-    def detect_heatmap(self, image, heatmap_save_path):
+    def detect_heatmap(self, image, dir_save_path, img_name):
         import cv2
         import matplotlib.pyplot as plt
         def sigmoid(x):
@@ -264,9 +264,10 @@ class YOLO(object):
         plt.axis('off')
         plt.subplots_adjust(top=1, bottom=0, right=1,  left=0, hspace=0, wspace=0)
         plt.margins(0, 0)
-        plt.savefig(heatmap_save_path, dpi=200, bbox_inches='tight', pad_inches = -0.1)
-        print("Save to the " + heatmap_save_path)
-        plt.show()
+        plt.savefig(os.path.join(dir_save_path, img_name.replace(".jpg", ".png")),
+                    dpi=200, bbox_inches='tight', pad_inches = -0.1)
+        print("Save to the " + str(img_name))
+        # plt.show()
 
     #---------------------------------------------------#
     #   检测图片
