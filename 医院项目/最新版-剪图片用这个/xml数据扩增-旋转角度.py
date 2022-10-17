@@ -59,16 +59,16 @@ def rotate_xml(src, xmin, ymin, xmax, ymax, angle, scale = 1):
  
 if __name__ == '__main__':
  
-	file_path = 'D:/relabeled/' #输入路径，同时有jpg和xml文件
-	rotated_img_path = '/jpg2/'	 #翻转后的图片路径
-	rotated_xml_path = '/xml2/'  #翻转后的xml路径
+	file_path = 'E:\\MyGithub\\xmltest\\test\\' #输入路径，同时有jpg和xml文件
+	rotated_img_path = 'E:\\MyGithub\\xmltest\\jpg2\\'	 #翻转后的图片路径
+	rotated_xml_path = 'E:\\MyGithub\\xmltest\\xml2\\'  #翻转后的xml路径
 	if not os.path.exists(rotated_img_path):
 		os.makedirs(rotated_img_path)
 	if not os.path.exists(rotated_xml_path):
-		os.makedirs(xml_wrrotated_xml_pathite_dir)
+		os.makedirs(rotated_xml_path)
  
 	# 自定义翻转角度
-	for angle in (10,20,30):
+	for angle in (90,180,270):
 		for file in os.listdir(file_path):
 			if file.endswith('.jpg'):
 				a,b = os.path.splitext(file)
