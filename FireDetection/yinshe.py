@@ -4,15 +4,15 @@ import os
 import re
 import sys
 def renameall():
-	fileList = os.listdir(r"E:\PycharmProjects\TensorFlow\ImageSegmentation\2022_6fireDetection\fireDetection\数据集制作3.0-\jpg")		#待修改文件夹
-	saveBasePath = r"E:\PycharmProjects\TensorFlow\ImageSegmentation\2022_6fireDetection\fireDetection\数据集制作3.0-\jpg"
+	fileList = os.listdir(r"E:\PycharmProjects\TensorFlow\FireDetection\fireDetection\OpenCV\imgtest")		#待修改文件夹
+	saveBasePath = r"E:\PycharmProjects\TensorFlow\FireDetection\fireDetection\OpenCV\imgtest"
 	print("修改前："+str(fileList))		#输出文件夹中包含的文件
 	print("---------------------------------------------------")
 	T = str(fileList)
 	print(T)
 	currentpath = os.getcwd()		#得到进程当前工作目录
-	os.chdir(r"E:\PycharmProjects\TensorFlow\ImageSegmentation\2022_6fireDetection\fireDetection\数据集制作3.0-\jpg")		#将当前工作目录修改为待修改文件夹的位置
-	num=1149		#名称变量
+	os.chdir(r"E:\PycharmProjects\TensorFlow\FireDetection\fireDetection\OpenCV\imgtest")		#将当前工作目录修改为待修改文件夹的位置
+	num=100		#名称变量
 	for fileName in fileList:		#遍历文件夹中所有文件
 
 		pat=".+\.(jpg|png|gif|json|JPG|xml)"		#匹配文件名正则表达式

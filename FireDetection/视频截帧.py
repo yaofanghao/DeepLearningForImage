@@ -1,9 +1,9 @@
 import cv2
 import os
 
-video_name = '2'
+video_name = 'test'
 
-output_dir = 'img/'
+output_dir = 'testimg/'
 
 vc = cv2.VideoCapture(video_name + '.mp4')  # 读入视频文件
 
