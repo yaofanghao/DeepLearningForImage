@@ -1,0 +1,26 @@
+<annotation>
+	<folder>&#32959;&#30244;&#24615;2</folder>
+	<filename>1 (10)_aflip.jpg</filename>
+	<path>C:\Users\liuleheng\Desktop\&#25913;&#22238;&#20154;&#21517;\&#35757;&#32451;&#38598;\&#32959;&#30244;&#24615;2\&#26361;&#24314;&#27665;(1).jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>620</width>
+		<height>540</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>NEO</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>114</xmin>
+			<ymin>121</ymin>
+			<xmax>568</xmax>
+			<ymax>383</ymax>
+		</bndbox>
+	</object>
+</annotation>

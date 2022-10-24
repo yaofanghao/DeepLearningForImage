@@ -1,0 +1,26 @@
+<annotation>
+	<folder>肿瘤性2</folder>
+	<filename>曹建民(1).jpg</filename>
+	<path>C:\Users\liuleheng\Desktop\改回人名\训练集\肿瘤性2\曹建民(1).jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>620</width>
+		<height>540</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>NEO</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>53</xmin>
+			<ymin>158</ymin>
+			<xmax>507</xmax>
+			<ymax>420</ymax>
+		</bndbox>
+	</object>
+</annotation>
