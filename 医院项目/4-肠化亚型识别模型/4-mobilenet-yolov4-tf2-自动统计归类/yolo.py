@@ -52,7 +52,7 @@ class YOLO(object):
         #---------------------------------------------------------------------#
         #   非极大抑制所用到的nms_iou大小
         #---------------------------------------------------------------------#
-        "nms_iou"           : 0.1,
+        "nms_iou"           : 0.3,
         "max_boxes"         : 100,
         #---------------------------------------------------------------------#
         #   该变量用于控制是否使用letterbox_image对输入图像进行不失真的resize，
@@ -230,7 +230,7 @@ class YOLO(object):
             left = 0
             bottom = 0
 
-        return image, out_scores, out_classes,top,right,left,bottom  # 和原版相比，添加了 out_scores, out_classes
+        return image, out_scores, out_classes,top,right,left,bottom, # 和原版相比，添加了 out_scores, out_classes
 
 
     def get_FPS(self, image, test_interval):

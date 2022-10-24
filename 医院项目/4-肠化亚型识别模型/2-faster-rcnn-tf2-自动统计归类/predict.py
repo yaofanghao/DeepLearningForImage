@@ -24,7 +24,7 @@ if __name__ == "__main__":
     #   dir_origin_path和dir_save_path仅在mode='dir_predict'时有效
     #-------------------------------------------------------------------------#
     dir_origin_path = "img/"
-    dir_save_path   = "img_out/"
+    dir_save_path   = "img_out"
 
     if mode == "dir_predict":
         # -----------------------------------#
@@ -73,18 +73,18 @@ if __name__ == "__main__":
                     # filename = int(filename)
                     # print(img_name)
                     # print(filename)
-                    out_scores_size = out_scores.numpy().size
-                    print(out_scores.numpy())
+                    # out_scores_size = out_scores.numpy().size
+                    # print(out_scores.numpy())
                     # print(out_scores.numpy().max()) # 这句不能有，会报错
 
-                    if out_scores.numpy().size != 0:
+                    if out_scores.size != 0:
                         ################ 找到置信度最大的类别的算法 ############
                         num = 0
                         t = out_scores
                         tempNEO = numpy.array([0])
                         tempNONNEO = numpy.array([0])
 
-                        for i in out_classes.numpy():
+                        for i in out_classes:
                             if i == 0:
                                 tempNEO = numpy.append(tempNEO, t[num])
                             if i == 1:
@@ -98,15 +98,15 @@ if __name__ == "__main__":
                         print(tempNEO_max)
                         print(tempNONNEO_max)
 
-                        locat = out_scores.numpy().argmax(axis=None, out=None)  # 找最大值位置
+                        locat = out_scores.argmax(axis=None, out=None)  # 找最大值位置
                         # print(locat)
-                        out_scores_max = out_scores.numpy().max()
+                        out_scores_max = out_scores.max()
                         out_scores_max =round(out_scores_max,4)
                         # print("小数后两位")
                         # print(out_scores_max)
                         # print(type(out_scores.numpy()))
                         # print(out_classes.numpy())
-                        a = out_classes.numpy()
+                        a = out_classes
                         class1 = a[locat]  # 最大值位置的类别
                         print(class1)
                         # print(type(out_classes.numpy()))

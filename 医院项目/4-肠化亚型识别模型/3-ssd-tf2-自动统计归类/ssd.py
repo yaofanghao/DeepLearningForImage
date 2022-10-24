@@ -26,7 +26,7 @@ class SSD(object):
         #   验证集损失较低不代表mAP较高，仅代表该权值在验证集上泛化性能较好。
         #   如果出现shape不匹配，同时要注意训练时的model_path和classes_path参数的修改
         #--------------------------------------------------------------------------#
-        "model_path"        : 'model_data/ssd_weights.h5',
+        "model_path"        : 'logs/best_epoch_weights.h5',
         "classes_path"      : 'model_data/voc_classes.txt',
         #---------------------------------------------------------------------#
         #   用于预测的图像大小，和train时使用同一个即可
@@ -39,7 +39,7 @@ class SSD(object):
         #---------------------------------------------------------------------#
         #   非极大抑制所用到的nms_iou大小
         #---------------------------------------------------------------------#
-        "nms_iou"           : 0.1,
+        "nms_iou"           : 0.3,
         #---------------------------------------------------------------------#
         #   用于指定先验框的大小
         #---------------------------------------------------------------------#
@@ -204,11 +204,11 @@ class SSD(object):
             del draw
 
         # print(out_scores.numpy().size)
-        if top_conf.numpy().size == 0:
-            top = 0
-            right = 0
-            left = 0
-            bottom = 0
+        # if top_conf.numpy().size == 0:
+        #     top = 0
+        #     right = 0
+        #     left = 0
+        #     bottom = 0
 
         return image, top_conf, top_label,top,right,left,bottom # 和原版相比，添加了 out_scores, out_classes
 

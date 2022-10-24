@@ -29,7 +29,7 @@ class FRCNN(object):
         #   验证集损失较低不代表mAP较高，仅代表该权值在验证集上泛化性能较好。
         #   如果出现shape不匹配，同时要注意训练时的model_path和classes_path参数的修改
         #--------------------------------------------------------------------------#
-        "model_path"    : 'model_data/voc_weights_resnet.h5',
+        "model_path"    : 'logs/best_epoch_weights.h5',
         "classes_path"  : 'model_data/voc_classes.txt',
         #---------------------------------------------------------------------#
         #   网络的主干特征提取网络，resnet50或者vgg
@@ -217,7 +217,7 @@ class FRCNN(object):
             draw.text(text_origin, str(label,'UTF-8'), fill=(0, 0, 0), font=font)
             del draw
         # print(out_scores.numpy().size)
-        if top_conf.numpy().size == 0:
+        if top_conf.size == 0:
             top = 0
             right = 0
             left = 0
