@@ -228,7 +228,7 @@ class YOLO(object):
             left = 0
             bottom = 0
 
-        return image, out_scores, out_classes,top,right,left,bottom, # 和原版相比，添加了 out_scores, out_classes
+        return image, out_scores, out_classes,top,right,left,bottom # 和原版相比，添加了 out_scores, out_classes
 
     def detect_heatmap(self, image, heatmap_save_path):
         import cv2

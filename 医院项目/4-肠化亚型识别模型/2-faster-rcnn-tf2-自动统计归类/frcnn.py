@@ -223,7 +223,7 @@ class FRCNN(object):
             left = 0
             bottom = 0
 
-        return image, top_conf, top_label, top, right, left, bottom,  # 和原版相比，添加了 out_scores, out_classes
+        return image, top_conf, top_label, top, right, left, bottom  # 和原版相比，添加了 out_scores, out_classes
 
     def get_map_txt(self, image_id, image, class_names, map_out_path):
         f = open(os.path.join(map_out_path, "detection-results/"+image_id+".txt"),"w") 

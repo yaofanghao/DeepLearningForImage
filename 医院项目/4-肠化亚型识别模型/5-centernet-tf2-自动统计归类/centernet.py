@@ -43,11 +43,11 @@ class CenterNet(object):
         #--------------------------------------------------------------------------#
         #   只有得分大于置信度的预测框会被保留下来
         #--------------------------------------------------------------------------#
-        "confidence"        : 0.3,
+        "confidence"        : 0.5,
         #---------------------------------------------------------------------#
         #   非极大抑制所用到的nms_iou大小
         #---------------------------------------------------------------------#
-        "nms_iou"           : 0.3,
+        "nms_iou"           : 0.1,
         #--------------------------------------------------------------------------#
         #   是否进行非极大抑制，可以根据检测效果自行选择
         #   backbone为resnet50时建议设置为True、backbone为hourglass时建议设置为False
@@ -229,7 +229,7 @@ class CenterNet(object):
             left = 0
             bottom = 0
 
-        return image, top_conf, top_label,top,right,left,bottom, # 和原版相比，添加了 out_scores, out_classes
+        return image, top_conf, top_label,top,right,left,bottom # 和原版相比，添加了 out_scores, out_classes
 
 
     def get_FPS(self, image, test_interval):
