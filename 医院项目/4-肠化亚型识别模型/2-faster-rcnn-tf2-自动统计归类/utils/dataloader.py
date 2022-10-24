@@ -11,9 +11,9 @@ from random import shuffle
 import cv2
 import numpy as np
 import six
-import keras
-from keras.applications.imagenet_utils import preprocess_input
 from PIL import Image
+from tensorflow.keras.applications.imagenet_utils import preprocess_input
+from tensorflow import keras
 
 try:
     import queue

@@ -1,4 +1,6 @@
-from keras.layers import Conv2D, Dense, Flatten, MaxPooling2D, TimeDistributed
+from tensorflow.keras.layers import (Conv2D, Dense, Flatten, MaxPooling2D,
+                                     TimeDistributed)
+
 
 def VGG16(inputs):
     x = Conv2D(64,(3,3),activation = 'relu',padding = 'same',name = 'block1_conv1')(inputs)

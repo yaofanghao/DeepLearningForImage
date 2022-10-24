@@ -1,10 +1,11 @@
-from keras.layers import Input
-from keras.models import Model
+from tensorflow.keras.layers import Input
+from tensorflow.keras.models import Model
 
 from nets.classifier import get_resnet50_classifier, get_vgg_classifier
 from nets.resnet import ResNet50
-from nets.vgg import VGG16
 from nets.rpn import get_rpn
+from nets.vgg import VGG16
+
 
 def get_model(num_classes, backbone, num_anchors = 9, input_shape=[None, None, 3]):
     inputs      = Input(shape=input_shape)
@@ -28,7 +29,7 @@ def get_model(num_classes, backbone, num_anchors = 9, input_shape=[None, None, 3
         classifier  = get_vgg_classifier(base_layers, roi_input, 7, num_classes)
     else:
         #----------------------------------------------------#
-        #   假设输入为600,600,3 
+        #   假设输入为600,600,3
         #   获得一个38,38,1024的共享特征层base_layers
         #----------------------------------------------------#
         base_layers = ResNet50(inputs)

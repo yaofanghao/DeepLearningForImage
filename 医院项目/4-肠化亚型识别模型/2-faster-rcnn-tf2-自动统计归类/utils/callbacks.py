@@ -1,6 +1,5 @@
 import os
 
-import keras
 import matplotlib
 matplotlib.use('Agg')
 from matplotlib import pyplot as plt
@@ -8,7 +7,8 @@ import scipy.signal
 
 import shutil
 import numpy as np
-from keras.applications.imagenet_utils import preprocess_input
+from tensorflow.keras.applications.imagenet_utils import preprocess_input
+from tensorflow import keras
 from PIL import Image
 from tqdm import tqdm
 
@@ -111,10 +111,6 @@ class EvalCallback(keras.callbacks.Callback):
         #   计算输入图片的高和宽
         #---------------------------------------------------#
         image_shape = np.array(np.shape(image)[0:2])
-        #---------------------------------------------------#
-        #   计算输入到网络中进行运算的图片的高和宽
-        #   保证短边是600的
-        #---------------------------------------------------#
         input_shape = get_new_img_size(image_shape[0], image_shape[1])
         #---------------------------------------------------------#
         #   在这里将图像转换成RGB图像，防止灰度图在预测时报错。
@@ -133,7 +129,8 @@ class EvalCallback(keras.callbacks.Callback):
         #---------------------------------------------------------#
         #   获得rpn网络预测结果和base_layer
         #---------------------------------------------------------#
-        rpn_pred        = self.model_rpn.predict(image_data)
+        rpn_pred        = self.model_rpn(image_data)
+        rpn_pred        = [x.numpy() for x in rpn_pred]
         #---------------------------------------------------------#
         #   生成先验框并解码
         #---------------------------------------------------------#
@@ -143,7 +140,8 @@ class EvalCallback(keras.callbacks.Callback):
         #-------------------------------------------------------------#
         #   利用建议框获得classifier网络预测结果
         #-------------------------------------------------------------#
-        classifier_pred = self.model_all.predict([image_data, rpn_results[:, :, [1, 0, 3, 2]]])[-2:]
+        classifier_pred = self.model_all([image_data, rpn_results[:, :, [1, 0, 3, 2]]])[-2:]
+        classifier_pred = [x.numpy() for x in classifier_pred]
         #-------------------------------------------------------------#
         #   利用classifier的预测结果对建议框进行解码，获得预测框
         #-------------------------------------------------------------#

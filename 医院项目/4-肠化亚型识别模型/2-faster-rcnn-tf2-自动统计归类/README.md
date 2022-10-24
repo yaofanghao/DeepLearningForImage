@@ -1,4 +1,4 @@
-## Faster-Rcnn：Two-Stage目标检测模型在Keras当中的实现
+## Faster-Rcnn：Two-Stage目标检测模型在Tensorflow2当中的实现
 ---
 
 ## 目录
@@ -15,24 +15,23 @@
 **`2022-04`**:**支持多GPU训练，新增各个种类目标数量计算。**  
 
 **`2022-03`**:**进行了大幅度的更新，支持step、cos学习率下降法、支持adam、sgd优化器选择、支持学习率根据batch_size自适应调整、新增图片裁剪。**  
-BiliBili视频中的原仓库地址为：https://github.com/bubbliiiing/faster-rcnn-keras/tree/bilibili
+BiliBili视频中的原仓库地址为：https://github.com/bubbliiiing/faster-rcnn-tf2/tree/bilibili
 
 **`2021-10`**:**进行了大幅度的更新，增加了大量注释、增加了大量可调整参数、对代码的组成模块进行修改、增加fps、视频预测、批量预测等功能。**   
 
 ## 性能情况
 | 训练数据集 | 权值文件名称 | 测试数据集 | 输入图片大小 | mAP 0.5:0.95 | mAP 0.5 |
 | :-----: | :-----: | :------: | :------: | :------: | :-----: |
-| VOC07+12 | [voc_weights_resnet.h5](https://github.com/bubbliiiing/faster-rcnn-keras/releases/download/v1.0/voc_weights_resnet.h5) | VOC-Test07 | - | - | 81.16
-| VOC07+12 | [voc_weights_vgg.h5](https://github.com/bubbliiiing/faster-rcnn-keras/releases/download/v1.0/voc_weights_vgg.h5) | VOC-Test07 | - | - | 76.28
+| VOC07+12 | [voc_weights_resnet.h5](https://github.com/bubbliiiing/faster-rcnn-tf2/releases/download/v1.0/voc_weights_resnet.h5) | VOC-Test07 | - | - | 81.16
+| VOC07+12 | [voc_weights_vgg.h5](https://github.com/bubbliiiing/faster-rcnn-tf2/releases/download/v1.0/voc_weights_vgg.h5) | VOC-Test07 | - | - | 76.28
 
 ## 所需环境
-tensorflow-gpu==1.13.1  
-keras==2.1.5  
+tensorflow-gpu==2.2.0
 
 ## 文件下载
 训练所需的voc_weights_resnet.h5、voc_weights_vgg.h5和主干的权值可以去百度网盘下载  
-链接: https://pan.baidu.com/s/1O5lTyservM2SHqMTz7YciA     
-提取码: fqv2    
+链接: https://pan.baidu.com/s/1ACymiz3m9Kx0L8WXIDX_dg     
+提取码: jwvs    
 
 VOC数据集下载地址如下，里面已经包括了训练集、测试集、验证集（与测试集一样），无需再次划分：  
 链接: https://pan.baidu.com/s/1YuBbBKxm2FGgTU5OfaeC5A    

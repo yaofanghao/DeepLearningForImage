@@ -1,10 +1,10 @@
 import math
 from functools import partial
 
-import keras
 import numpy as np
 import tensorflow as tf
-from keras import backend as K
+from tensorflow import keras
+from tensorflow.keras import backend as K
 
 
 def rpn_cls_loss():

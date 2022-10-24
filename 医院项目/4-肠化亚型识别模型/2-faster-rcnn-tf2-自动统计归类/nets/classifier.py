@@ -1,11 +1,11 @@
-import keras.backend as K
 import tensorflow as tf
-from keras.engine.topology import Layer
-from keras.initializers import random_normal
-from keras.layers import Dense, Flatten, TimeDistributed
+import tensorflow.keras.backend as K
+from tensorflow.keras.initializers import RandomNormal
+from tensorflow.keras.layers import Dense, Flatten, Layer, TimeDistributed
 
 from nets.resnet import resnet50_classifier_layers
 from nets.vgg import vgg_classifier_layers
+
 
 class RoiPoolingConv(Layer):
     def __init__(self, pool_size, **kwargs):
@@ -69,9 +69,9 @@ def get_resnet50_classifier(base_layers, input_rois, roi_size, num_classes=21):
     out = TimeDistributed(Flatten())(out)
 
     # batch_size, num_rois, 2048 -> batch_size, num_rois, num_classes
-    out_class   = TimeDistributed(Dense(num_classes, activation='softmax', kernel_initializer=random_normal(stddev=0.02)), name='dense_class_{}'.format(num_classes))(out)
+    out_class   = TimeDistributed(Dense(num_classes, activation='softmax', kernel_initializer=RandomNormal(stddev=0.02)), name='dense_class_{}'.format(num_classes))(out)
     # batch_size, num_rois, 2048 -> batch_size, num_rois, 4 * (num_classes-1)
-    out_regr    = TimeDistributed(Dense(4 * (num_classes - 1), activation='linear', kernel_initializer=random_normal(stddev=0.02)), name='dense_regress_{}'.format(num_classes))(out)
+    out_regr    = TimeDistributed(Dense(4 * (num_classes - 1), activation='linear', kernel_initializer=RandomNormal(stddev=0.02)), name='dense_regress_{}'.format(num_classes))(out)
     return [out_class, out_regr]
 
 def get_vgg_classifier(base_layers, input_rois, roi_size, num_classes=21):
@@ -82,7 +82,7 @@ def get_vgg_classifier(base_layers, input_rois, roi_size, num_classes=21):
     out = vgg_classifier_layers(out_roi_pool)
 
     # batch_size, num_rois, 4096 -> batch_size, num_rois, num_classes
-    out_class   = TimeDistributed(Dense(num_classes, activation='softmax', kernel_initializer=random_normal(stddev=0.02)), name='dense_class_{}'.format(num_classes))(out)
+    out_class   = TimeDistributed(Dense(num_classes, activation='softmax', kernel_initializer=RandomNormal(stddev=0.02)), name='dense_class_{}'.format(num_classes))(out)
     # batch_size, num_rois, 4096 -> batch_size, num_rois, 4 * (num_classes-1)
-    out_regr    = TimeDistributed(Dense(4 * (num_classes-1), activation='linear', kernel_initializer=random_normal(stddev=0.02)), name='dense_regress_{}'.format(num_classes))(out)
+    out_regr    = TimeDistributed(Dense(4 * (num_classes-1), activation='linear', kernel_initializer=RandomNormal(stddev=0.02)), name='dense_regress_{}'.format(num_classes))(out)
     return [out_class, out_regr]

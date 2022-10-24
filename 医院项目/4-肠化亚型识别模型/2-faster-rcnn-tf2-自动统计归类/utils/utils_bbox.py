@@ -2,7 +2,7 @@ import math
 
 import numpy as np
 import tensorflow as tf
-import keras.backend as K
+import tensorflow.keras.backend as K
 
 
 class BBoxUtility(object):
@@ -16,17 +16,15 @@ class BBoxUtility(object):
         #---------------------------------------------------#
         self.rpn_pre_boxes = rpn_pre_boxes
         #---------------------------------------------------#
+        #   非极大抑制的iou
+        #---------------------------------------------------#
+        self.rpn_nms       = rpn_nms
+        self.nms_iou       = nms_iou
+        #---------------------------------------------------#
         #   建议框非极大抑制后的框的数量
         #---------------------------------------------------#
         self._min_k        = min_k
 
-        self.boxes  = tf.placeholder(dtype='float32', shape=(None, 4))
-        self.scores = tf.placeholder(dtype='float32', shape=(None,))
-        
-        self.nms_out_rpn        = tf.image.non_max_suppression(self.boxes, self.scores, min_k, iou_threshold=rpn_nms)
-        self.nms_out_classifer  = tf.image.non_max_suppression(self.boxes, self.scores, min_k, iou_threshold=nms_iou)
-        self.sess               = K.get_session()
-        
     def decode_boxes(self, mbox_loc, anchors, variances):
         # 获得先验框的宽与高
         anchor_width     = anchors[:, 2] - anchors[:, 0]
@@ -35,25 +33,25 @@ class BBoxUtility(object):
         anchor_center_x  = 0.5 * (anchors[:, 2] + anchors[:, 0])
         anchor_center_y  = 0.5 * (anchors[:, 3] + anchors[:, 1])
 
-        # 建议框距离先验框中心的xy轴偏移情况
+        # 真实框距离先验框中心的xy轴偏移情况
         detections_center_x = mbox_loc[:, 0] * anchor_width * variances[0]
         detections_center_x += anchor_center_x
         detections_center_y = mbox_loc[:, 1] * anchor_height * variances[1]
         detections_center_y += anchor_center_y
         
-        # 建议框的宽与高的求取
+        # 真实框的宽与高的求取
         detections_width   = np.exp(mbox_loc[:, 2] * variances[2])
         detections_width   *= anchor_width
         detections_height  = np.exp(mbox_loc[:, 3] * variances[3])
         detections_height  *= anchor_height
 
-        # 获取建议框的左上角与右下角
+        # 获取真实框的左上角与右下角
         detections_xmin = detections_center_x - 0.5 * detections_width
         detections_ymin = detections_center_y - 0.5 * detections_height
         detections_xmax = detections_center_x + 0.5 * detections_width
         detections_ymax = detections_center_y + 0.5 * detections_height
 
-        # 建议框的左上角与右下角进行堆叠
+        # 真实框的左上角与右下角进行堆叠
         detections = np.concatenate((detections_xmin[:, None],
                                       detections_ymin[:, None],
                                       detections_xmax[:, None],
@@ -73,9 +71,7 @@ class BBoxUtility(object):
         mbox_loc    = predictions[1]
 
         results = []
-        #----------------------------------------------------------------------------------------------------------------------#
-        #   对每一张图片进行处理，由于在predict.py的时候，我们只输入一张图片，所以for i in range(len(mbox_loc))只进行一次
-        #----------------------------------------------------------------------------------------------------------------------#
+        # 对每一张图片进行处理，由于在predict.py的时候，我们只输入一张图片，所以for i in range(len(mbox_loc))只进行一次
         for i in range(len(mbox_loc)):
             #--------------------------------#
             #   利用回归结果对先验框进行解码
@@ -95,8 +91,8 @@ class BBoxUtility(object):
             #--------------------------------#
             #   进行iou的非极大抑制
             #--------------------------------#
-            idx = self.sess.run(self.nms_out_rpn, feed_dict={self.boxes: boxes_to_process, self.scores: confs_to_process})
-
+            idx = tf.image.non_max_suppression(boxes_to_process, confs_to_process, self._min_k, iou_threshold = self.rpn_nms).numpy()
+            
             #--------------------------------#
             #   取出在非极大抑制中效果较好的内容
             #--------------------------------#
@@ -183,7 +179,7 @@ class BBoxUtility(object):
                         #-----------------------------------------#
                         #   进行iou的非极大抑制
                         #-----------------------------------------#
-                        idx = self.sess.run(self.nms_out_classifer, feed_dict={self.boxes: boxes_to_process, self.scores: confs_to_process})
+                        idx = tf.image.non_max_suppression(boxes_to_process, confs_to_process, self._min_k, iou_threshold = self.nms_iou).numpy()
                         #-----------------------------------------#
                         #   取出在非极大抑制中效果较好的内容
                         #-----------------------------------------#

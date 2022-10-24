@@ -5,10 +5,13 @@ import tensorflow as tf
 from PIL import Image
 from tqdm import tqdm
 
+from frcnn import FRCNN
 from utils.utils import get_classes
 from utils.utils_map import get_coco_map, get_map
-from frcnn import FRCNN
 
+gpus = tf.config.experimental.list_physical_devices(device_type='GPU')
+for gpu in gpus:
+    tf.config.experimental.set_memory_growth(gpu, True)
     
 if __name__ == "__main__":
     '''

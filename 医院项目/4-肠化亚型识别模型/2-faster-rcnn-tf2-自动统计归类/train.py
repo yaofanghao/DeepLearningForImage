@@ -1,12 +1,10 @@
 import datetime
 import os
 
-import keras
-import keras.backend as K
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' 
 import tensorflow as tf
-from keras.callbacks import TensorBoard
-from keras.optimizers import SGD, Adam
-from keras.utils.multi_gpu_utils import multi_gpu_model
+import tensorflow.keras.backend as K
+from tensorflow.keras.optimizers import SGD, Adam
 
 from nets.frcnn import get_model
 from nets.frcnn_training import (ProposalTargetCreator, classifier_cls_loss,
@@ -19,7 +17,6 @@ from utils.utils import get_classes, show_config
 from utils.utils_bbox import BBoxUtility
 from utils.utils_fit import fit_one_epoch
 
-tf.logging.set_verbosity(tf.logging.ERROR)
 
 '''
 训练自己的目标检测模型一定需要注意以下几点：
@@ -129,8 +126,8 @@ if __name__ == "__main__":
     #                       (当Freeze_Train=False时失效)
     #------------------------------------------------------------------#
     Init_Epoch          = 0
-    Freeze_Epoch        = 50
-    Freeze_batch_size   = 4
+    Freeze_Epoch        = 100
+    Freeze_batch_size   = 16
     #------------------------------------------------------------------#
     #   解冻阶段训练参数
     #   此时模型的主干不被冻结了，特征提取网络会发生改变
@@ -141,7 +138,7 @@ if __name__ == "__main__":
     #   Unfreeze_batch_size     模型在解冻后的batch_size
     #------------------------------------------------------------------#
     UnFreeze_Epoch      = 100
-    Unfreeze_batch_size = 2
+    Unfreeze_batch_size = 8
     #------------------------------------------------------------------#
     #   Freeze_Train    是否进行冻结训练
     #                   默认先冻结主干训练后解冻训练。
@@ -171,11 +168,11 @@ if __name__ == "__main__":
     #------------------------------------------------------------------#
     #   lr_decay_type   使用到的学习率下降方式，可选的有'step'、'cos'
     #------------------------------------------------------------------#
-    lr_decay_type       = 'cos'
+    lr_decay_type       = 'step'
     #------------------------------------------------------------------#
-    #   save_period     多少个epoch保存一次权值，默认每个世代都保存
+    #   save_period     多少个epoch保存一次权值
     #------------------------------------------------------------------#
-    save_period         = 5
+    save_period         = 10
     #------------------------------------------------------------------#
     #   save_dir        权值与日志文件保存的文件夹
     #------------------------------------------------------------------#
@@ -190,7 +187,7 @@ if __name__ == "__main__":
     #   （二）此处设置评估参数较为保守，目的是加快评估速度。
     #------------------------------------------------------------------#
     eval_flag           = True
-    eval_period         = 5
+    eval_period         = 10
     #------------------------------------------------------------------#
     #   num_workers     用于设置是否使用多线程读取数据，1代表关闭多线程
     #                   开启后会加快数据读取速度，但是会占用更多内存
@@ -210,6 +207,15 @@ if __name__ == "__main__":
     #------------------------------------------------------#
     os.environ["CUDA_VISIBLE_DEVICES"]  = ','.join(str(x) for x in train_gpu)
     ngpus_per_node                      = len(train_gpu)
+    
+    gpus = tf.config.experimental.list_physical_devices(device_type='GPU')
+    for gpu in gpus:
+        tf.config.experimental.set_memory_growth(gpu, True)
+
+    if ngpus_per_node > 1:
+        strategy = tf.distribute.MirroredStrategy()
+    else:
+        strategy = None
     print('Number of devices: {}'.format(ngpus_per_node))
 
     #----------------------------------------------------#
@@ -219,30 +225,35 @@ if __name__ == "__main__":
     num_classes += 1
     anchors = get_anchors(input_shape, backbone, anchors_size)
 
-    K.clear_session()
-    model_rpn_body, model_all_body = get_model(num_classes, backbone = backbone)
-    if model_path != '':
-        #------------------------------------------------------#
-        #   载入预训练权重
-        #------------------------------------------------------#
-        print('Load weights {}.'.format(model_path))
-        model_rpn_body.load_weights(model_path, by_name=True)
-        model_all_body.load_weights(model_path, by_name=True)
-
+    #----------------------------------------------------#
+    #   判断是否多GPU载入模型和预训练权重
+    #----------------------------------------------------#
     if ngpus_per_node > 1:
-        model_rpn = multi_gpu_model(model_rpn_body, gpus=ngpus_per_node)
-        model_all = multi_gpu_model(model_all_body, gpus=ngpus_per_node)
+        with strategy.scope():
+            model_rpn, model_all = get_model(num_classes, backbone = backbone)
+            if model_path != '':
+                #------------------------------------------------------#
+                #   载入预训练权重
+                #------------------------------------------------------#
+                print('Load weights {}.'.format(model_path))
+                model_rpn.load_weights(model_path, by_name=True)
+                model_all.load_weights(model_path, by_name=True)
     else:
-        model_rpn = model_rpn_body
-        model_all = model_all_body
+        model_rpn, model_all = get_model(num_classes, backbone = backbone)
+        if model_path != '':
+            #------------------------------------------------------#
+            #   载入预训练权重
+            #------------------------------------------------------#
+            print('Load weights {}.'.format(model_path))
+            model_rpn.load_weights(model_path, by_name=True)
+            model_all.load_weights(model_path, by_name=True)
 
-    #--------------------------------------------#
-    #   回调函数
-    #--------------------------------------------#
     time_str        = datetime.datetime.strftime(datetime.datetime.now(),'%Y_%m_%d_%H_%M_%S')
     log_dir         = os.path.join(save_dir, "loss_" + str(time_str))
-    callback        = TensorBoard(log_dir=log_dir)
-    callback.set_model(model_all)
+    #--------------------------------------------#
+    #   训练参数的设置
+    #--------------------------------------------#
+    callback        = tf.summary.create_file_writer(log_dir)
     loss_history    = LossHistory(log_dir)
 
     bbox_util       = BBoxUtility(num_classes)
@@ -292,14 +303,14 @@ if __name__ == "__main__":
         if Freeze_Train:
             freeze_layers = {'vgg' : 17, 'resnet50' : 141}[backbone]
             for i in range(freeze_layers): 
-                if type(model_all_body.layers[i]) != keras.layers.BatchNormalization:
-                    model_all_body.layers[i].trainable = False
-            print('Freeze the first {} layers of total {} layers.'.format(freeze_layers, len(model_all_body.layers)))
+                if type(model_all.layers[i]) != tf.keras.layers.BatchNormalization:
+                    model_all.layers[i].trainable = False
+            print('Freeze the first {} layers of total {} layers.'.format(freeze_layers, len(model_all.layers)))
 
         #-------------------------------------------------------------------#
         #   如果不冻结训练的话，直接设置batch_size为Unfreeze_batch_size
         #-------------------------------------------------------------------#
-        batch_size  = Freeze_batch_size if Freeze_Train else Unfreeze_batch_size
+        batch_size = Freeze_batch_size if Freeze_Train else Unfreeze_batch_size
         
         #-------------------------------------------------------------------#
         #   判断当前batch_size，自适应调整学习率
@@ -314,21 +325,28 @@ if __name__ == "__main__":
             'adam'  : Adam(lr = Init_lr_fit, beta_1 = momentum),
             'sgd'   : SGD(lr = Init_lr_fit, momentum = momentum, nesterov=True)
         }[optimizer_type]
-        model_rpn.compile(
-            loss = {
-                'classification': rpn_cls_loss(),
-                'regression'    : rpn_smooth_l1()
-            }, optimizer = optimizer
-        )
-        model_all.compile(
-            loss = {
-                'classification'                        : rpn_cls_loss(),
-                'regression'                            : rpn_smooth_l1(),
-                'dense_class_{}'.format(num_classes)    : classifier_cls_loss(),
-                'dense_regress_{}'.format(num_classes)  : classifier_smooth_l1(num_classes - 1)
-            }, optimizer = optimizer
-        )
-
+        if ngpus_per_node > 1:
+            with strategy.scope():
+                model_rpn.compile(
+                    loss = {'classification' : rpn_cls_loss(), 'regression' : rpn_smooth_l1()}, optimizer = optimizer
+                )
+                model_all.compile(
+                    loss = {
+                        'classification' : rpn_cls_loss(), 'regression' : rpn_smooth_l1(),
+                        'dense_class_{}'.format(num_classes) : classifier_cls_loss(), 'dense_regress_{}'.format(num_classes)  : classifier_smooth_l1(num_classes - 1)
+                    }, optimizer = optimizer
+                )
+        else:
+            model_rpn.compile(
+                loss = {'classification' : rpn_cls_loss(), 'regression' : rpn_smooth_l1()}, optimizer = optimizer
+            )
+            model_all.compile(
+                loss = {
+                    'classification' : rpn_cls_loss(), 'regression' : rpn_smooth_l1(),
+                    'dense_class_{}'.format(num_classes) : classifier_cls_loss(), 'dense_regress_{}'.format(num_classes)  : classifier_smooth_l1(num_classes - 1)
+                }, optimizer = optimizer
+            )
+    
         #---------------------------------------#
         #   获得学习率下降的公式
         #---------------------------------------#
@@ -382,24 +400,31 @@ if __name__ == "__main__":
                 lr_scheduler_func = get_lr_scheduler(lr_decay_type, Init_lr_fit, Min_lr_fit, UnFreeze_Epoch)
 
                 for i in range(freeze_layers): 
-                    if type(model_all_body.layers[i]) != keras.layers.BatchNormalization:
-                        model_all_body.layers[i].trainable = True
-                        
-                model_rpn.compile(
-                    loss = {
-                        'classification': rpn_cls_loss(),
-                        'regression'    : rpn_smooth_l1()
-                    }, optimizer = optimizer
-                )
-                model_all.compile(
-                    loss = {
-                        'classification'                        : rpn_cls_loss(),
-                        'regression'                            : rpn_smooth_l1(),
-                        'dense_class_{}'.format(num_classes)    : classifier_cls_loss(),
-                        'dense_regress_{}'.format(num_classes)  : classifier_smooth_l1(num_classes - 1)
-                    }, optimizer = optimizer
-                )
-
+                    if type(model_all.layers[i]) != tf.keras.layers.BatchNormalization:
+                        model_all.layers[i].trainable = True
+                                
+                if ngpus_per_node > 1:
+                    with strategy.scope():
+                        model_rpn.compile(
+                            loss = {'classification' : rpn_cls_loss(), 'regression' : rpn_smooth_l1()}, optimizer = optimizer
+                        )
+                        model_all.compile(
+                            loss = {
+                                'classification' : rpn_cls_loss(), 'regression' : rpn_smooth_l1(),
+                                'dense_class_{}'.format(num_classes) : classifier_cls_loss(), 'dense_regress_{}'.format(num_classes)  : classifier_smooth_l1(num_classes - 1)
+                            }, optimizer = optimizer
+                        )
+                else:
+                    model_rpn.compile(
+                        loss = {'classification' : rpn_cls_loss(), 'regression' : rpn_smooth_l1()}, optimizer = optimizer
+                    )
+                    model_all.compile(
+                        loss = {
+                            'classification' : rpn_cls_loss(), 'regression' : rpn_smooth_l1(),
+                            'dense_class_{}'.format(num_classes) : classifier_cls_loss(), 'dense_regress_{}'.format(num_classes)  : classifier_smooth_l1(num_classes - 1)
+                        }, optimizer = optimizer
+                    )
+                    
                 epoch_step      = num_train // batch_size
                 epoch_step_val  = num_val // batch_size
 
@@ -426,5 +451,6 @@ if __name__ == "__main__":
                     
             lr = lr_scheduler_func(epoch)
             K.set_value(optimizer.lr, lr)
-            fit_one_epoch(model_rpn, model_all, model_all_body, loss_history, eval_callback, callback, epoch, epoch_step, epoch_step_val, gen, gen_val, UnFreeze_Epoch,
+            
+            fit_one_epoch(model_rpn, model_all, loss_history, eval_callback, callback, epoch, epoch_step, epoch_step_val, gen, gen_val, UnFreeze_Epoch,
                     anchors, bbox_util, roi_helper, save_period, save_dir)
