@@ -4,7 +4,7 @@
 * 实现了将肠化亚型预测结果自动按照最大分数归类至三种文件夹：
 	- CIM
 	- IIM
-	- fail	
+	- fail
 * 打印预测结果和准确率
 * 目前适用于： YOLOv3、 Faster-RCNN、 SSD
 * 未测试：mobilenet-yolov4、centernet 
