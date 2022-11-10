@@ -3,7 +3,7 @@ from tqdm import tqdm
 import xml.dom.minidom
 
 # xml所在文件夹路径，修改这个即可
-SrcDir = r"E:\\MyGithub\\1\\1630\\Annotations"
+SrcDir = r"E:\\MyGithub\\1\\xml"
 
 
 def ReadXml(FilePath):
