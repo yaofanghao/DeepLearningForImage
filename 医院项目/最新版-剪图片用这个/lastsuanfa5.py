@@ -6,10 +6,15 @@ import os
 
 # 设置图片路径
 DATADIR = "C:\\Users\\admin\\Desktop\\dataset\\\jpg2"
+save_dir = 'C:\\Users\\admin\\Desktop\\dataset\\jpg3\\'
+if not os.path.exists(DATADIR):
+    os.makedirs(DATADIR)
+if not os.path.exists(save_dir):
+    os.makedirs(save_dir)
 
 # 使用os.path模块的join方法生成路径'''
 path = os.path.join(DATADIR)
-path1 = os.path.join(DATADIR1)
+# path1 = os.path.join(DATADIR1)
 img_list = os.listdir(path)
 
 #按顺序  (问题)（解决）
@@ -172,7 +177,7 @@ for i in img_list:
 
 
     # '''生成图片存储的目标路径'''
-    save_path = 'C:\\Users\\admin\\Desktop\\dataset\\jpg3\\' + str(ind) + '.jpg'
+    save_path = save_dir + str(ind) + '.jpg'
     ind = ind + 1
 
     # '''调用cv.2的imwrite函数保存图片'''

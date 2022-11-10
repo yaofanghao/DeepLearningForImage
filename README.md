@@ -39,15 +39,15 @@
 ## 常用软件--更新中
 * 计算机应用相关：
   * **MATLAB**
-    * 学术科研必备，非常常用
+    * 学术科研必备
   * **PyCharm**
     * Python必备
   * **Visual Stuido**
     * C++必备
   * **VS Code**
-    * 浏览代码赏心悦目，也可以写markdown
+    * 浏览代码，也可以写markdown
   * Anaconda
-    * 创建Python虚拟环境
+    * Python虚拟环境
   * Qt Designer
     * 制作GUI界面，非必需
   * LabVIEW
@@ -64,10 +64,12 @@
     * 管理Git仓库，代码备份
   * VM Ware
     * 安装虚拟机环境
-  * Xshell
+  * **Xshell**
   * Xftp
-  * Putty
+  * putty
+  * VNC
     * 远程连接、文件传输
+  * Adavanced IP Scanner
 * 学习:
   * **OneNote**
     * 做笔记，电脑、手机、平板实时同步
@@ -98,17 +100,23 @@
 基础知识
 |  内容   | 备注  |  进度 |
 |  ----  | ----  | ---- |  
+| 电子技术基础  |  |  √ |
+| 传感器基础 |  |  √ |
+| 精密测试和计量基础 |  |  √ |
+| 信号分析基础 |  |  √ |
+| 自动控制基础 |  |  √ |
 | 数字图像处理基础  |  |  √ |
 | 计算机视觉基础  |  | √ |
 | 机器学习、深度学习基础  |  | √ |
 | Linux命令行入门  |  | √ |
-| Git和github管理  |  | √ |
+| XShell、Putty、VNC工具  |  | √ |
+| Git和github管理、TortoiseGit  |  | √ |
 | C入门  |  |   |
 | Python  |  | √ |
 | PyQt  |  | √ |
 | MATLAB  |  | √ |
 | LabVIEW vision开发 |  | √ |
-| 树莓派  |  |   |
+| 树莓派  |  | √ |
 | Multisim  |  | √ |
 | SQL语法  |  | √ |
 -------
@@ -120,15 +128,18 @@
 | 数据结构与算法  |  |   |
 | CMake、gcc、gdb |  |   |
 | Shell脚本编程 |  |   |
-| vim |  |   |
+| vim使用 |  |   |
+| 基于CppLinuxSerial的串口通信 |  | √  |
 | 基于C++的OpenCV实现  |  | √ |
 | 基于C++的OpenNI实现  |  | √ |
+| 基于C++的机器学习方法，如SVM  |  | √ |
 | C++Qt  |  |  |
 -------
 更高要求
 |  内容   | 备注  |  进度 |
 |  ----  | ----  | ---- |  
 | 现代C++  |  |   |
+| C++STL  |  |   |
 | CSAPP |  |   |
 | 操作系统 |  |   |
 | 计算机组成原理 |  |   |
@@ -145,66 +156,83 @@
 * 网盘链接
 链接：https://pan.baidu.com/s/1c4AqcZEszESKigTSSaPaaA 
 提取码：1234
-* 专业背景
-  * 线性代数 J.Leon
-  * 统计学习方法 李航
-  * 最优化导论 Edwin K.P.  
-  * 嵌入式C语言自我修养 王利涛
-  * 信号与系统 Oppenheim
-  * Linux命令行与shell脚本编程大全 布鲁姆
-  * Linux命令行大全 William Shotts
-  * 我和LabVIEW 阮奇桢
-* 视觉
-  * 数字图像处理 冈萨雷斯
-  * 机器视觉 伯特霍尔德
-  * 计算机视觉 E. R. Davies
-  * 计算机视觉中的多视图几何 哈特利
-  * OpenCV轻松入门 李立宗
-  * OpenCV计算机视觉编程攻略 罗伯特·拉戈尼尔
-  * 数字图像处理与机器视觉——Visual C++与Matlab实现
-  * 图像处理、分析与机器视觉 杨高科
-  * 机器人学、机器视觉与控制 Peter Corke
-  * OpenNI Cookbook Soroush
-* 深度学习
-  * 深度学习入门-基于Python的理论与实现 斋藤康毅
-  * 利用Python进行数据分析 Wes McKinney
-  * Learing From Data Yaser
-  * Python深度学习 弗朗索瓦·肖莱
-  * 机器学习实战 Aurélien Géron
-  * 深度学习 Ian Godfellow
-  * 动手学深度学习 Aston Zhang/李沐
-  * 神经网络与深度学习 邱锡鹏
-  * 集体智慧编程 Toby Segaran
-  * MATLAB神经网络43个案例分析 王小川
-  * TinyML Pete Warden
-* 计算机
-  * 深入理解计算机系统（CSAPP）
-  * 计算机网络 谢希仁
-  * 计算机网络 James F. Kurose
-  * 网络是怎样连接的 户根勤
-  * Python编程-从入门到实践 Eric Matthes
-  * Python编程快速上手 Al Sweigart
-  * 流畅的Python Luciano
-  * C程序设计语言 K&R
-  * C和指针 Kenneth A.Reek
-  * C++ Primer Stanley B. Lippman
-  * 数据结构C++版 邓俊辉 
-  * 剑指Offer 
-  * Essential C++ Stanley
-  * Effective C++ Scott
-  * More Effective C++ Scott
-  * 编程珠玑 Jon Bentley
-  * C++ 程序设计语言 Bjarne
-  * Linux/UNIX系统编程手册 Michael Kerrisk
-  * STL源码剖析 侯捷
-  * 现代C++语言核心特性解析 谢丙？
-  * 设计模式 Erich
-  * 深入理解Linux设备驱动程序内核机制陈学松
-
-* 其他
-  * 树莓派开始，玩转Linux Vamei
-  * 黑客与画家 Paul Graham
-  * 编码 Charles Petzold
+-------
+专业背景
+|  书名   | 作者  |  是否读完 |
+|  ----  | ----  | ---- |  
+| 线性代数 | J.Leon |  √ |
+| 统计学习方法 | 李航 |   |
+| Pattern Recognition and Machine Learning | M. Bishop |  |
+| 最优化导论 | Edwin K.P. |   |
+| 嵌入式C语言自我修养 | 王利涛 |  √ |
+| 信号与系统 | Oppenheim |   |
+| Linux命令行与shell脚本编程大全 | 布鲁姆 |  √ |
+| Linux命令行大全 | William Shotts |  √ |
+-------
+视觉
+|  书名   | 作者  |  是否读完 |
+|  ----  | ----  | ---- |  
+| 数字图像处理 | 冈萨雷斯 |  √ |
+| 机器视觉  | 伯特霍尔德 |  √ |
+| 计算机视觉 | E. R. Davies |  √ |
+| 计算机视觉中的多视图几何 | 哈特利 |  |
+| OpenCV轻松入门 | 李立宗 |  √ |
+| OpenCV计算机视觉编程攻略 | 罗伯特·拉戈尼尔 |  √ |
+| 数字图像处理与机器视觉——Visual C++与Matlab实现 |  |  √ |
+| 图像处理、分析与机器视觉 | 杨高科 |  √ |
+| 机器人学、机器视觉与控制 | Peter Corke |  |
+| 视觉SLAM十四讲 | 高翔 |  |
+| OpenNI Cookbook | Soroush |  √ |
+-------
+深度学习
+|  书名   | 作者  |  是否读完 | 
+|  ----  | ----  | ---- |  
+| 深度学习入门-基于Python的理论与实现 | 斋藤康毅 |  √ |
+| 利用Python进行数据分析 | Wes McKinney |  √ |
+| Learing From Data | Yaser |  √ |
+| Python深度学习 | 弗朗索瓦·肖莱 |  √ |
+| 机器学习实战 | Aurélien Géron |  √ |
+| 机器学习 | 周志华 |  |
+| 深度学习 | Ian Godfellow |  √ | 
+| 动手学深度学习 | Aston Zhang/李沐 |  √ |
+| 神经网络与深度学习 | 邱锡鹏 |  √ |
+| 集体智慧编程 | Toby Segaran |  |
+| MATLAB神经网络43个案例分析 | 王小川 |  √ |
+| TinyML | Pete Warden |  |
+-------
+计算机
+|  书名   | 作者  |  是否读完 | 
+|  ----  | ----  | ---- |  
+| 深入理解计算机系统（CSAPP） |  |  |
+| 计算机网络 | 谢希仁 |  |
+| 计算机网络 | James F. Kurose | |
+| 网络是怎样连接的 | 户根勤 |  |
+| Python编程-从入门到实践 | Eric Matthes | √ |
+| 流畅的Python | Luciano |  |
+| C程序设计语言 | K&R |  √ |
+| C和指针 | Kenneth A.Reek |  √ |
+| C++ Primer | Stanley B. Lippman | |
+| 数据结构C++版 | 邓俊辉 |  |
+| 剑指Offer |  |  |
+| Essential C++ | Stanley |  |
+| Effective C++ | Scott |  |
+| More Effective C++ | Scott |  |
+| 编程珠玑 | Jon Bentley |  |
+| C++ 程序设计语言 | Bjarne | √ |
+| Linux/UNIX系统编程手册 | Michael Kerrisk |  |
+| STL源码剖析 | 侯捷 |  |
+| 现代C++语言核心特性解析 | 谢丙堃 |  |
+| 设计模式 | Erich |  |
+| 深入理解Linux设备驱动程序内核机制 | 陈学松 |  |
+-------
+其他
+|  书名   | 作者  |  是否读完 | 
+|  ----  | ----  | ---- |  
+| 我和LabVIEW | 阮奇桢 |  √ |
+| 树莓派开始，玩转Linux | Vamei | √ |
+| 黑客与画家 | Paul Graham | √ |
+| 编码 | Charles Petzold | √ |
+| 工程控制论 | 钱学森 |  |
 
 ----------------------
 

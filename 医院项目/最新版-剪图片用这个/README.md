@@ -53,7 +53,11 @@ labelme版本 3.16.2
 
 # **以下步骤先不进行（改回人名的处理）**
 12.复制jpg3到jpg4
+
 13.复制png3到png4
+
 14.change_name.py（存至jpg4），需检查name.txt为UTF-8编码格式，每行有三个空格
+
 15.change_name.py（存至png4）
+
 16.结束。如需重新进行新一轮处理，需先删除三个txt文件。
