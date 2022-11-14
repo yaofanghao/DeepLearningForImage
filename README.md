@@ -145,8 +145,9 @@
 | 计算机组成原理 |  |   |
 | 计算机网络 |  |   |
 | Linux驱动内核 |  |   |
-| TF-lite  |  |   |
-| Paddle-lite |  |   |
+| docker  |  |   |
+| 个人服务器搭建  |  |   |
+| TF-lite、Paddle-lite  |  |   |
 | 树莓派、工控机等轻量级图像处理  |  |   |
 | TinyML低功耗设备机器学习 |  |   |
   
@@ -218,6 +219,8 @@
 | Effective C++ | Scott |  |
 | More Effective C++ | Scott |  |
 | 编程珠玑 | Jon Bentley |  |
+| 代码大全 | 麦克康奈尔 |  |
+| 重构 | Martin Fowler |  |
 | C++ 程序设计语言 | Bjarne | √ |
 | Linux/UNIX系统编程手册 | Michael Kerrisk |  |
 | STL源码剖析 | 侯捷 |  |
