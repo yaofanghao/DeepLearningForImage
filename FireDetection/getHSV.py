@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from matplotlib import pyplot as plt
 
-image=cv2.imread("114.png")
+image=cv2.imread("113.png")
 # image=cv2.resize(image,dsize=None,fx=0.3,fy=0.3) #这句有问题
 HSV=cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 def getpos(event,x,y,flags,param):
