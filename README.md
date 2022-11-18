@@ -118,6 +118,7 @@
 | LabVIEW vision开发 |  | √ |
 | 树莓派  |  | √ |
 | Multisim  |  | √ |
+| COMSOL仿真基础  |  | √ |
 | SQL语法  |  | √ |
 -------
 进阶
@@ -233,6 +234,7 @@
 |  ----  | ----  | ---- |  
 | 我和LabVIEW | 阮奇桢 |  √ |
 | 树莓派开始，玩转Linux | Vamei | √ |
+| 计算机文化 | June Jamrich | √ |
 | 黑客与画家 | Paul Graham | √ |
 | 编码 | Charles Petzold | √ |
 | 工程控制论 | 钱学森 |  |
