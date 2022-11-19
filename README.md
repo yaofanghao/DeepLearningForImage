@@ -130,7 +130,7 @@
 | CMake、gcc、gdb |  |   |
 | Shell脚本编程 |  |   |
 | vim使用 |  |   |
-| 基于CppLinuxSerial的串口通信 |  | √  |
+| 基于CppLinuxSerial、WiringPi的串口通信 |  | √  |
 | 基于C++的OpenCV实现  |  | √ |
 | 基于C++的OpenNI实现  |  | √ |
 | 基于C++的机器学习方法，如SVM  |  | √ |
