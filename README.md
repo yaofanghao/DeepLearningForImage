@@ -117,6 +117,7 @@
 | MATLAB  |  | √ |
 | LabVIEW vision开发 |  | √ |
 | 树莓派  |  | √ |
+| 基于CppLinuxSerial、wiringPi的树莓派串口通信 |  | √  |
 | Multisim  |  | √ |
 | COMSOL仿真基础  |  | √ |
 | SQL语法  |  | √ |
@@ -130,7 +131,6 @@
 | CMake、gcc、gdb |  |   |
 | Shell脚本编程 |  |   |
 | vim使用 |  |   |
-| 基于CppLinuxSerial、WiringPi的串口通信 |  | √  |
 | 基于C++的OpenCV实现  |  | √ |
 | 基于C++的OpenNI实现  |  | √ |
 | 基于C++的机器学习方法，如SVM  |  | √ |

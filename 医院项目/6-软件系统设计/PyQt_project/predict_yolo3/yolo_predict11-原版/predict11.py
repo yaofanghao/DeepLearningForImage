@@ -98,7 +98,7 @@ if __name__ == "__main__":
 
             img_names = os.listdir(dir_origin_path)
 
-            img_names.sort(key=lambda x:int(x.split('.')[0]))  # 按照1，2，3顺序读图片
+            # img_names.sort(key=lambda x:int(x.split('.')[0]))  # 按照1，2，3顺序读图片
 
             # 存放修改后的分数的numpy
             out_scores_new = numpy.array([])
