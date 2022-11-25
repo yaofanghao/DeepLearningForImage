@@ -1,0 +1,27 @@
+Configurations:
+----------------------------------------------------------------------
+|                     keys |                                   values|
+----------------------------------------------------------------------
+|             classes_path |               model_data/voc_classes.txt|
+|             anchors_path |              model_data/yolo_anchors.txt|
+|             anchors_mask |        [[6, 7, 8], [3, 4, 5], [0, 1, 2]]|
+|               model_path | model_data/yolov3_efficientnet_b2_voc.h5|
+|              input_shape |                               [416, 416]|
+|               Init_Epoch |                                        0|
+|             Freeze_Epoch |                                      150|
+|           UnFreeze_Epoch |                                      500|
+|        Freeze_batch_size |                                       64|
+|      Unfreeze_batch_size |                                       16|
+|             Freeze_Train |                                     True|
+|                  Init_lr |                                    0.001|
+|                   Min_lr |                                    1e-05|
+|           optimizer_type |                                     adam|
+|                 momentum |                                    0.937|
+|            lr_decay_type |                                     step|
+|              save_period |                                       10|
+|                 save_dir |                                     logs|
+|              num_workers |                                        1|
+|                num_train |                                    17416|
+|                  num_val |                                     1936|
+----------------------------------------------------------------------
+Freeze the first 333 layers of total 401 layers.
