@@ -7,7 +7,7 @@
 	- fail
 * 打印预测结果和准确率
 * 目前适用于： YOLOv3、 Faster-RCNN、 SSD
-* 未测试：mobilenet-yolov4、centernet、f-cos、efficientdet、DETR、YOLOv7等
+* 未测试：mobilenet-yolov4、centernet、DETR等
 
 * 查找Faster-RCNN改进方法，用于大论文
 	* 改进backbone，如resnet101，mobilenet等

@@ -117,7 +117,7 @@
 | MATLAB  |  | √ |
 | LabVIEW vision开发 |  | √ |
 | 树莓派  |  | √ |
-| 基于CppLinuxSerial、wiringPi的树莓派串口通信 |  | √  |
+| C++实现的串口通信 |  | √  |
 | Multisim  |  | √ |
 | COMSOL仿真基础  |  | √ |
 | SQL语法  |  | √ |
