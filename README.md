@@ -12,7 +12,10 @@
   
 * 异源_配准
   * 参考资料  
-  
+ 
+* DeepLearningWithLabVIEW
+  * 基于LabVIEW实现的图像处理、深度学习项目
+
 * FireDetection
   * 火焰检测项目代码demo 
   * 已不再更新，转移至cpp/OpenCV仓库，用C++实现  
@@ -25,10 +28,6 @@
 
 * Opencv-project
   * OpenCV实用示例
-
-* practice-in-paddle-main
-  * 邱锡鹏《神经网络与深度学习-案例与实践》参考代码和教程
-  * 基于PaddlePaddle框架
 
 * PyQt
   * Qt的学习日记、代码
