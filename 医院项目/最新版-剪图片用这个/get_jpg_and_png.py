@@ -11,6 +11,7 @@ def main():
         if count[i].endswith("jpg"):
             path = os.path.join("./before", count[i])
             img = Image.open(path)
+            img = img.convert('RGB')  # raise OSError(f"cannot write mode {im.mode} as JPEG") from e  OSError: cannot write mode RGBA as JPEG
             img.save(os.path.join("./jpg", count[i]))
 
             # 找到对应的png
@@ -27,19 +28,14 @@ def main():
                 # ["bk","dog"]
                 new = Image.new("RGB", [np.shape(img)[1], np.shape(img)[0]])
                 for name in names:
-                        if name=='肠化':
-                            print(count[i])
-                        elif name == '炎症':
-                            print(count[i])
-                        else:
-                            # index_json是json文件里存在的类，局部类
-                            index_json = names.index(name)
-                            # index_all是全局的类
-                            index_all = class_name.index(name)
+                    # index_json是json文件里存在的类，局部类
+                    index_json = names.index(name)
+                    # index_all是全局的类
+                    index_all = class_name.index(name)
 
-                            # 将局部类转换成为全局类
-
-                            new = new + np.expand_dims(index_all * (np.array(img) == index_json), -1)
+                    # 将局部类转换成为全局类
+                    new = new + np.expand_dims(index_all * (np.array(img) == index_json), -1)
+                    print("ok")
 
             new = Image.fromarray(np.uint8(new))
             new.save(os.path.join("./png", count[i].replace("jpg", "png")))

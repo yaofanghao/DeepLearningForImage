@@ -10,7 +10,6 @@ import yaml
 from labelme import utils
 import base64
 
-
 def main():
     count = os.listdir("./before/")
     for i in range(0, len(count)):
@@ -57,14 +56,6 @@ def main():
                 os.mkdir(out_dir)
 
             PIL.Image.fromarray(img).save(osp.join(out_dir, 'img.png'))
-            # utils.lblsave(osp.join('E:\标注图\make——dataset\png1', png_name+'.png'), lbl)
-            # img_1 = np.fliplr(lbl)  # 左右翻转
-            # img_2 = np.flip(lbl, 0)  # 上下翻转
-            # img_3 = np.fliplr(img_2)  # 左右翻转
-            # utils.lblsave(osp.join('E:\标注图\make——dataset\png3', png_name + '.png'), img_1)
-            # utils.lblsave(osp.join('E:\标注图\make——dataset\png4', png_name + '.png'), img_2)
-            # utils.lblsave(osp.join('E:\标注图\make——dataset\png5', png_name + '.p00ng'), img_3)
-
             utils.lblsave(osp.join(out_dir, 'label.png'), lbl)
             PIL.Image.fromarray(lbl_viz).save(osp.join(out_dir, 'label_viz.png'))
             PIL.Image.fromarray(lbl_viz).save(osp.join(out_dir, png_name+'_viz'+'.png'))
@@ -79,8 +70,9 @@ def main():
                 yaml.safe_dump(info, f, default_flow_style=False)
 
             print('Saved to: %s' % out_dir)
+            print('success')
 
 
 if __name__ == '__main__':
     main()
-    print('success')
+    print("finish!")
