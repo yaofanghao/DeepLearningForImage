@@ -26,9 +26,6 @@
 * handson-ml2-master
   * Aurelien Geron《机器学习实战》参考代码
 
-* Opencv-project
-  * OpenCV实用示例
-
 * PyQt
   * Qt的学习日记、代码
   
