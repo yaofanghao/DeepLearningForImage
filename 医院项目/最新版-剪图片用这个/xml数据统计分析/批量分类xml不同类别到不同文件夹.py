@@ -4,12 +4,14 @@ import shutil
 import xml.etree.ElementTree as ET
 import tqdm
 
-# 针对OLGIM四分类问题，将测试集按照四种标签分类至四个文件夹
-# 修改以下三项
+#######################
+# 修改内容区域：
 root_dir = "E:\MyGithub\\1"  # 根目录
 origin_xml_dir = str(root_dir) + "\\xml" #根目录下存放所有标签的xml文件
 origin_jpg_dir = str(root_dir) + "\\jpg" #根目录下存放所有标签的jpg文件
+#######################
 
+# 针对OLGIM四分类问题，将测试集按照四种标签分类至四个文件夹
 class0_dir = str(root_dir) + "\\xml0\\"
 class0_jpg_dir = str(root_dir) + "\\jpg0\\"
 class1_dir = str(root_dir) + "\\xml1\\"
@@ -34,7 +36,7 @@ if not os.path.exists(class3_dir):
     os.makedirs(class3_dir)
 if not os.path.exists(class3_jpg_dir):
     os.makedirs(class3_jpg_dir)
-
+#######################
 
 if __name__ == '__main__':
     xml_path_list = [os.path.join(origin_xml_dir, x) for x in os.listdir(origin_xml_dir)]

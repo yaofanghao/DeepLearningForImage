@@ -11,7 +11,11 @@ def main():
         if count[i].endswith("jpg"):
             path = os.path.join("./before", count[i])
             img = Image.open(path)
-            img = img.convert('RGB')  # raise OSError(f"cannot write mode {im.mode} as JPEG") from e  OSError: cannot write mode RGBA as JPEG
+
+            # 这句convert如果不加，读取png图片会报错
+            # raise OSError(f"cannot write mode {im.mode} as JPEG") from e  OSError: cannot write mode RGBA as JPEG
+            img = img.convert('RGB')     
+
             img.save(os.path.join("./jpg", count[i]))
 
             # 找到对应的png
@@ -41,11 +45,8 @@ def main():
             new.save(os.path.join("./png", count[i].replace("jpg", "png")))
             print(np.max(new), np.min(new))
 
-
 if __name__ == '__main__':
     main()
-
-
 
 # for i in range(0, len(count)):
 #     name=count[i].split("_")[0]
@@ -58,14 +59,3 @@ if __name__ == '__main__':
 #             path2=path1+'/'+count1[j]
 #             img = Image.open(path2)
 #             img.save(os.path.join("./before", name+'.jpg'))
-
-# -------------------------------------------------------------------------------
-#
-# for i in range(0, len(count)):
-#     if count[i].endswith("jpg"):
-#         # path = os.path.join("C:\\Users\\qiukaili\\Desktop\\第三批 CJN", count[i])
-#         # img = Image.open(path)
-#         # img.save(os.path.join("C:\\Users\\qiukaili\\Desktop\\jpg", count[i]))
-#         os.remove(os.path.join("C:\\Users\\qiukaili\\Desktop\\第三批 CJN", count[i]))
-#         print(i)
-# print('ok!!!!!!!!!')

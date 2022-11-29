@@ -10,7 +10,7 @@ import yaml
 from labelme import utils
 import base64
 
-def main():
+if __name__ == '__main__':
     count = os.listdir("./before/")
     for i in range(0, len(count)):
         path = os.path.join("./before", count[i])
@@ -72,7 +72,4 @@ def main():
             print('Saved to: %s' % out_dir)
             print('success')
 
-
-if __name__ == '__main__':
-    main()
-    print("finish!")
+        print("finish!")

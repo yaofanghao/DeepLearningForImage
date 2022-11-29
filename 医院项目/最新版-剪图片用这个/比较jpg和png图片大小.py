@@ -1,6 +1,7 @@
 # coding:utf-8
 import os
 from PIL import Image
+import difflib
 
 # 生成图片尺寸的txt
 def generate_jpg_size(base_dir):
@@ -38,7 +39,6 @@ def generate_png_size(base_dir1):
         ftrainval.write("\r")
 
 # 比较两个txt的差异
-import difflib
 def compare_txt(file_1,file_2):
     # 打开文件
     # 按行分割文件,返回的是列表

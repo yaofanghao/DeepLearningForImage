@@ -2,9 +2,11 @@ import os
 from tqdm import tqdm
 import xml.dom.minidom
 
+#######################
+# 修改内容区域：
 # xml所在文件夹路径，修改这个即可
 SrcDir = r"E:\\MyGithub\\1\\xml"
-
+#######################
 
 def ReadXml(FilePath):
     if os.path.exists(FilePath) is False:
@@ -23,7 +25,6 @@ def ReadXml(FilePath):
         info.append([xmin, ymin, xmax, ymax, name])
     return info
 
-
 def CountLabelKind(Path):
     LabelDict = {}
     print("Star to count label kinds....")
@@ -38,7 +39,6 @@ def CountLabelKind(Path):
                         LabelDict[Info[-1]] += 1
 
     return dict(sorted(LabelDict.items(), key=lambda x: x[0]))
-
 
 if __name__ == '__main__':
     LabelDict = CountLabelKind(SrcDir)

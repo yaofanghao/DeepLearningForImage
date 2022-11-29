@@ -2,8 +2,11 @@ import os
 import xml.etree.ElementTree as ET
 import tqdm
 
+#######################
+# 修改内容区域：
 # xml所在文件夹路径，修改这个即可
 root_dir = r"E:\\MyGithub\\1\\1630\\Annotations"
+#######################
 
 def del_delete_eq_1(xml_path):
     # 从xml文件中读取，使用getroot()获取根节点，得到的是一个Element对象
