@@ -2,13 +2,20 @@ import os
 from PIL import Image
 import numpy as np
 
+jpg_dir = "./jpg"
+png_dir = "./png"
+if not os.path.exists(jpg_dir):
+    os.makedirs(jpg_dir)
+if not os.path.exists(png_dir):
+    os.makedirs(png_dir)
+
 def main():
     # 读取原文件夹
     count = os.listdir("./before/")
     for i in range(0, len(count)):
         # 如果里的文件以jpg结尾
         # 则寻找它对应的png
-        if count[i].endswith("jpg"):
+        if count[i].endswith("jpg") or count[i].endswith("JPG"):
             path = os.path.join("./before", count[i])
             img = Image.open(path)
 

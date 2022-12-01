@@ -72,4 +72,4 @@ if __name__ == '__main__':
             print('Saved to: %s' % out_dir)
             print('success')
 
-        print("finish!")
+    print("finish!")
