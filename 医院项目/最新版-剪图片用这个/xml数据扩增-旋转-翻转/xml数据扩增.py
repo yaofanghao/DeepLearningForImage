@@ -128,8 +128,8 @@ def mirror(img_dir, xml_dir, img_write_dir, xml_write_dir):
 
 
 if __name__ == '__main__':
-    img_path = './935jpg'  # 图片文件夹路径
-    xml_path = './935xml'  # xml标注文件夹路径
-    img_write_path = './jpg2'  # 翻转后的图片保存路径
-    xml_write_path = './xml2'  # 修改后的xml标注保存路径
+    img_path = './JPEGImages'  # 图片文件夹路径
+    xml_path = './Annotations'  # xml标注文件夹路径
+    img_write_path = './JPEGImages_aug'  # 翻转后的图片保存路径
+    xml_write_path = './Annotations_aug'  # 修改后的xml标注保存路径
     mirror(img_path, xml_path, img_write_path, xml_write_path)
