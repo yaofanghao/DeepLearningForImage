@@ -1,0 +1,2 @@
+sudo ethtool -s enp5s0 wol g
+sudo ethtool enp5s0 |grep Wake-on

@@ -11,7 +11,7 @@ for gpu in gpus:
     tf.config.experimental.set_memory_growth(gpu, True)
 
 
-# 根据修改后的置信度画图，7.23 修改中
+# 根据修改后的置信度画图，2022.7.23
 def draw_new_scores(out_scores_max,left,top,right,bottom):
     label = '{:.4f}'.format(out_scores_max)
     draw = ImageDraw.Draw(image)
