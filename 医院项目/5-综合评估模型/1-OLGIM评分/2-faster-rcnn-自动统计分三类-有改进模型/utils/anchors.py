@@ -78,7 +78,7 @@ def get_vgg_output_length(height, width):
         return input_length
     return get_output_length(height), get_output_length(width)
 
-def get_anchors(input_shape, backbone, sizes = [128, 256, 512], ratios = [[1, 1], [1, 2], [2, 1]], stride=16):
+def  get_anchors(input_shape, backbone, sizes = [128, 256, 512], ratios = [[1, 1], [1, 2], [2, 1]], stride=16):
     if backbone == 'vgg':
         feature_shape = get_vgg_output_length(input_shape[0], input_shape[1])
     else:
