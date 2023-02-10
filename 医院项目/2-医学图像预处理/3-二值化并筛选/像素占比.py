@@ -1,13 +1,13 @@
 import cv2
 import  numpy as np
 
-img=cv2.imread('3.jpg',cv2.IMREAD_GRAYSCALE) #灰度图像
+img=cv2.imread('1.jpg',cv2.IMREAD_GRAYSCALE) #灰度图像
 x,y= img.shape
 print(x)
 
 print(img.shape)
 
-# #遍历灰度图，阈值大于150的全变白
+# #遍历灰度图，阈值大于的全变白
 for i in range(x):
     for j in range(y):
         if img[i,j]>0:

@@ -33,6 +33,7 @@ if __name__ == "__main__":
     #   如果想要检测小物体，可以减小anchors_size靠前的数。
     #   比如设置anchors_size = [64, 256, 512]
     anchors_size    = [128, 256, 512]
+    # anchors_size    = [32, 64, 128]
 
     #   从整个模型的预训练权重开始训练： 
     #       Adam：

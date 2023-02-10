@@ -5,7 +5,8 @@ import cv2
 
 output_dir = './erzhihua/'  # 二值化处理后存放的文件夹位置
 txt_dir = 'zhanbi.txt'  #txt文件夹目录
-thresh = 3 # 自定义设置白色占比的阈值
+
+thresh = 2 # 自定义设置白色占比的阈值
 
 list = pd.read_csv(txt_dir, sep='\s+',
                    header=None,

@@ -17,10 +17,43 @@ def edge_area(image):
     for c in range(len(contours)):
         area += cv2.contourArea(contours[c])  # 面积
     # cv2.putText(dst, "area/sum:" + str(area / image.size)*100, (50, 50), cv2.FONT_HERSHEY_SIMPLEX, .7, (255, 0, 0), 2)  # 显示
-    # # cv2.imshow("t3", dst)
-    # # cv2.waitKey(0)
+    # cv2.imshow("t3", dst)
+    # cv2.waitKey(0)
     zhanbi = (area / image.size)*100
+
+
+    ######################
+    # x, y = image.shape
+    # # print(image.shape)
+    # for i in range(x):
+    #     for j in range(y):
+    #         if image[i, j] > 0:
+    #             image[i, j] = 255
+    #         else:
+    #             image[i, j] = 0
+    # black = 0
+    # white = 0
+    # # 遍历二值图，为0则black+1，否则white+1
+    # for i in range(x):
+    #     for j in range(y):
+    #         if image[i, j] == 0:
+    #             black += 1
+    #         else:
+    #             white += 1
+    # print("白色个数:", white)
+    # print("黑色个数:", black)
+    # rate1 = white / (x * y)
+    # rate2 = black / (x * y)
+    # print(white + black)
+    #
+    # rate1 = white / (white + black)
+    # rate2 = black / (white + black)
+    #
+    # print("白色占比:", round(rate1 * 100, 2), '%')
+    # print("黑色占比:", round(rate2 * 100, 2), '%')
+    # return rate1
     return zhanbi
+
 
 filelist2 = os.listdir(output_dir)
 filelist2.sort(key=lambda x: int(x.split('.')[0]))

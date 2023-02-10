@@ -36,7 +36,7 @@ https://blog.csdn.net/weixin_44791964/article/details/108513563
 |  变量   | 对应代码修改处  | 代码是否可行  |
 |  ----  | ----  | ---- | 
 |  backbone选择 vgg / resnet  | 1、train.py 中第25行设置backbone的值 2、frcnn.py 中第37行设置backbone的值  | √ | 
-|  激活函数选择 relu / leaky-relu  | nets/resnet.py 中将第15行 leaky_flag 设置为False/True  |  | 
+|  激活函数选择 relu / leaky-relu  | nets/resnet.py 中将第15行 leaky_flag 设置为False/True  | √ | 
 |  注意力模块选择 无 / SE-Net  | nets/resnet.py 中将第17行 attention_flag 设置为False/True | √ | 
-|  正常锚框 128，256，512 -> 改小锚框 32，64，128  | utils/anchors.py 中的 get_anchors()的sizes值  | √ | 
+|  正常锚框 128，256，512 -> 改小锚框 32，64，128  | train.py 中第35行设置 anchors_size 的值  | √ | 
 
