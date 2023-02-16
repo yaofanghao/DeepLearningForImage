@@ -1,5 +1,6 @@
-# 2022.2.15 @ yaofanghao
+# 2023.2.15 @ yaofanghao
 # json格式数据集制作的一步到位版
+# 2023.2.16 解决了一些png和JPG格式后缀的问题
 
 import PIL.Image
 import json
@@ -88,6 +89,8 @@ def get_jpg_and_png():
         # 如果里的文件以jpg结尾
         # 则寻找它对应的png
         if count[i].endswith("jpg") or count[i].endswith("JPG"):
+            if count[i].endswith("JPG"):
+                count[i].replace("JPG", "jpg")
             path = os.path.join("./before", count[i])
             img = Image.open(path)
 
@@ -95,7 +98,7 @@ def get_jpg_and_png():
             # raise OSError(f"cannot write mode {im.mode} as JPEG") from e  OSError: cannot write mode RGBA as JPEG
             img = img.convert('RGB')
 
-            img.save(os.path.join("./jpg", count[i]))
+            img.save(os.path.join("./JPEGImages", count[i]))
 
             # 找到对应的png
             path = "./output/" + count[i].split(".")[0] + "_json/label.png"
@@ -119,7 +122,11 @@ def get_jpg_and_png():
                     new = new + np.expand_dims(index_all * (np.array(img) == index_json), -1)
                     print("ok")
             new = Image.fromarray(np.uint8(new))
-            new.save(os.path.join("./png", count[i].replace("jpg", "png")))
+            if count[i].endswith("jpg") :
+                new.save(os.path.join("./SegmentationClass", count[i].replace("jpg", "png")))
+            if count[i].endswith("JPG"):
+                new.save(os.path.join("./SegmentationClass", count[i].replace("JPG", "png")))
+
             print(np.max(new), np.min(new))
 
 if __name__ == '__main__':
