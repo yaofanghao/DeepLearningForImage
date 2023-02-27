@@ -10,7 +10,7 @@
 		<Property Name="server.vi.callsEnabled" Type="Bool">true</Property>
 		<Property Name="server.vi.propertiesEnabled" Type="Bool">true</Property>
 		<Property Name="specify.custom.address" Type="Bool">false</Property>
-		<Item Name="复材超声C扫缺陷分析评定软件-修改中.vi" Type="VI" URL="../复材超声C扫缺陷分析评定软件-修改中.vi"/>
+		<Item Name="复材超声C扫缺陷分析评定软件.vi" Type="VI" URL="../复材超声C扫缺陷分析评定软件.vi"/>
 		<Item Name="工件信息输入_子VI.vi" Type="VI" URL="../工件信息输入_子VI.vi"/>
 		<Item Name="依赖关系" Type="Dependencies">
 			<Item Name="vi.lib" Type="Folder">
@@ -151,8 +151,8 @@
 			<Item Name="灰度图像平滑去毛刺处理.vi" Type="VI" URL="../灰度图像平滑去毛刺处理.vi"/>
 			<Item Name="控件 1.ctl" Type="VI" URL="../控件 1.ctl"/>
 			<Item Name="线性灰度值曲线查看子VI.vi" Type="VI" URL="../线性灰度值曲线查看子VI.vi"/>
-			<Item Name="子界面-查看某框和报告生成-第2版-不显示界面.vi" Type="VI" URL="../子界面-查看某框和报告生成-第2版-不显示界面.vi"/>
-			<Item Name="子界面-查看某框和报告生成-第2版.vi" Type="VI" URL="../子界面-查看某框和报告生成-第2版.vi"/>
+			<Item Name="子界面-查看某框-不显示界面.vi" Type="VI" URL="../子界面-查看某框-不显示界面.vi"/>
+			<Item Name="子界面-查看某框.vi" Type="VI" URL="../子界面-查看某框.vi"/>
 			<Item Name="自定义成像色谱20200214.vi" Type="VI" URL="../自定义成像色谱20200214.vi"/>
 			<Item Name="阈值范围选择子VI.vi" Type="VI" URL="../阈值范围选择子VI.vi"/>
 		</Item>
