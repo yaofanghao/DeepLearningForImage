@@ -154,6 +154,7 @@
 			<Item Name="控件 1.ctl" Type="VI" URL="../控件 1.ctl"/>
 			<Item Name="控件2.ctl" Type="VI" URL="../控件2.ctl"/>
 			<Item Name="线性灰度值曲线查看子VI.vi" Type="VI" URL="../线性灰度值曲线查看子VI.vi"/>
+			<Item Name="子界面-查看某框-不显示界面-只读穿透图模式.vi" Type="VI" URL="../子界面-查看某框-不显示界面-只读穿透图模式.vi"/>
 			<Item Name="子界面-查看某框-不显示界面.vi" Type="VI" URL="../子界面-查看某框-不显示界面.vi"/>
 			<Item Name="子界面-查看某框.vi" Type="VI" URL="../子界面-查看某框.vi"/>
 			<Item Name="自定义成像色谱20200214.vi" Type="VI" URL="../自定义成像色谱20200214.vi"/>
