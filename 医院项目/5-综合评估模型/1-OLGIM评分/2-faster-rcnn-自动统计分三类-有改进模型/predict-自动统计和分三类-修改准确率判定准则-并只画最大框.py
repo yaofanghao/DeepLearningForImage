@@ -27,7 +27,7 @@ def draw_new_scores(class_max_confidence, out_scores_max,left,top,right,bottom):
 if __name__ == "__main__":
     frcnn = FRCNN()
 
-    dir_origin_path = "jpg3/"
+    dir_origin_path = "jpg2/"
     dir_save_path = "img_out"
 
     # 存放全部图片预测结果数据的txt
@@ -83,6 +83,16 @@ if __name__ == "__main__":
             test1 = out_classes
             test1 = numpy.asarray(test1, dtype=int)
             out_scores = numpy.around(out_scores,3)
+
+            if out_scores[0]==0:  # 2023.3.2 解决了部分图片non-iterale的错误问题
+                none += 1
+                image.save(os.path.join(all_save_path_none, img_name.replace(".jpg", ".png")), quality=95, subsampling=0)
+                f1.write("置信度分数最大的类别为：none")
+                f1.write("\r")
+                f1.write("分数为：none")
+                f1.write("\r")
+                f1.write("-------------------")
+                f1.write("\r")
 
             if out_scores.size != 0:
                 ################ 找到置信度最大的类别的算法 ############
@@ -146,15 +156,15 @@ if __name__ == "__main__":
                 f1.write("-------------------")
                 f1.write("\r")
 
-            else: # 没有识别出任何一个框
-                none += 1
-                image.save(os.path.join(all_save_path_none, img_name.replace(".jpg", ".png")), quality=95,subsampling=0)
-                f1.write("置信度分数最大的类别为：none")
-                f1.write("\r")
-                f1.write("分数为：none")
-                f1.write("\r")
-                f1.write("-------------------")
-                f1.write("\r")
+            # else: # 没有识别出任何一个框
+            #     none += 1
+            #     image.save(os.path.join(all_save_path_none, img_name.replace(".jpg", ".png")), quality=95,subsampling=0)
+            #     f1.write("置信度分数最大的类别为：none")
+            #     f1.write("\r")
+            #     f1.write("分数为：none")
+            #     f1.write("\r")
+            #     f1.write("-------------------")
+            #     f1.write("\r")
 
     # # -----------------------------------------------------------------------------------------------#
     print("识别为0-1分：")
