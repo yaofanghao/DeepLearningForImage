@@ -175,7 +175,7 @@ class HRnet_Segmentation(object):
             for i in range(self.num_classes):
                 num     = np.sum(pr == i)
                 # ratio   = num / total_points_num * 100
-                if num > 0:
+                if  (num > 0) & (name_classes!=None):
                     # print("|%25s | %15s | %14.2f%%|"%(str(name_classes[i]), str(num), ratio))
                     # print('-' * 63)
                     draw.text((100*i,200),str(name_classes[i]),fill='red',font=font)
