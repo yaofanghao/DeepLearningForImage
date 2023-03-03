@@ -14,7 +14,6 @@ for gpu in gpus:
 if __name__ == "__main__":
     hrnet = HRnet_Segmentation()
     mode = "dir_predict"
-    count           = True
     name_classes    = ["background","duoyuwu","aokeng","qipi","cashang","gubo","xiuban","baiban"]    #   区分的种类，和json_to_dataset里面的一样
     dir_origin_path = "img/"
     dir_save_path   = "img_out/"
@@ -28,7 +27,7 @@ if __name__ == "__main__":
                 print('Open Error! Try again!')
                 continue
             else:
-                r_image = hrnet.detect_image(image, count=count, name_classes=name_classes)
+                r_image = hrnet.detect_image(image, name_classes=name_classes)
                 r_image.show()
         
     if mode == "dir_predict":
@@ -40,7 +39,7 @@ if __name__ == "__main__":
             if img_name.lower().endswith(('.bmp', '.dib', '.png', '.jpg', '.jpeg', '.pbm', '.pgm', '.ppm', '.tif', '.tiff')):
                 image_path  = os.path.join(dir_origin_path, img_name)
                 image       = Image.open(image_path)
-                r_image     = hrnet.detect_image(image, count=count, name_classes=name_classes)
+                r_image     = hrnet.detect_image(image, name_classes=name_classes)
                 if not os.path.exists(dir_save_path):
                     os.makedirs(dir_save_path)
                 r_image.save(os.path.join(dir_save_path, img_name))
