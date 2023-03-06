@@ -328,21 +328,21 @@ if __name__ == "__main__":
         if ngpus_per_node > 1:
             with strategy.scope():
                 model_rpn.compile(
-                    loss = {'classification' : rpn_cls_loss(), 'regression' : rpn_smooth_l1()}, optimizer = optimizer
+                    loss = {'classification' : rpn_cls_loss(), 'regression' : rpn_smooth_l1_plus()}, optimizer = optimizer
                 )
                 model_all.compile(
                     loss = {
-                        'classification' : rpn_cls_loss(), 'regression' : rpn_smooth_l1(),
+                        'classification' : rpn_cls_loss(), 'regression' : rpn_smooth_l1_plus(),
                         'dense_class_{}'.format(num_classes) : classifier_cls_loss(), 'dense_regress_{}'.format(num_classes)  : classifier_smooth_l1(num_classes - 1)
                     }, optimizer = optimizer
                 )
         else:
             model_rpn.compile(
-                loss = {'classification' : rpn_cls_loss(), 'regression' : rpn_smooth_l1()}, optimizer = optimizer
+                loss = {'classification' : rpn_cls_loss(), 'regression' : rpn_smooth_l1_plus()}, optimizer = optimizer
             )
             model_all.compile(
                 loss = {
-                    'classification' : rpn_cls_loss(), 'regression' : rpn_smooth_l1(),
+                    'classification' : rpn_cls_loss(), 'regression' : rpn_smooth_l1_plus(),
                     'dense_class_{}'.format(num_classes) : classifier_cls_loss(), 'dense_regress_{}'.format(num_classes)  : classifier_smooth_l1(num_classes - 1)
                 }, optimizer = optimizer
             )
@@ -406,21 +406,21 @@ if __name__ == "__main__":
                 if ngpus_per_node > 1:
                     with strategy.scope():
                         model_rpn.compile(
-                            loss = {'classification' : rpn_cls_loss(), 'regression' : rpn_smooth_l1()}, optimizer = optimizer
+                            loss = {'classification' : rpn_cls_loss(), 'regression' : rpn_smooth_l1_plus()}, optimizer = optimizer
                         )
                         model_all.compile(
                             loss = {
-                                'classification' : rpn_cls_loss(), 'regression' : rpn_smooth_l1(),
+                                'classification' : rpn_cls_loss(), 'regression' : rpn_smooth_l1_plus(),
                                 'dense_class_{}'.format(num_classes) : classifier_cls_loss(), 'dense_regress_{}'.format(num_classes)  : classifier_smooth_l1(num_classes - 1)
                             }, optimizer = optimizer
                         )
                 else:
                     model_rpn.compile(
-                        loss = {'classification' : rpn_cls_loss(), 'regression' : rpn_smooth_l1()}, optimizer = optimizer
+                        loss = {'classification' : rpn_cls_loss(), 'regression' : rpn_smooth_l1_plus()}, optimizer = optimizer
                     )
                     model_all.compile(
                         loss = {
-                            'classification' : rpn_cls_loss(), 'regression' : rpn_smooth_l1(),
+                            'classification' : rpn_cls_loss(), 'regression' : rpn_smooth_l1_plus(),
                             'dense_class_{}'.format(num_classes) : classifier_cls_loss(), 'dense_regress_{}'.format(num_classes)  : classifier_smooth_l1(num_classes - 1)
                         }, optimizer = optimizer
                     )
