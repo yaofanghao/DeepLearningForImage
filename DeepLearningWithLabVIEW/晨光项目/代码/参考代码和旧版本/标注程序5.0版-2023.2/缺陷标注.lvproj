@@ -16,7 +16,7 @@
 		<Item Name="database_path.vi" Type="VI" URL="../database_path.vi"/>
 		<Item Name="main.vi" Type="VI" URL="../main.vi"/>
 		<Item Name="Z值ctl.ctl" Type="VI" URL="../Z值ctl.ctl"/>
-		<Item Name="控件 1.ctl" Type="VI" URL="../控件 1.ctl"/>
+		<Item Name="测试-图片插入word.vi" Type="VI" URL="../测试-图片插入word.vi"/>
 		<Item Name="控件 2.ctl" Type="VI" URL="../控件 2.ctl"/>
 		<Item Name="生成word报表.vi" Type="VI" URL="../生成word报表.vi"/>
 		<Item Name="子界面-查看某框和报告生成.vi" Type="VI" URL="../子界面-查看某框和报告生成.vi"/>
@@ -75,7 +75,7 @@
 				<Item Name="IMAQ Clear Overlay" Type="VI" URL="/&lt;vilib&gt;/vision/Overlay.llb/IMAQ Clear Overlay"/>
 				<Item Name="IMAQ Copy" Type="VI" URL="/&lt;vilib&gt;/vision/Management.llb/IMAQ Copy"/>
 				<Item Name="IMAQ Create" Type="VI" URL="/&lt;vilib&gt;/vision/Basics.llb/IMAQ Create"/>
-				<Item Name="IMAQ Dispose" Type="VI" URL="/&lt;vilib&gt;/vision/Basics.llb/IMAQ Dispose"/>
+				<Item Name="Imaq Dispose" Type="VI" URL="/&lt;vilib&gt;/vision/Basics.llb/Imaq Dispose"/>
 				<Item Name="IMAQ GetFileInfo" Type="VI" URL="/&lt;vilib&gt;/vision/Files.llb/IMAQ GetFileInfo"/>
 				<Item Name="IMAQ Image.ctl" Type="VI" URL="/&lt;vilib&gt;/vision/Image Controls.llb/IMAQ Image.ctl"/>
 				<Item Name="IMAQ Load Image Dialog" Type="VI" URL="/&lt;vilib&gt;/vision/Files.llb/IMAQ Load Image Dialog"/>
