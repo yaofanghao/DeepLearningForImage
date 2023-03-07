@@ -16,6 +16,8 @@
     * -i./xxx.ico  是设置图标，选填
     * -F 打包为一个exe （-D不打包为一个exe，不推荐）
     * -c 带控制台，一般用于查找错误 （-w 不带控制台）
+  * 示例：
+    * pyinstaller -F -c predict_for_exe.py
 
 * 生成结果： 
   * build文件夹
