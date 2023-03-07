@@ -11,6 +11,10 @@ https://blog.csdn.net/weixin_44791964/article/details/108513563
   * 可以考虑改为4？（两种尺度x两种比例）
 * 改小锚框个数
 * 修改损失函数Loss？
+  * 修改为smoothl1plus
+  * y = 1/log(2)*((abs(x)+1).*log(abs(x)+1)+log(2)-abs(x))
+  * 其导数在-1和1处更为平滑
+  * 有效降低大梯度难学样本与小梯度易学样本间的不平衡问题
 * 加入注意力机制  
   * https://github.com/bubbliiiing/Keras-Attention
   * 代码见 nets/resent.py 中的107行
@@ -38,5 +42,6 @@ https://blog.csdn.net/weixin_44791964/article/details/108513563
 |  backbone选择 vgg / resnet  | 1、train.py 中第25行设置backbone的值 2、frcnn.py 中第37行设置backbone的值  | √ | 
 |  激活函数选择 relu / leaky-relu  | nets/resnet.py 中将第15行 leaky_flag 设置为False/True  | √ | 
 |  注意力模块选择 无 / SE-Net  | nets/resnet.py 中将第17行 attention_flag 设置为False/True | √ | 
-|  正常锚框 128，256，512 -> 改小锚框 32，64，128  | train.py 中第35行设置 anchors_size 的值  | √ | 
+|  正常锚框 128，256，512 -> 改小锚框 32，64，128  | utils/anchors.py 中的 get_anchors()的sizes值  | √ | 
+|  改进损失函数smoothl1plus  | 训练时使用train_soomthl1plus.py 替代train.py  |  | 
 

@@ -2,7 +2,7 @@ import cv2
 import os
 
 if __name__ == '__main__':
-    video_name = 'video3.mp4' # 原视频名称
+    video_name = '1.MPG' # 原视频名称
     output_dir = 'img/' # 保存图片路径
     output_img_type = '.jpg' # 保存图片的格式
 
@@ -20,6 +20,8 @@ if __name__ == '__main__':
     while rval:   # 循环读取视频帧
         rval, frame = vc.read()
         print(rval, frame)
+        if not rval:
+            break
         if c % timeF == 0:  # 每隔timeF帧进行存储
             cv2.imwrite(output_dir + str(c) + output_img_type, frame)  
         c = c + 1

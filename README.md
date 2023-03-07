@@ -13,10 +13,6 @@
 * DeepLearningWithLabVIEW
   * 基于LabVIEW实现的图像处理、深度学习项目
 
-* FireDetection
-  * 火焰检测项目代码demo 
-  * 已不再更新，转移至cpp/OpenCV仓库，用C++实现  
-
 * Fluent Python
   * Luciano《流畅的Python》参考代码
 

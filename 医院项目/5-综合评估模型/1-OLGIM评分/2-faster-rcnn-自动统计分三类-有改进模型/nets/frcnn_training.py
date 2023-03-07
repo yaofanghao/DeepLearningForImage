@@ -110,11 +110,7 @@ def rpn_smooth_l1_plus(sigma = 1.0):
 
         regression_diff = regression - regression_target
         regression_diff = keras.backend.abs(regression_diff)
-        # regression_loss = tf.where(
-        #     keras.backend.less(regression_diff, 1.0 / sigma_squared),
-        #     0.5 * sigma_squared * keras.backend.pow(regression_diff, 2),
-        #     regression_diff - 0.5 / sigma_squared
-        # )
+
         # 分段计算改进的的损失函数
         # 1/ln2 近似为1.4427 
         # ln2 近似为0.69315
