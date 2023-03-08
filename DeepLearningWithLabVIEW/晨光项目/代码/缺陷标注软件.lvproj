@@ -10,9 +10,19 @@
 		<Property Name="server.vi.callsEnabled" Type="Bool">true</Property>
 		<Property Name="server.vi.propertiesEnabled" Type="Bool">true</Property>
 		<Property Name="specify.custom.address" Type="Bool">false</Property>
+		<Item Name="窗位窗宽调整子VI.vi" Type="VI" URL="../窗位窗宽调整子VI.vi"/>
 		<Item Name="复材超声C扫缺陷分析评定软件.vi" Type="VI" URL="../复材超声C扫缺陷分析评定软件.vi"/>
 		<Item Name="工件信息输入_子VI.vi" Type="VI" URL="../工件信息输入_子VI.vi"/>
+		<Item Name="灰度图像平滑去毛刺处理.vi" Type="VI" URL="../灰度图像平滑去毛刺处理.vi"/>
+		<Item Name="控件 1.ctl" Type="VI" URL="../控件 1.ctl"/>
+		<Item Name="控件2.ctl" Type="VI" URL="../控件2.ctl"/>
+		<Item Name="线性灰度值曲线查看子VI.vi" Type="VI" URL="../线性灰度值曲线查看子VI.vi"/>
+		<Item Name="子界面-查看某框-不显示界面-只读穿透图模式.vi" Type="VI" URL="../子界面-查看某框-不显示界面-只读穿透图模式.vi"/>
+		<Item Name="子界面-查看某框-不显示界面.vi" Type="VI" URL="../子界面-查看某框-不显示界面.vi"/>
 		<Item Name="子界面-查看某框-只读穿透图模式.vi" Type="VI" URL="../子界面-查看某框-只读穿透图模式.vi"/>
+		<Item Name="子界面-查看某框.vi" Type="VI" URL="../子界面-查看某框.vi"/>
+		<Item Name="自定义成像色谱20200214.vi" Type="VI" URL="../自定义成像色谱20200214.vi"/>
+		<Item Name="阈值范围选择子VI.vi" Type="VI" URL="../阈值范围选择子VI.vi"/>
 		<Item Name="依赖关系" Type="Dependencies">
 			<Item Name="vi.lib" Type="Folder">
 				<Item Name="Application Directory.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/file.llb/Application Directory.vi"/>
@@ -149,16 +159,6 @@
 			<Item Name="nivissvc.dll" Type="Document" URL="nivissvc.dll">
 				<Property Name="NI.PreserveRelativePath" Type="Bool">true</Property>
 			</Item>
-			<Item Name="窗位窗宽调整子VI.vi" Type="VI" URL="../窗位窗宽调整子VI.vi"/>
-			<Item Name="灰度图像平滑去毛刺处理.vi" Type="VI" URL="../灰度图像平滑去毛刺处理.vi"/>
-			<Item Name="控件 1.ctl" Type="VI" URL="../控件 1.ctl"/>
-			<Item Name="控件2.ctl" Type="VI" URL="../控件2.ctl"/>
-			<Item Name="线性灰度值曲线查看子VI.vi" Type="VI" URL="../线性灰度值曲线查看子VI.vi"/>
-			<Item Name="子界面-查看某框-不显示界面-只读穿透图模式.vi" Type="VI" URL="../子界面-查看某框-不显示界面-只读穿透图模式.vi"/>
-			<Item Name="子界面-查看某框-不显示界面.vi" Type="VI" URL="../子界面-查看某框-不显示界面.vi"/>
-			<Item Name="子界面-查看某框.vi" Type="VI" URL="../子界面-查看某框.vi"/>
-			<Item Name="自定义成像色谱20200214.vi" Type="VI" URL="../自定义成像色谱20200214.vi"/>
-			<Item Name="阈值范围选择子VI.vi" Type="VI" URL="../阈值范围选择子VI.vi"/>
 		</Item>
 		<Item Name="程序生成规范" Type="Build"/>
 	</Item>
