@@ -6,7 +6,7 @@ from frcnn import FRCNN
 if __name__ == "__main__":
     frcnn = FRCNN()
 
-    dir_origin_path = "jpg3/"
+    dir_origin_path = "img/"
     dir_save_path = "img_out"
 
     # 存放全部图片预测结果数据的txt

@@ -7,7 +7,7 @@ import os
 from frcnn import FRCNN
 
 def softmax(x):
-    x = numpy.where(x==0, -5, x)  # 0的时候，视为一个极小的值exp计算为一个很小的值
+    x = numpy.where(x==0, -10, x)  # 0的时候，视为一个极小的值exp计算为一个很小的值
     row_max = numpy.max(x)
     # 每行元素都需要减去对应的最大值，否则求exp(x)会溢出，导致inf情况
     x = x - row_max
@@ -162,14 +162,14 @@ if __name__ == "__main__":
 
                 f_softmax.write("置信度分数最大的类别为：" + str(class_max_confidence))
                 f_softmax.write("\r")
-                f_softmax.write("分数为：" + str(softmax_output_max))
+                f_softmax.write("softmax后分数为：" + str(softmax_output_max))
                 f_softmax.write("\r")
                 f_softmax.write("-------------------")
                 f_softmax.write("\r")
 
                 f1.write("置信度分数最大的类别为：" + str(class_max_confidence))
                 f1.write("\r")
-                f1.write("softmax后分数为：" + str(out_scores_max))
+                f1.write("分数为：" + str(out_scores_max))
                 f1.write("\r")
                 f1.write("-------------------")
                 f1.write("\r")
