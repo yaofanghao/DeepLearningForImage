@@ -38,11 +38,11 @@ class FRCNN(object):
         #---------------------------------------------------------------------#
         #   只有得分大于置信度的预测框会被保留下来
         #---------------------------------------------------------------------#
-        "confidence"    : 0.3,
+        "confidence"    : 0.05,
         #---------------------------------------------------------------------#
         #   非极大抑制所用到的nms_iou大小
         #---------------------------------------------------------------------#
-        "nms_iou"       : 0.1,
+        "nms_iou"       : 0.8,
         #---------------------------------------------------------------------#
         #   用于指定先验框的大小
         #---------------------------------------------------------------------#
@@ -146,7 +146,9 @@ class FRCNN(object):
         results         = self.bbox_util.detection_out_classifier(classifier_pred, rpn_results, image_shape, input_shape, self.confidence)
 
         if len(results[0]) == 0:
-            return image
+            out_scores_none = np.array([0])
+            out_classes_none = np.array([0])
+            return out_scores_none, out_classes_none,0,0,0,0
             
         top_label   = np.array(results[0][:, 5], dtype = 'int32')
         top_conf    = results[0][:, 4]
