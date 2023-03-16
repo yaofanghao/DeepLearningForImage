@@ -1,5 +1,6 @@
 # 2023.3.14
 # 统计每一类最大值，并进行softmax，输出结果至txt
+# 将三分类转换为二分类（是或否的问题），并生成混淆矩阵，计算特异度 灵敏度等数值
 
 import numpy
 from PIL import Image
@@ -74,8 +75,6 @@ if __name__ == "__main__":
             # print('------------------')
             print(out_scores)
             print(out_classes)
-            f1.write(img_name)
-            f1.write("\r")
             test1 = out_classes
             test1 = numpy.asarray(test1, dtype=int)
             out_scores = numpy.around(out_scores, 3)
@@ -84,13 +83,10 @@ if __name__ == "__main__":
                 none += 1
                 r_image.save(os.path.join(all_save_path_none, img_name.replace(".jpg", ".png")), quality=95,
                              subsampling=0)
-                f1.write("置信度分数最大的类别为：none")
+                f1.write(str(img_name) + "  ：none")
                 f1.write("\r")
-                f1.write("分数为：none")
-                f1.write("\r")
-                f1.write("-------------------")
-                f1.write("\r")
-                f_softmax.write(str(img_name) + "：none")
+                f_softmax.write(str(img_name) + "  ：none")
+                f_softmax.write("\r")
 
             if (out_scores.size != 0) & (out_scores[0] > 0):
                 ################ 找到置信度最大的类别的算法 ############
@@ -160,19 +156,27 @@ if __name__ == "__main__":
                     r_image.save(os.path.join(all_save_path_3, img_name.replace(".jpg", ".png")), quality=95,
                                  subsampling=0)
 
-                f_softmax.write("置信度分数最大的类别为：" + str(class_max_confidence))
-                f_softmax.write("\r")
-                f_softmax.write("softmax后分数为：" + str(softmax_output_max))
-                f_softmax.write("\r")
-                f_softmax.write("-------------------")
-                f_softmax.write("\r")
+                # f_softmax.write("置信度分数最大的类别为：" + str(class_max_confidence))
+                # f_softmax.write("\r")
+                # f_softmax.write("softmax后分数为：" + str(softmax_output_max))
+                # f_softmax.write("\r")
+                # f_softmax.write("-------------------")
+                # f_softmax.write("\r")
 
-                f1.write("置信度分数最大的类别为：" + str(class_max_confidence))
+                f1.write(str(img_name) + "  三个类别最大分数原始值为： ")
+                f1.write(str(class0_max))
+                f1.write("  ")
+                f1.write(str(class2_max))
+                f1.write("  ")
+                f1.write(str(class3_max))
                 f1.write("\r")
-                f1.write("分数为：" + str(out_scores_max))
-                f1.write("\r")
-                f1.write("-------------------")
-                f1.write("\r")
+
+                # f1.write("置信度分数最大的类别为：" + str(class_max_confidence))
+                # f1.write("\r")
+                # f1.write("分数为：" + str(out_scores_max))
+                # f1.write("\r")
+                # f1.write("-------------------")
+                # f1.write("\r")
 
     # # -----------------------------------------------------------------------------------------------#
     print("识别为0-1分：")
@@ -213,3 +217,5 @@ if __name__ == "__main__":
     f.write("无结果的比例：" + str((none / (num0 + num2 + num3 + none)) * 100) + '%')
     f.write("\r")
     f.close()
+
+    # 统计灵敏度 特异度信息
