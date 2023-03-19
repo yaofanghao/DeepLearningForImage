@@ -22,7 +22,7 @@ def softmax(x):
 if __name__ == "__main__":
     frcnn = FRCNN()
 
-    dir_origin_path = "3/"
+    dir_origin_path = "0-1/"
     dir_save_path = "img_out"
 
     # 存放全部图片预测结果数据的txt
@@ -175,24 +175,24 @@ if __name__ == "__main__":
 
                 # 2023.3.19 2.0版
                 # 情况2
-                if (class0_max==0) & (class2_max>0) & (class3_max==0):
-                    new_score = 0.2-0.2*class2_max                    
+                if (class0_max>0) & (class2_max==0) & (class3_max==0):
+                    new_score = 0.2-0.2*class0_max                    
 
                 # 情况3
                 if (class0_max==0) & (class2_max==0) & (class3_max>0):
                     new_score = 0.2-0.2*class3_max
                 
                 # 情况4
-                if (class0_max==0) & (class2_max>0) & (class3_max>0):
+                if (class0_max>0) & (class2_max>0) & (class3_max==0):
                     new_score = 0
 
                 # 情况5\6\7
-                if (class0_max>0) & ((class2_max>0) | (class3_max>0)):
-                    new_score = 0.2+0.5*softmax_output[0]
+                if (class3_max>0) & ((class0_max>0) | (class2_max>0)):
+                    new_score = 0.2+0.5*softmax_output[2]
 
                 # 情况8
-                if (class0_max>0) & (class2_max==0) & (class3_max==0):
-                    new_score = class0_max
+                if (class3_max>0) & (class0_max==0) & (class2_max==0):
+                    new_score = class3_max
 
                 new_score = round(new_score,4)
                 f_new_scores.write(str(img_name) + " " + str(new_score))
