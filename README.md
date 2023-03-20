@@ -13,9 +13,6 @@
 * DeepLearningWithLabVIEW
   * 基于LabVIEW实现的图像处理、深度学习项目
 
-* Fluent Python
-  * Luciano《流畅的Python》参考代码
-
 * handson-ml2-master
   * Aurelien Geron《机器学习实战》参考代码
 

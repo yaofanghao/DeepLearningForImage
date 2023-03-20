@@ -22,7 +22,7 @@ def softmax(x):
 if __name__ == "__main__":
     frcnn = FRCNN()
 
-    dir_origin_path = "0-1/"
+    dir_origin_path = "3/"
     dir_save_path = "img_out"
 
     # 存放全部图片预测结果数据的txt
@@ -32,7 +32,7 @@ if __name__ == "__main__":
     f_softmax = open(os.path.join(os.getcwd(), 'result_softmax.txt'), 'a')
 
     # 存放经过新的计算方法得到新分数的txt
-    f_new_scores = open(os.path.join(os.getcwd(), 'result_new_scores_0_1.txt'), 'a')
+    f_new_scores = open(os.path.join(os.getcwd(), 'result_new_scores_2.txt'), 'a')
 
     # 创建图片输出的文件夹
     all_save_path_0 = str(dir_save_path) + "_0-1/"
