@@ -38,7 +38,7 @@ class FRCNN(object):
         #---------------------------------------------------------------------#
         #   只有得分大于置信度的预测框会被保留下来
         #---------------------------------------------------------------------#
-        "confidence"    : 0.3,
+        "confidence"    : 0.05,
         #---------------------------------------------------------------------#
         #   非极大抑制所用到的nms_iou大小
         #---------------------------------------------------------------------#
@@ -202,7 +202,7 @@ class FRCNN(object):
             bottom  = min(image.size[1], np.floor(bottom).astype('int32'))
             right   = min(image.size[0], np.floor(right).astype('int32'))
 
-            label = '{} {:.2f}'.format(predicted_class, score)
+            label = '{} {:.6f}'.format(predicted_class, score)
             draw = ImageDraw.Draw(image)
             label_size = draw.textsize(label, font)
             label = label.encode('utf-8')

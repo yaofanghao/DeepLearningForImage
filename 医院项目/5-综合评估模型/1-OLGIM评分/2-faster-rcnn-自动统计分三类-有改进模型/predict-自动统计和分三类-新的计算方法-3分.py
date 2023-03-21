@@ -16,7 +16,7 @@ def softmax(x):
     x_exp = numpy.exp(x)
     x_sum = numpy.sum(x_exp)
     s = x_exp / x_sum
-    s = numpy.around(s, 3)
+    s = numpy.around(s, 6)
     return s
  
 if __name__ == "__main__":
@@ -81,7 +81,7 @@ if __name__ == "__main__":
             print(out_classes)
             test1 = out_classes
             test1 = numpy.asarray(test1, dtype=int)
-            out_scores = numpy.around(out_scores, 3)
+            out_scores = numpy.around(out_scores, 6)
 
             if out_scores[0] == 0:  # 2023.3.2 解决了部分图片non-iterale的错误问题
                 none += 1
@@ -116,11 +116,11 @@ if __name__ == "__main__":
 
                 # 得到各类别分数的最大值 非常重要！
                 class0_max = numpy.max(class0)
-                class0_max = round(class0_max, 4)
+                class0_max = round(class0_max, 6)
                 class2_max = numpy.max(class2)
-                class2_max = round(class2_max, 4)
+                class2_max = round(class2_max, 6)
                 class3_max = numpy.max(class3)
-                class3_max = round(class3_max, 4)
+                class3_max = round(class3_max, 6)
 
                 # 计算三个类别最大分数输出的softmax值
                 softmax_output = softmax(numpy.array([class0_max, class2_max, class3_max]))
@@ -133,11 +133,11 @@ if __name__ == "__main__":
                 f_softmax.write(str(softmax_output[2]))
                 f_softmax.write("\r")
                 softmax_output_max = softmax_output.max()
-                softmax_output_max = round(softmax_output_max,4)
+                softmax_output_max = round(softmax_output_max,6)
 
                 locat = out_scores.argmax(axis=None, out=None)  # 找最大值位置
                 out_scores_max = out_scores.max()
-                out_scores_max = round(out_scores_max, 4)
+                out_scores_max = round(out_scores_max, 6)
                 a = out_classes
                 class_max_confidence = a[locat]  # 最大值位置的类别
                 print(class_max_confidence)
@@ -194,7 +194,7 @@ if __name__ == "__main__":
                 if (class3_max>0) & (class0_max==0) & (class2_max==0):
                     new_score = class3_max
 
-                new_score = round(new_score,4)
+                new_score = round(new_score,6)
                 f_new_scores.write(str(img_name) + " " + str(new_score))
                 f_new_scores.write("\r")
 

@@ -202,7 +202,7 @@ class FRCNN(object):
             bottom  = min(image.size[1], np.floor(bottom).astype('int32'))
             right   = min(image.size[0], np.floor(right).astype('int32'))
 
-            # label = '{} {:.2f}'.format(predicted_class, score)
+            # label = '{} {:.6f}'.format(predicted_class, score)
             # draw = ImageDraw.Draw(image)
             # label_size = draw.textsize(label, font)
             # label = label.encode('utf-8')
