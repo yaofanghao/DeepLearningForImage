@@ -5,7 +5,7 @@ https://blog.csdn.net/weixin_44791964/article/details/108513563
 
 可能的想法：
 * 选用ResNet50替换原模型的VGG16，作为backbone
-* 将relu替换为leaky relu
+* 选用leaky relu替换原模型的relu
 * 减少proposal个数 ？
   * 代码修改 nets/frcnn.py 中的 num_anchors （原的值为9，三种尺度x三种比例） 
   * 可以考虑改为4？（两种尺度x两种比例）
