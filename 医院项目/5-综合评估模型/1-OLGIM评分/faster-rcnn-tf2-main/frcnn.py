@@ -3,14 +3,15 @@ import os
 import time
 
 import numpy as np
-from keras.applications.imagenet_utils import preprocess_input
 from PIL import ImageDraw, ImageFont
+from tensorflow.keras.applications.imagenet_utils import preprocess_input
 
 import nets.frcnn as frcnn
 from utils.anchors import get_anchors
 from utils.utils import (cvtColor, get_classes, get_new_img_size, resize_image,
                          show_config)
 from utils.utils_bbox import BBoxUtility
+
 
 #--------------------------------------------#
 #   使用自己训练好的模型预测需要修改2个参数
@@ -29,7 +30,7 @@ class FRCNN(object):
         #   验证集损失较低不代表mAP较高，仅代表该权值在验证集上泛化性能较好。
         #   如果出现shape不匹配，同时要注意训练时的model_path和classes_path参数的修改
         #--------------------------------------------------------------------------#
-        "model_path"    : 'logs/best_epoch_weights.h5',
+        "model_path"    : 'model_data/voc_weights_resnet.h5',
         "classes_path"  : 'model_data/voc_classes.txt',
         #---------------------------------------------------------------------#
         #   网络的主干特征提取网络，resnet50或者vgg
@@ -38,11 +39,11 @@ class FRCNN(object):
         #---------------------------------------------------------------------#
         #   只有得分大于置信度的预测框会被保留下来
         #---------------------------------------------------------------------#
-        "confidence"    : 0.05,
+        "confidence"    : 0.5,
         #---------------------------------------------------------------------#
         #   非极大抑制所用到的nms_iou大小
         #---------------------------------------------------------------------#
-        "nms_iou"       : 0.1,
+        "nms_iou"       : 0.3,
         #---------------------------------------------------------------------#
         #   用于指定先验框的大小
         #---------------------------------------------------------------------#
@@ -129,26 +130,26 @@ class FRCNN(object):
         #---------------------------------------------------------#
         #   获得rpn网络预测结果和base_layer
         #---------------------------------------------------------#
-        rpn_pred        = self.model_rpn.predict(image_data)
+        rpn_pred        = self.model_rpn(image_data)
+        rpn_pred        = [x.numpy() for x in rpn_pred]
         #---------------------------------------------------------#
         #   生成先验框并解码
         #---------------------------------------------------------#
         anchors         = get_anchors(input_shape, self.backbone, self.anchors_size)
         rpn_results     = self.bbox_util.detection_out_rpn(rpn_pred, anchors)
-
+        
         #-------------------------------------------------------------#
         #   利用建议框获得classifier网络预测结果
         #-------------------------------------------------------------#
-        classifier_pred = self.model_classifier.predict([rpn_pred[2], rpn_results[:, :, [1, 0, 3, 2]]])
+        classifier_pred = self.model_classifier([rpn_pred[2], rpn_results[:, :, [1, 0, 3, 2]]])
+        classifier_pred = [x.numpy() for x in classifier_pred]
         #-------------------------------------------------------------#
         #   利用classifier的预测结果对建议框进行解码，获得预测框
         #-------------------------------------------------------------#
         results         = self.bbox_util.detection_out_classifier(classifier_pred, rpn_results, image_shape, input_shape, self.confidence)
 
         if len(results[0]) == 0:
-            out_scores_none = np.array([0])
-            out_classes_none = np.array([0])
-            return image, out_scores_none, out_classes_none,0,0,0,0
+            return image
             
         top_label   = np.array(results[0][:, 5], dtype = 'int32')
         top_conf    = results[0][:, 4]
@@ -202,7 +203,7 @@ class FRCNN(object):
             bottom  = min(image.size[1], np.floor(bottom).astype('int32'))
             right   = min(image.size[0], np.floor(right).astype('int32'))
 
-            label = '{} {:.6f}'.format(predicted_class, score)
+            label = '{} {:.2f}'.format(predicted_class, score)
             draw = ImageDraw.Draw(image)
             label_size = draw.textsize(label, font)
             label = label.encode('utf-8')
@@ -218,25 +219,15 @@ class FRCNN(object):
             draw.rectangle([tuple(text_origin), tuple(text_origin + label_size)], fill=self.colors[c])
             draw.text(text_origin, str(label,'UTF-8'), fill=(0, 0, 0), font=font)
             del draw
-        # print(out_scores.numpy().size)
-        if top_conf.size == 0:
-            top = 0
-            right = 0
-            left = 0
-            bottom = 0
 
-        return image, top_conf, top_label, top, right, left, bottom  # 和原版相比，添加了 out_scores, out_classes
+        return image
 
-    def get_map_txt(self, image_id, image, class_names, map_out_path):
-        f = open(os.path.join(map_out_path, "detection-results/"+image_id+".txt"),"w") 
+
+    def get_FPS(self, image, test_interval):
         #---------------------------------------------------#
         #   计算输入图片的高和宽
         #---------------------------------------------------#
         image_shape = np.array(np.shape(image)[0:2])
-        #---------------------------------------------------#
-        #   计算输入到网络中进行运算的图片的高和宽
-        #   保证短边是600的
-        #---------------------------------------------------#
         input_shape = get_new_img_size(image_shape[0], image_shape[1])
         #---------------------------------------------------------#
         #   在这里将图像转换成RGB图像，防止灰度图在预测时报错。
@@ -255,7 +246,8 @@ class FRCNN(object):
         #---------------------------------------------------------#
         #   获得rpn网络预测结果和base_layer
         #---------------------------------------------------------#
-        rpn_pred        = self.model_rpn.predict(image_data)
+        rpn_pred        = self.model_rpn(image_data)
+        rpn_pred        = [x.numpy() for x in rpn_pred]
         #---------------------------------------------------------#
         #   生成先验框并解码
         #---------------------------------------------------------#
@@ -265,7 +257,78 @@ class FRCNN(object):
         #-------------------------------------------------------------#
         #   利用建议框获得classifier网络预测结果
         #-------------------------------------------------------------#
-        classifier_pred = self.model_classifier.predict([rpn_pred[2], rpn_results[:, :, [1, 0, 3, 2]]])
+        classifier_pred = self.model_classifier([rpn_pred[2], rpn_results[:, :, [1, 0, 3, 2]]])
+        classifier_pred = [x.numpy() for x in classifier_pred]
+        #-------------------------------------------------------------#
+        #   利用classifier的预测结果对建议框进行解码，获得预测框
+        #-------------------------------------------------------------#
+        results         = self.bbox_util.detection_out_classifier(classifier_pred, rpn_results, image_shape, input_shape, self.confidence)
+
+        t1 = time.time()
+        for _ in range(test_interval):
+            #---------------------------------------------------------#
+            #   获得rpn网络预测结果和base_layer
+            #---------------------------------------------------------#
+            rpn_pred        = self.model_rpn(image_data)
+            rpn_pred        = [x.numpy() for x in rpn_pred]
+            #---------------------------------------------------------#
+            #   生成先验框并解码
+            #---------------------------------------------------------#
+            anchors         = get_anchors(input_shape, self.backbone, self.anchors_size)
+            rpn_results     = self.bbox_util.detection_out_rpn(rpn_pred, anchors)
+            temp_ROIs       = rpn_results[:, :, [1, 0, 3, 2]]
+            
+            #-------------------------------------------------------------#
+            #   利用建议框获得classifier网络预测结果
+            #-------------------------------------------------------------#
+            classifier_pred = self.model_classifier([rpn_pred[2], temp_ROIs])
+            classifier_pred = [x.numpy() for x in classifier_pred]
+            #-------------------------------------------------------------#
+            #   利用classifier的预测结果对建议框进行解码，获得预测框
+            #-------------------------------------------------------------#
+            results         = self.bbox_util.detection_out_classifier(classifier_pred, rpn_results, image_shape, input_shape, self.confidence)
+
+        t2 = time.time()
+        tact_time = (t2 - t1) / test_interval
+        return tact_time
+
+    def get_map_txt(self, image_id, image, class_names, map_out_path):
+        f = open(os.path.join(map_out_path, "detection-results/"+image_id+".txt"),"w") 
+        #---------------------------------------------------#
+        #   计算输入图片的高和宽
+        #---------------------------------------------------#
+        image_shape = np.array(np.shape(image)[0:2])
+        input_shape = get_new_img_size(image_shape[0], image_shape[1])
+        #---------------------------------------------------------#
+        #   在这里将图像转换成RGB图像，防止灰度图在预测时报错。
+        #   代码仅仅支持RGB图像的预测，所有其它类型的图像都会转化成RGB
+        #---------------------------------------------------------#
+        image       = cvtColor(image)
+        #---------------------------------------------------------#
+        #   给原图像进行resize，resize到短边为600的大小上
+        #---------------------------------------------------------#
+        image_data  = resize_image(image, [input_shape[1], input_shape[0]])
+        #---------------------------------------------------------#
+        #   添加上batch_size维度
+        #---------------------------------------------------------#
+        image_data  = np.expand_dims(preprocess_input(np.array(image_data, dtype='float32')), 0)
+
+        #---------------------------------------------------------#
+        #   获得rpn网络预测结果和base_layer
+        #---------------------------------------------------------#
+        rpn_pred        = self.model_rpn(image_data)
+        rpn_pred        = [x.numpy() for x in rpn_pred]
+        #---------------------------------------------------------#
+        #   生成先验框并解码
+        #---------------------------------------------------------#
+        anchors         = get_anchors(input_shape, self.backbone, self.anchors_size)
+        rpn_results     = self.bbox_util.detection_out_rpn(rpn_pred, anchors)
+        
+        #-------------------------------------------------------------#
+        #   利用建议框获得classifier网络预测结果
+        #-------------------------------------------------------------#
+        classifier_pred = self.model_classifier([rpn_pred[2], rpn_results[:, :, [1, 0, 3, 2]]])
+        classifier_pred = [x.numpy() for x in classifier_pred]
         #-------------------------------------------------------------#
         #   利用classifier的预测结果对建议框进行解码，获得预测框
         #-------------------------------------------------------------#

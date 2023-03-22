@@ -6,7 +6,7 @@ from frcnn import FRCNN
 if __name__ == "__main__":
     frcnn = FRCNN()
 
-    dir_origin_path = "jpg3/"
+    dir_origin_path = "img/"
     dir_save_path = "img_out"
 
     # 存放全部图片预测结果数据的txt
@@ -61,9 +61,19 @@ if __name__ == "__main__":
             f1.write("\r")
             test1 = out_classes
             test1 = numpy.asarray(test1, dtype=int)
-            out_scores = numpy.around(out_scores,3)
+            out_scores = numpy.around(out_scores,6)
 
-            if out_scores.size != 0:
+            if out_scores[0]==0:  # 2023.3.2 解决了部分图片non-iterale的错误问题
+                none += 1
+                r_image.save(os.path.join(all_save_path_none, img_name.replace(".jpg", ".png")), quality=95, subsampling=0)
+                f1.write("置信度分数最大的类别为：none")
+                f1.write("\r")
+                f1.write("分数为：none")
+                f1.write("\r")
+                f1.write("-------------------")
+                f1.write("\r")
+
+            if (out_scores.size != 0) & (out_scores[0]>0):
                 ################ 找到置信度最大的类别的算法 ############
                 num = 0
                 t = out_scores
@@ -82,15 +92,15 @@ if __name__ == "__main__":
 
                 # 得到各类别分数的最大值
                 class0_max = numpy.max(class0)
-                class0_max=round(class0_max, 4)
+                class0_max=round(class0_max, 6)
                 class2_max = numpy.max(class2)
-                class2_max=round(class2_max, 4)
+                class2_max=round(class2_max, 6)
                 class3_max = numpy.max(class3)
-                class3_max=round(class3_max, 4)
+                class3_max=round(class3_max, 6)
 
                 locat = out_scores.argmax(axis=None, out=None)  # 找最大值位置
                 out_scores_max = out_scores.max()
-                out_scores_max =round(out_scores_max,4)   # 小数点后2位
+                out_scores_max =round(out_scores_max,6)   # 小数点后2位
                 a = out_classes
                 class_max_confidence = a[locat]  # 最大值位置的类别
                 print(class_max_confidence)
@@ -121,15 +131,15 @@ if __name__ == "__main__":
                 f1.write("-------------------")
                 f1.write("\r")
 
-            else: # 没有识别出任何一个框
-                none += 1
-                r_image.save(os.path.join(all_save_path_none, img_name.replace(".jpg", ".png")), quality=95,subsampling=0)
-                f1.write("置信度分数最大的类别为：none")
-                f1.write("\r")
-                f1.write("分数为：none")
-                f1.write("\r")
-                f1.write("-------------------")
-                f1.write("\r")
+            # else: # 没有识别出任何一个框
+            #     none += 1
+            #     r_image.save(os.path.join(all_save_path_none, img_name.replace(".jpg", ".png")), quality=95,subsampling=0)
+            #     f1.write("置信度分数最大的类别为：none")
+            #     f1.write("\r")
+            #     f1.write("分数为：none")
+            #     f1.write("\r")
+            #     f1.write("-------------------")
+            #     f1.write("\r")
 
     # # -----------------------------------------------------------------------------------------------#
     print("识别为0-1分：")
