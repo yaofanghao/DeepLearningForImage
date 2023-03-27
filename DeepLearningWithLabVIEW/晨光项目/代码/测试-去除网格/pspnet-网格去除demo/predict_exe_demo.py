@@ -4,6 +4,12 @@
 # ---------------------------
 # 程序命令行输入方式示例： 
 #       python .\predict_exe_demo.py .\test.jpg 2 10
+#       输入：
+#           test.jpg
+#       输出：
+#           test_img_block/
+#           test_img_out/
+#           test_img_out/test_final_out.jpg
 
 import sys
 import cv2
@@ -72,7 +78,7 @@ if __name__ == "__main__":
     name_classes = ["background","grid"]
     dir_origin_path = str(filename) + '_img_block/'
     dir_save_path = str(filename) + "_img_out/"
-    output_save_path = str(filename) + "_final_out.jpg"
+    output_save_path = str(dir_save_path) + str(filename) + "_final_out.jpg"
 
     if not os.path.exists(dir_origin_path):
         os.makedirs(dir_origin_path)
@@ -90,19 +96,20 @@ if __name__ == "__main__":
     # 原分块图像文件夹路径为 dir_origin_path
     # 模型预测结果图像保存至 dir_save_path
     img_names = os.listdir(dir_origin_path)
+    img_names.sort(key=lambda x: int(x[:-4]))
     # 读取分块后图片的长宽 用于后续拼接
     img_test_path = str(dir_origin_path) + str(img_names[0])
     img_test = cv2.imread(img_test_path)
     h, w = img_test.shape[0], img_test.shape[1]
-    for img_name in tqdm(img_names):
-        if img_name.lower().endswith(('.bmp', '.dib', '.png', '.jpg', '.jpeg', '.pbm', '.pgm', '.ppm', '.tif', '.tiff')):
-            image_path  = os.path.join(dir_origin_path, img_name)
+    for _img_name in tqdm(img_names):
+        if _img_name.lower().endswith(('.bmp', '.dib', '.png', '.jpg', '.jpeg', '.pbm', '.pgm', '.ppm', '.tif', '.tiff')):
+            image_path  = os.path.join(dir_origin_path, _img_name)
             image       = Image.open(image_path)
             r_image     = pspnet.detect_image(image)
             if not os.path.exists(dir_save_path):
                 os.makedirs(dir_save_path)
-            r_image.save(os.path.join(dir_save_path, img_name))
-            print("predicting..." + str(img_name))
+            r_image.save(os.path.join(dir_save_path, _img_name))
+            print("predicting..." + str(_img_name))
     print("dir_predict image success!")
 
     # ------------------图像拼接
@@ -113,7 +120,7 @@ if __name__ == "__main__":
     image_save_names.sort(key=lambda x: int(x[:-4]))
     if len(image_save_names) != m * n:
         raise ValueError("row*colum != num!")
-    to_image = Image.new('RGB',(n*w, m*h),'white' )  # 创建一个新图
+    to_image = Image.new('L',(n*w, m*h),'white' )  # 创建一个新图 L模式表示灰度图
     # 循环遍历，把每张图片按顺序粘贴到对应位置上
     for y in range(1, m+1):
         for x in range(1, n+1):
@@ -121,5 +128,19 @@ if __name__ == "__main__":
                             Image.ANTIALIAS)
             to_image.paste(from_image, ((x-1)*w, (y-1)*h))
             print("composing..." + str(x) + " " + str(y))
-    to_image.save(output_save_path)    
+    # to_image.save(output_save_path)
+    to_image_array = np.array(to_image)
     print("compose image success!")
+
+    # ------------------输出图与原图叠加去除网格
+    src0 = cv2.imread(img_name, cv2.IMREAD_GRAYSCALE)
+    src = np.copy(src0)
+    for i in tqdm(range(img.shape[0])):
+        for j in range(img.shape[1]):
+            if (to_image_array[i,j]>250):
+                src[i,j] = 255  # 将预测为网格的部分，在原图对应位置设置为白色
+            else:
+                pass
+    mix = cv2.add(src0, src)
+    cv2.imwrite(output_save_path,src)
+    print("mix image success!")
