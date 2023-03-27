@@ -1,9 +1,9 @@
 # 2023.3.27
-# 实现输入单张图片--分块--模型预测--拼接--输出完整图片--输出图与原图叠加去除网格--保存至指定路径功能
+# 实现输入单张图片--分块--模型预测--拼接--输出完整图片--霍夫线检测算法--输出图与原图叠加去除网格--保存至指定路径功能
 # 并打包成exe
 # ---------------------------
 # 程序命令行输入方式示例： 
-#       python .\predict_exe_demo.py .\test.jpg 2 10
+#       python predict_exe_demo.py test.jpg 2 10
 #       输入：
 #           test.jpg
 #       输出：
@@ -14,9 +14,10 @@
 import sys
 import cv2
 import numpy as np
-import tensorflow as tf
 from PIL import Image
 import os
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"  # 忽略tensorflow错误信息
+import tensorflow as tf
 from tqdm import tqdm
 import matplotlib.pyplot as plt
 from pspnet import Pspnet
@@ -26,7 +27,7 @@ for gpu in gpus:
     tf.config.experimental.set_memory_growth(gpu, True)
 
 # 图像分块 分成m行n列    
-def divide_method2(img, m, n):  
+def divide_method2(img, m, n):
     h, w = img.shape[0], img.shape[1]
     grid_h = int(h * 1.0 / (m - 1) + 0.5)  # 每个网格的高
     grid_w = int(w * 1.0 / (n - 1) + 0.5)  # 每个网格的宽
@@ -67,19 +68,22 @@ if __name__ == "__main__":
     # ------------------参数设置区域
     pspnet = Pspnet()
     if len(sys.argv) ==1:
+        print("start: python predict_exe_demo.py test.jpg 2 10")
         img_name = "test.jpg"
         m = 2  # 图像分块的行数
         n = 10  # 图像分块的列数
     else:  # 传入图片名称参数
         img_name = sys.argv[1]
-        m = sys.argv[2]
-        n = sys.argv[3]
+        m = int(sys.argv[2])
+        n = int(sys.argv[3])
+    if (m<=1) | (n<=1):
+        raise AssertionError("Invalid input of m or n, m and n must bigger than 1.")
+
     filename, _ = os.path.splitext(img_name)
     name_classes = ["background","grid"]
     dir_origin_path = str(filename) + '_img_block/'
     dir_save_path = str(filename) + "_img_out/"
     output_save_path = str(dir_save_path) + str(filename) + "_final_out.jpg"
-
     if not os.path.exists(dir_origin_path):
         os.makedirs(dir_origin_path)
     if not os.path.exists(dir_save_path):
@@ -88,7 +92,7 @@ if __name__ == "__main__":
     # ------------------图像分块
     img = cv2.imread(img_name)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    divide_image2 = divide_method2(img, m + 1, n + 1)  # 该函数中m+1和n+1表示网格点个数，m和n分别表示分块的块数
+    divide_image2 = divide_method2(img, m+1, n+1)  # 该函数中m+1和n+1表示网格点个数，m和n分别表示分块的块数
     display_blocks(divide_image2)
     print("divide image success!")
 
@@ -135,10 +139,27 @@ if __name__ == "__main__":
     # ------------------输出图与原图叠加去除网格
     src0 = cv2.imread(img_name, cv2.IMREAD_GRAYSCALE)
     src = np.copy(src0)
+
+    # Probabilistic Line Transform
+    # 累计概率霍夫变换算法
+    dst = cv2.Canny(src0, 0, 150, None, 3)
+    cdstP = cv2.cvtColor(dst, cv2.COLOR_GRAY2BGR)
+    # 用法：(image, rho, theta, threshold,
+    #           lines=None, minLineLength=None, maxLineGap=None)
+    linesP = cv2.HoughLinesP(dst, 2, np.pi / 180, 150,
+                            None, minLineLength=1, maxLineGap=1)
+    # 画霍夫变换检测到的线（红色）
+    if linesP is not None:
+        for i in range(0, len(linesP)):
+            l = linesP[i][0]
+            cv2.line(cdstP, (l[0], l[1]), (l[2], l[3]), (0,0,255), 5, cv2.LINE_AA)
+
     for i in tqdm(range(img.shape[0])):
         for j in range(img.shape[1]):
             if (to_image_array[i,j]>250):
-                src[i,j] = 255  # 将预测为网格的部分，在原图对应位置设置为白色
+                src[i,j] = 255  # 对深度学习预测得到的图片中的白色部分排除为缺陷的可能，设置为白色
+            if (cdstP[i, j][0] == 0) & (cdstP[i, j][1] == 0) & (cdstP[i, j][2] == 255):
+                src[i, j] = 255  # # 对霍夫P线检测中的红色部分排除为缺陷的可能，设置为白色
             else:
                 pass
     mix = cv2.add(src0, src)

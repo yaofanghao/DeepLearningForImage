@@ -38,6 +38,7 @@ class Pspnet(object):
         self.model = pspnet([self.input_shape[0], self.input_shape[1], 3], self.num_classes,
                     downsample_factor=self.downsample_factor, backbone=self.backbone, aux_branch=False)
         self.model.load_weights(self.model_path, by_name = True)
+        print('pspnet model start...')
         print('{} model loaded.'.format(self.model_path))
 
     @tf.function
