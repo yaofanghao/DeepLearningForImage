@@ -14,3 +14,9 @@
   
 * 保留dis中的.exe和需要运行的其他文件（如训练参数h5）即可，可以转移到其他计算机运行。
 * **在同一目录下放入upx.exe可以减少一些生成exe的大小**
+
+* 如果提示 A RecursionError (maximum recursion depth exceeded) occurred.For working around please follow these instructions ，在spec文件中开头加入以下两行：
+import sys
+sys.setrecursionlimit(2000)
+* 然后cmd下输入
+pyinstaller xxx.spec

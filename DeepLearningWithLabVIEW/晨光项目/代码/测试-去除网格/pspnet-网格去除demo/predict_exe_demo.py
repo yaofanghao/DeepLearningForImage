@@ -97,7 +97,7 @@ if __name__ == "__main__":
     # ------------------图像分块
     img = cv2.imdecode(np.fromfile(img_name, dtype=np.uint8), cv2.IMREAD_COLOR)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    print("start divide image... m (row) is 2, n (column) is 10.")
+    print("start divide image... / m (row) is 2, n (column) is 10.")
     divide_image2 = divide_method2(img, m+1, n+1)  # 该函数中m+1和n+1表示网格点个数，m和n分别表示分块的块数
     display_blocks(divide_image2)
     print("divide image success!")
@@ -160,8 +160,11 @@ if __name__ == "__main__":
             cv2.line(cdstP, (l[0], l[1]), (l[2], l[3]), (0,0,255), 5, cv2.LINE_AA)
 
     print("start mix image...")
-    for i in tqdm(range(img.shape[0])):
-        for j in range(img.shape[1]):
+    # 选取src和to_image_array两者的最小尺寸做遍历
+    _i = min(src.shape[0], to_image_array.shape[0])
+    _j = min(src.shape[1], to_image_array.shape[1])
+    for i in tqdm(range(_i)):
+        for j in range(_j):
             if (to_image_array[i,j]>250):
                 src[i,j] = 255  # 对深度学习预测得到的图片中的白色部分排除为缺陷的可能，设置为白色
             if (cdstP[i, j][0] == 0) & (cdstP[i, j][1] == 0) & (cdstP[i, j][2] == 255):

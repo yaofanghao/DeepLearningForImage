@@ -23,6 +23,7 @@
 		<Item Name="子VI-查看某框.vi" Type="VI" URL="../子VI-查看某框.vi"/>
 		<Item Name="子VI-窗位窗宽调整.vi" Type="VI" URL="../子VI-窗位窗宽调整.vi"/>
 		<Item Name="子VI-深度学习自动检测.vi" Type="VI" URL="../子VI-深度学习自动检测.vi"/>
+		<Item Name="子VI-深度学习自动检测结果分析.vi" Type="VI" URL="../子VI-深度学习自动检测结果分析.vi"/>
 		<Item Name="子VI-图像预处理.vi" Type="VI" URL="../子VI-图像预处理.vi"/>
 		<Item Name="自定义成像色谱20200214.vi" Type="VI" URL="../自定义成像色谱20200214.vi"/>
 		<Item Name="阈值范围选择子VI.vi" Type="VI" URL="../阈值范围选择子VI.vi"/>
