@@ -2,8 +2,7 @@
 # 实现输入单张图片--分块--模型预测--拼接--输出完整图片--霍夫线检测算法--输出图与原图叠加去除网格--保存至指定路径功能
 # 并打包成exe
 # ---------------------------
-# 程序命令行输入方式示例： 
-#       python predict_exe_demo.py test.jpg 2 10
+# 程序命令行输入方式示例：
 #       输入：
 #           test.jpg
 #       输出：
@@ -11,12 +10,12 @@
 #           test_img_out/
 #           test_img_out/test_final_out.jpg
 
-import sys
+# import sys
 import cv2
 import numpy as np
 from PIL import Image
 import os
-os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"  # 忽略tensorflow错误信息
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"  # 忽略TensorFlow的warning信息
 import tensorflow as tf
 from tqdm import tqdm
 import matplotlib.pyplot as plt
@@ -38,8 +37,6 @@ def divide_method2(img, m, n):
 
     # 图像缩放
     img_re = cv2.resize(img, (w, h),cv2.INTER_LINEAR)
-    # 也可以用img_re=skimage.transform.resize(img, (h,w)).astype(np.uint8)
-    # plt.imshow(img_re)
     gx, gy = np.meshgrid(np.linspace(0, w, n), np.linspace(0, h, m))
     gx = gx.astype(np.int)
     gy = gy.astype(np.int)
@@ -60,38 +57,47 @@ def display_blocks(divide_image):
     for i in range(m):
         for j in range(n):
             plt.imsave("{}/{}.jpg".format(dir_origin_path,num), divide_image[i, j, :])
-            print("processing..." + str(num))
+            # print("processing..." + str(num))
             num += 1
     plt.show()
 
 if __name__ == "__main__":
     # ------------------参数设置区域
     pspnet = Pspnet()
-    if len(sys.argv) ==1:
-        print("start: python predict_exe_demo.py test.jpg 2 10")
-        img_name = "test.jpg"
-        m = 2  # 图像分块的行数
-        n = 10  # 图像分块的列数
-    else:  # 传入图片名称参数
-        img_name = sys.argv[1]
-        m = int(sys.argv[2])
-        n = int(sys.argv[3])
-    if (m<=1) | (n<=1):
-        raise AssertionError("Invalid input of m or n, m and n must bigger than 1.")
+    # if len(sys.argv) ==1:
+    #     print("start: python predict_exe_demo.py test.jpg 2 10")
+    #     img_name = "test.jpg"
+    #     m = 2  # 图像分块的行数
+    #     n = 10  # 图像分块的列数
+    # else:  # 传入图片名称参数
+    #     img_name = sys.argv[1]
+    #     m = int(sys.argv[2])
+    #     n = int(sys.argv[3])
+    # if (m<=1) | (n<=1):
+    #     raise AssertionError("Invalid input of m or n, m and n must bigger than 1.")
+
+    img_name = input("Input image filename:")
+    try:
+        image = Image.open(img_name)
+    except:
+        raise AssertionError('Fail to open image!')
+    m = 2
+    n = 10
 
     filename, _ = os.path.splitext(img_name)
     name_classes = ["background","grid"]
     dir_origin_path = str(filename) + '_img_block/'
     dir_save_path = str(filename) + "_img_out/"
-    output_save_path = str(dir_save_path) + str(filename) + "_final_out.jpg"
+    output_save_path = str(dir_save_path) + "final_out.jpg"
     if not os.path.exists(dir_origin_path):
         os.makedirs(dir_origin_path)
     if not os.path.exists(dir_save_path):
         os.makedirs(dir_save_path)
 
     # ------------------图像分块
-    img = cv2.imread(img_name)
+    img = cv2.imdecode(np.fromfile(img_name, dtype=np.uint8), cv2.IMREAD_COLOR)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    print("start divide image... m (row) is 2, n (column) is 10.")
     divide_image2 = divide_method2(img, m+1, n+1)  # 该函数中m+1和n+1表示网格点个数，m和n分别表示分块的块数
     display_blocks(divide_image2)
     print("divide image success!")
@@ -103,8 +109,9 @@ if __name__ == "__main__":
     img_names.sort(key=lambda x: int(x[:-4]))
     # 读取分块后图片的长宽 用于后续拼接
     img_test_path = str(dir_origin_path) + str(img_names[0])
-    img_test = cv2.imread(img_test_path)
+    img_test = cv2.imdecode(np.fromfile(img_test_path, dtype=np.uint8), cv2.IMREAD_COLOR)
     h, w = img_test.shape[0], img_test.shape[1]
+    print("start dir_predict image...")
     for _img_name in tqdm(img_names):
         if _img_name.lower().endswith(('.bmp', '.dib', '.png', '.jpg', '.jpeg', '.pbm', '.pgm', '.ppm', '.tif', '.tiff')):
             image_path  = os.path.join(dir_origin_path, _img_name)
@@ -113,7 +120,6 @@ if __name__ == "__main__":
             if not os.path.exists(dir_save_path):
                 os.makedirs(dir_save_path)
             r_image.save(os.path.join(dir_save_path, _img_name))
-            print("predicting..." + str(_img_name))
     print("dir_predict image success!")
 
     # ------------------图像拼接
@@ -126,18 +132,17 @@ if __name__ == "__main__":
         raise ValueError("row*colum != num!")
     to_image = Image.new('L',(n*w, m*h),'white' )  # 创建一个新图 L模式表示灰度图
     # 循环遍历，把每张图片按顺序粘贴到对应位置上
+    print("start compose image...")
     for y in range(1, m+1):
         for x in range(1, n+1):
             from_image = Image.open(dir_save_path + image_save_names[n*(y-1)+x-1]).resize((w, h), 
                             Image.ANTIALIAS)
             to_image.paste(from_image, ((x-1)*w, (y-1)*h))
-            print("composing..." + str(x) + " " + str(y))
-    # to_image.save(output_save_path)
     to_image_array = np.array(to_image)
     print("compose image success!")
 
     # ------------------输出图与原图叠加去除网格
-    src0 = cv2.imread(img_name, cv2.IMREAD_GRAYSCALE)
+    src0 = cv2.imdecode(np.fromfile(img_name, dtype=np.uint8), cv2.IMREAD_COLOR)
     src = np.copy(src0)
 
     # Probabilistic Line Transform
@@ -154,6 +159,7 @@ if __name__ == "__main__":
             l = linesP[i][0]
             cv2.line(cdstP, (l[0], l[1]), (l[2], l[3]), (0,0,255), 5, cv2.LINE_AA)
 
+    print("start mix image...")
     for i in tqdm(range(img.shape[0])):
         for j in range(img.shape[1]):
             if (to_image_array[i,j]>250):
@@ -163,5 +169,6 @@ if __name__ == "__main__":
             else:
                 pass
     mix = cv2.add(src0, src)
-    cv2.imwrite(output_save_path,src)
+    # cv2.imwrite(output_save_path, mix)
+    cv2.imencode('.jpg', mix)[1].tofile(output_save_path)  # 保存图片，解决了中文路径报错的问题
     print("mix image success!")
