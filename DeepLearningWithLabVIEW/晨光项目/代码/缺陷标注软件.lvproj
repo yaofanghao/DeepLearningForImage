@@ -11,22 +11,22 @@
 		<Property Name="server.vi.propertiesEnabled" Type="Bool">true</Property>
 		<Property Name="specify.custom.address" Type="Bool">false</Property>
 		<Item Name="ini配置文件读取（DBL）.vi" Type="VI" URL="../ini配置文件读取（DBL）.vi"/>
-		<Item Name="复材超声C扫缺陷分析评定软件.vi" Type="VI" URL="../复材超声C扫缺陷分析评定软件.vi"/>
-		<Item Name="工件信息输入_子VI.vi" Type="VI" URL="../工件信息输入_子VI.vi"/>
 		<Item Name="灰度图像平滑去毛刺处理.vi" Type="VI" URL="../灰度图像平滑去毛刺处理.vi"/>
 		<Item Name="控件 1.ctl" Type="VI" URL="../控件 1.ctl"/>
 		<Item Name="控件2.ctl" Type="VI" URL="../控件2.ctl"/>
-		<Item Name="线性灰度值曲线查看子VI.vi" Type="VI" URL="../线性灰度值曲线查看子VI.vi"/>
+		<Item Name="主程序-复材超声C扫缺陷分析评定软件.vi" Type="VI" URL="../主程序-复材超声C扫缺陷分析评定软件.vi"/>
 		<Item Name="子VI-查看某框-不显示界面-只读穿透图模式.vi" Type="VI" URL="../子VI-查看某框-不显示界面-只读穿透图模式.vi"/>
 		<Item Name="子VI-查看某框-不显示界面.vi" Type="VI" URL="../子VI-查看某框-不显示界面.vi"/>
 		<Item Name="子VI-查看某框-只读穿透图模式.vi" Type="VI" URL="../子VI-查看某框-只读穿透图模式.vi"/>
 		<Item Name="子VI-查看某框.vi" Type="VI" URL="../子VI-查看某框.vi"/>
 		<Item Name="子VI-窗位窗宽调整.vi" Type="VI" URL="../子VI-窗位窗宽调整.vi"/>
+		<Item Name="子VI-工件信息输入.vi" Type="VI" URL="../子VI-工件信息输入.vi"/>
 		<Item Name="子VI-深度学习自动检测.vi" Type="VI" URL="../子VI-深度学习自动检测.vi"/>
 		<Item Name="子VI-深度学习自动检测结果分析.vi" Type="VI" URL="../子VI-深度学习自动检测结果分析.vi"/>
 		<Item Name="子VI-图像预处理.vi" Type="VI" URL="../子VI-图像预处理.vi"/>
+		<Item Name="子VI-线性灰度值曲线查看.vi" Type="VI" URL="../子VI-线性灰度值曲线查看.vi"/>
+		<Item Name="子VI-阈值范围选择.vi" Type="VI" URL="../子VI-阈值范围选择.vi"/>
 		<Item Name="自定义成像色谱20200214.vi" Type="VI" URL="../自定义成像色谱20200214.vi"/>
-		<Item Name="阈值范围选择子VI.vi" Type="VI" URL="../阈值范围选择子VI.vi"/>
 		<Item Name="依赖关系" Type="Dependencies">
 			<Item Name="vi.lib" Type="Folder">
 				<Item Name="8.6CompatibleGlobalVar.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/config.llb/8.6CompatibleGlobalVar.vi"/>

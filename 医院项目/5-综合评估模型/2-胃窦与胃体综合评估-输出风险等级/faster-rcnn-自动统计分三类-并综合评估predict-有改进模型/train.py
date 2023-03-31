@@ -9,7 +9,7 @@ from tensorflow.keras.optimizers import SGD, Adam
 from nets.frcnn import get_model
 from nets.frcnn_training import (ProposalTargetCreator, classifier_cls_loss,
                                  classifier_smooth_l1, get_lr_scheduler,
-                                 rpn_cls_loss, rpn_smooth_l1)
+                                 rpn_cls_loss, rpn_smooth_l1, rpn_smooth_l1_plus)
 from utils.anchors import get_anchors
 from utils.callbacks import EvalCallback, LossHistory
 from utils.dataloader import FRCNNDatasets, OrderedEnqueuer
