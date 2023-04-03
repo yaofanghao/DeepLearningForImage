@@ -128,7 +128,8 @@ def get_jpg_and_png():
                 new.save(os.path.join("./SegmentationClass", count[i].replace("JPG", "png")))
 
             print(np.max(new), np.min(new))
+    print("完成get_jpg_and_png步骤!")
 
-if __name__ == '__main__':
+if __name__ == '__main__':    
     json_to_dataset()
     get_jpg_and_png()
