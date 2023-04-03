@@ -192,7 +192,7 @@ if __name__ == "__main__":
 
                 # 情况8
                 if (class2_max>0) & (class0_max==0) & (class3_max==0):
-                    new_score = class2_max
+                    new_score = 0.7+0.3*class2_max
 
                 new_score = round(new_score,6)
                 f_new_scores.write(str(img_name) + " " + str(new_score))
