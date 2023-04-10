@@ -1,8 +1,10 @@
 # 2023.3.7 @yaofanghao
+# update 2023.4.7
 # 用于制作exe的py文件
 
 import time
 import os
+# os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"  # 忽略TensorFlow的warning信息
 from tqdm import tqdm
 import colorsys
 import copy
@@ -23,8 +25,8 @@ for gpu in gpus:
 
 class HRnet_Segmentation(object):
     _defaults = {
-        "model_path": 'logs/best_epoch_weights.h5',
-        "num_classes": 8,  # 所需要区分的类的个数+1
+        "model_path": 'logs/best_epoch_weights.h5',  # 模型权重
+        "num_classes": 10,  # 所需要区分的类的个数+1
         # ----------------------------------------#
         #   所使用的的主干网络：
         #   hrnetv2_w18
@@ -33,7 +35,6 @@ class HRnet_Segmentation(object):
         # ----------------------------------------#
         "backbone": "hrnetv2_w32",
         "input_shape": [480, 480],     #   输入图片的大小
-        # "input_shape": [320, 320],
     }
 
     def __init__(self, **kwargs):
@@ -58,11 +59,8 @@ class HRnet_Segmentation(object):
 
     #   获得所有的分类
     def generate(self):
-        # -------------------------------#
         #   载入模型与权值
-        # -------------------------------#
         self.model = HRnet([self.input_shape[0], self.input_shape[1], 3], self.num_classes, backbone=self.backbone)
-
         self.model.load_weights(self.model_path)
         logging.info('{} model loaded.'.format(self.model_path))
 
@@ -72,50 +70,32 @@ class HRnet_Segmentation(object):
         return preds
 
     #   检测图片
-    def detect_image(self, image, name_classes=None, img_name=None):
-        # ---------------------------------------------------------#
-        #   在这里将图像转换成RGB图像，防止灰度图在预测时报错。
-        #   代码仅仅支持RGB图像的预测，所有其它类型的图像都会转化成RGB
-        # ---------------------------------------------------------#
+    def detect_image(self, image, name_classes=None, img_name=None, filename=None):
         image = cvtColor(image)
-        # ---------------------------------------------------#
         #   对输入图像进行一个备份，后面用于绘图
-        # ---------------------------------------------------#
         old_img = copy.deepcopy(image)
         orininal_h = np.array(image).shape[0]
         orininal_w = np.array(image).shape[1]
-        # ---------------------------------------------------------#
         #   给图像增加灰条，实现不失真的resize
-        # ---------------------------------------------------------#
         image_data, nw, nh = resize_image(image, (self.input_shape[1], self.input_shape[0]))
-        # ---------------------------------------------------------#
         #   归一化+添加上batch_size维度
-        # ---------------------------------------------------------#
         image_data = np.expand_dims(preprocess_input(np.array(image_data, np.float32)), 0)
 
-        # ---------------------------------------------------#
         #   图片传入网络进行预测
-        # ---------------------------------------------------#
         pr = self.get_pred(image_data)[0].numpy()
-        # ---------------------------------------------------#
         #   将灰条部分截取掉
-        # ---------------------------------------------------#
         pr = pr[int((self.input_shape[0] - nh) // 2): int((self.input_shape[0] - nh) // 2 + nh), \
              int((self.input_shape[1] - nw) // 2): int((self.input_shape[1] - nw) // 2 + nw)]
-        # ---------------------------------------------------#
         #   进行图片的resize
-        # ---------------------------------------------------#
         pr = cv2.resize(pr, (orininal_w, orininal_h), interpolation=cv2.INTER_LINEAR)
-        # ---------------------------------------------------#
         #   取出每一个像素点的种类
-        # ---------------------------------------------------#
         pr = pr.argmax(axis=-1)
 
         seg_img = np.reshape(np.array(self.colors, np.uint8)[np.reshape(pr, [-1])], [orininal_h, orininal_w, -1])
         image = Image.fromarray(np.uint8(seg_img))
         image = Image.blend(old_img, image, 0.7)
 
-        # 修改显示字体
+        # 修改显示字体格式
         font = ImageFont.truetype(font='model_data/simhei.ttf',
                                   size=np.floor(3e-2 * image.size[1] + 20).astype('int32'))  # 修改字体大小
         draw = ImageDraw.Draw(image)
@@ -127,26 +107,30 @@ class HRnet_Segmentation(object):
                 draw.text((50 * i, 50 * i), str(name_classes[i]), fill='red', font=font)
                 output_class_name = np.append(output_class_name, i)
             classes_nums[i] = num
-        logging.debug( "{}--{}".format(img_name,output_class_name))
+        logging.debug( "{}发现缺陷--{}".format(img_name,output_class_name))
         max_output_class_name = np.max(output_class_name)
 
-        # 2023.3.3 只保存有预测结果的图片（只有background不算作有预测结果）
-        # 最大预测结果类别大于0，说明预测出的不是只有background，此时保存图片
+        # 2023.3.3改 只保存有预测结果的图片（只有background不算作有预测结果）
+        # 代码原理：最大预测结果类别大于0，说明预测出的不是只有background，此时保存图片
         if (max_output_class_name > 0):
             f1 = open(os.path.join(os.getcwd(), 'predict_result.txt'), 'a')  # 存放预测结果的文件夹
             f1.write(img_name)
             f1.write("  最大分数预测类别为： "+ str(max_output_class_name))
             f1.write("\r")
-            image.save(os.path.join("img_out/", img_name))
+            image.save(os.path.join( str(filename)+"_img_out/", img_name))
             f1.close()
 
 if __name__ == "__main__":
 
-    #------------------------------------------------#
-    #   逐帧分解视频
-    #------------------------------------------------#
-    video_name = 'test.mp4'  # 原视频名称
-    output_dir = 'img/'  # 保存图片路径
+    # ------------------输入要读取的内窥图像视频
+    video_name = input("Input video filename:")
+    try:
+        logging.debug('success read video ' + str(video_name))
+        filename, _ = os.path.splitext(video_name)
+    except:
+        logging.error('Fail to open video!')
+
+    output_dir = str(filename) + '_img/'  # 保存图片文件夹路径
     output_img_type = '.jpg'  # 保存图片的格式
     vc = cv2.VideoCapture(video_name)
     if not os.path.exists(output_dir):
@@ -164,32 +148,28 @@ if __name__ == "__main__":
             break
         if c % timeF == 0:  # 每隔timeF帧进行存储
             cv2.imwrite(output_dir + str(c) + output_img_type, frame)
+            logging.debug('success read frame of video:' + str(c))
         c = c + 1
         cv2.waitKey(1)
-        logging.debug('success:' + str(c))
     vc.release()
-
-    #------------------------------------------------#
-    #   对img文件中图片批量预测
-    #------------------------------------------------#
-    logging.debug("--------------")
-    logging.debug("--------------")
+    
+    # ------------------对img文件中图片批量预测
+    logging.debug("-----------------------")
     logging.info("start model predict")
-    hrnet1 = HRnet_Segmentation()
-    name_classes    = ["background","duoyuwu","aokeng","qipi","cashang","gubo","xiuban","baiban"]    #   区分的种类，和json_to_dataset里面的一样
-    dir_origin_path = "img/"
-    dir_save_path   = "img_out/"
+    hrnet = HRnet_Segmentation()
+    name_classes    = ["background","duoyuwu","aokeng","qipi","cashang","gubo","xiuban","baiban","huashang","yanghuawu"]    #   区分的种类，和json_to_dataset里面的一样
+    dir_save_path   = str(filename) + "_img_out/"
     if not os.path.exists(dir_save_path):
         os.makedirs(dir_save_path)
 
-
-    localtime1 = time.localtime(time.time())
-    img_names = os.listdir(dir_origin_path)
+    # localtime1 = time.localtime(time.time())
+    img_names = os.listdir(output_dir)
     img_names.sort(key=lambda x : int(x.split('.')[0]))  # 按照1，2，3顺序读图片
     for img_name in tqdm(img_names):
         if img_name.lower().endswith(('.bmp', '.dib', '.png', '.jpg', '.jpeg', '.pbm', '.pgm', '.ppm', '.tif', '.tiff')):
-            image_path  = os.path.join(dir_origin_path, img_name)
+            image_path  = os.path.join(output_dir, img_name)
             image       = Image.open(image_path)
-            hrnet1.detect_image(image, name_classes=name_classes, img_name=img_name)
+            # 预测图片，只保存有预测结果图片
+            hrnet.detect_image(image, name_classes=name_classes, img_name=img_name, filename=filename)
 
     logging.info("success, all done")

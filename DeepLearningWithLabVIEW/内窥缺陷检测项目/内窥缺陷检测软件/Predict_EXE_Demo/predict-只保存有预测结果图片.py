@@ -164,7 +164,7 @@ class HRnet_Segmentation(object):
 
 if __name__ == "__main__":
     hrnet1 = HRnet_Segmentation()
-    name_classes    = ["background","duoyuwu","aokeng","qipi","cashang","gubo","xiuban","baiban"]    #   区分的种类，和json_to_dataset里面的一样
+    name_classes    = ["background","duoyuwu","aokeng","qipi","cashang","gubo","xiuban","baiban","huashang","yanghuawu"]    #   区分的种类，和json_to_dataset里面的一样
     dir_origin_path = "img/"
     dir_save_path   = "img_out/"
     if not os.path.exists(dir_save_path):

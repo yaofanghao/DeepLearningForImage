@@ -7,12 +7,12 @@ import os
 import shutil
 
 #目标文件夹路径
-determination = 'C:\\users\\姚方浩\\Desktop\\nan42\\output'
+determination = './output'
 if not os.path.exists(determination):
     os.makedirs(determination)
 
 #原文件夹总的路径
-path = 'C:\\users\\姚方浩\\Desktop\\nan42\\source'
+path = './source'
 folders = os.listdir(path)
 for folder in folders:
     dirs = path + '/' + str(folder)
