@@ -2,8 +2,6 @@
 # 几种超分辨率算法对比 
 # coding=utf-8
 import os
-from model import resolve_single
-from model.srgan import generator
 import cv2
 from PIL import Image
 import numpy
@@ -27,6 +25,8 @@ if __name__ == '__main__':
         pass
     else:
         # 加载模型
+        from model import resolve_single
+        from model.srgan import generator
         weights_dir = 'weights'
         weights_file = lambda filename: os.path.join(weights_dir, filename)
         os.makedirs(weights_dir, exist_ok=True)
