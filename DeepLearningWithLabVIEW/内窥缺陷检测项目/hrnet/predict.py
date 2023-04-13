@@ -13,8 +13,8 @@ for gpu in gpus:
 
 if __name__ == "__main__":
     hrnet = HRnet_Segmentation()
-    mode = "dir_predict"
-    name_classes    = ["background","duoyuwu","aokeng","qipi","cashang","gubo","xiuban","baiban"]    #   区分的种类，和json_to_dataset里面的一样
+    mode = "predict"
+    name_classes    = ["background","duoyuwu","aokeng","qipi","cashang","gubo","xiuban","baiban","huashang","yanghuawu"]    #   区分的种类，和json_to_dataset里面的一样
     dir_origin_path = "img/"
     dir_save_path   = "img_out/"
 

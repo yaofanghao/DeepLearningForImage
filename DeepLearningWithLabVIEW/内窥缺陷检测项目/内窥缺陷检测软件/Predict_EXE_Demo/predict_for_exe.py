@@ -1,5 +1,5 @@
 # 2023.3.7 @yaofanghao
-# update 2023.4.7
+# update 2023.4.12
 # 用于制作exe的py文件
 
 import time
@@ -19,9 +19,19 @@ from utils.utils import cvtColor, preprocess_input, resize_image, show_config
 import logging
 logging.basicConfig(format='%(asctime)s %(levelname)s %(name)s %(message)s',level=logging.DEBUG)
 
+# 使用GPU
 gpus = tf.config.experimental.list_physical_devices(device_type='GPU')
 for gpu in gpus:
     tf.config.experimental.set_memory_growth(gpu, True)
+
+# 使用CPU
+# os.environ["CUDA_VISIBLE_DEVICES"] ="-1"
+
+# 模式设置
+# 0:单张图片预测
+# 1：视频预测
+mode = 0
+# mode = 1
 
 class HRnet_Segmentation(object):
     _defaults = {
@@ -62,7 +72,7 @@ class HRnet_Segmentation(object):
         #   载入模型与权值
         self.model = HRnet([self.input_shape[0], self.input_shape[1], 3], self.num_classes, backbone=self.backbone)
         self.model.load_weights(self.model_path)
-        logging.info('{} model loaded.'.format(self.model_path))
+        # logging.info('{} model loaded.'.format(self.model_path))
 
     @tf.function
     def get_pred(self, photo):
@@ -113,7 +123,7 @@ class HRnet_Segmentation(object):
         # 2023.3.3改 只保存有预测结果的图片（只有background不算作有预测结果）
         # 代码原理：最大预测结果类别大于0，说明预测出的不是只有background，此时保存图片
         if (max_output_class_name > 0):
-            f1 = open(os.path.join(os.getcwd(), 'predict_result.txt'), 'a')  # 存放预测结果的文件夹
+            f1 = open(os.path.join(os.getcwd(), str(filename)+'_predict_result.txt'), 'a')  # 存放预测结果的文件夹
             f1.write(img_name)
             f1.write("  最大分数预测类别为： "+ str(max_output_class_name))
             f1.write("\r")
@@ -121,55 +131,65 @@ class HRnet_Segmentation(object):
             f1.close()
 
 if __name__ == "__main__":
-
-    # ------------------输入要读取的内窥图像视频
-    video_name = input("Input video filename:")
-    try:
-        logging.debug('success read video ' + str(video_name))
-        filename, _ = os.path.splitext(video_name)
-    except:
-        logging.error('Fail to open video!')
-
-    output_dir = str(filename) + '_img/'  # 保存图片文件夹路径
-    output_img_type = '.jpg'  # 保存图片的格式
-    vc = cv2.VideoCapture(video_name)
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
-    if vc.isOpened():
-        rval, frame = vc.read()
-    else:
-        rval = False
-        logging.error('Video do not exist.')
-    timeF = 1  # 视频帧计数间隔频率
-    c = 1  # 统计帧数
-    while rval:  # 循环读取视频帧
-        rval, frame = vc.read()
-        if not rval:
-            break
-        if c % timeF == 0:  # 每隔timeF帧进行存储
-            cv2.imwrite(output_dir + str(c) + output_img_type, frame)
-            logging.debug('success read frame of video:' + str(c))
-        c = c + 1
-        cv2.waitKey(1)
-    vc.release()
-    
-    # ------------------对img文件中图片批量预测
-    logging.debug("-----------------------")
-    logging.info("start model predict")
     hrnet = HRnet_Segmentation()
-    name_classes    = ["background","duoyuwu","aokeng","qipi","cashang","gubo","xiuban","baiban","huashang","yanghuawu"]    #   区分的种类，和json_to_dataset里面的一样
-    dir_save_path   = str(filename) + "_img_out/"
-    if not os.path.exists(dir_save_path):
-        os.makedirs(dir_save_path)
+    name_classes = ["background","duoyuwu","aokeng","qipi","cashang","gubo","xiuban","baiban","yanghuawu","huashang"]    #   区分的种类，和json_to_dataset里面的一样
 
-    # localtime1 = time.localtime(time.time())
-    img_names = os.listdir(output_dir)
-    img_names.sort(key=lambda x : int(x.split('.')[0]))  # 按照1，2，3顺序读图片
-    for img_name in tqdm(img_names):
-        if img_name.lower().endswith(('.bmp', '.dib', '.png', '.jpg', '.jpeg', '.pbm', '.pgm', '.ppm', '.tif', '.tiff')):
-            image_path  = os.path.join(output_dir, img_name)
-            image       = Image.open(image_path)
-            # 预测图片，只保存有预测结果图片
-            hrnet.detect_image(image, name_classes=name_classes, img_name=img_name, filename=filename)
+    if mode == 0:
+        # ------------------输入要读取的内窥单张图像
+        img_name = input('Input image filename:')
+        image = Image.open(str(img_name))
+        logging.debug('success read image ' + str(img_name))
+        filename, _ = os.path.splitext(img_name)
+        dir_save_path   = str(filename) + "_img_out/"
+        if not os.path.exists(dir_save_path):
+            os.makedirs(dir_save_path)
+        logging.debug("-----------------------")
+        logging.info("start image predict")
+        r_image = hrnet.detect_image(image, name_classes=name_classes, img_name=img_name, filename=filename)
+        logging.info("success, predict done!")
 
-    logging.info("success, all done")
+    if mode == 1:
+        # ------------------输入要读取的内窥图像视频
+        video_name = input("Input video filename:")
+        try:
+            logging.debug('success read video ' + str(video_name))
+            filename, _ = os.path.splitext(video_name)
+        except:
+            logging.error('Fail to open video!')
+        output_dir = str(filename) + '_img/'  # 保存图片文件夹路径
+        output_img_type = '.jpg'  # 保存图片的格式
+        vc = cv2.VideoCapture(video_name)
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+        if vc.isOpened():
+            rval, frame = vc.read()
+        else:
+            rval = False
+            logging.error('Video do not exist.')
+        timeF = 1  # 视频帧计数间隔频率
+        c = 1  # 统计帧数
+        while rval:  # 循环读取视频帧
+            rval, frame = vc.read()
+            if not rval:
+                break
+            if c % timeF == 0:  # 每隔timeF帧进行存储
+                cv2.imwrite(output_dir + str(c) + output_img_type, frame)
+                logging.debug('success read frame of video:' + str(c))
+            c = c + 1
+            cv2.waitKey(1)
+        vc.release()
+        # ------------------对img文件中图片批量预测
+        logging.debug("-----------------------")
+        logging.info("start video predict")
+        dir_save_path   = str(filename) + "_img_out/"
+        if not os.path.exists(dir_save_path):
+            os.makedirs(dir_save_path)
+        img_names = os.listdir(output_dir)
+        img_names.sort(key=lambda x : int(x.split('.')[0]))  # 按照1，2，3顺序读图片
+        for img_name in tqdm(img_names):
+            if img_name.lower().endswith(('.bmp', '.dib', '.png', '.jpg', '.jpeg', '.pbm', '.pgm', '.ppm', '.tif', '.tiff')):
+                image_path  = os.path.join(output_dir, img_name)
+                image       = Image.open(image_path)
+                # 预测图片，只保存有预测结果图片
+                hrnet.detect_image(image, name_classes=name_classes, img_name=img_name, filename=filename)
+        logging.info("success, all predict done!")
