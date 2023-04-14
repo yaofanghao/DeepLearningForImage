@@ -22,7 +22,7 @@ def softmax(x):
 if __name__ == "__main__":
     frcnn = FRCNN()
 
-    dir_origin_path = "2/"
+    dir_origin_path = "3"
     dir_save_path = "img_out"
 
     # 存放全部图片预测结果数据的txt
