@@ -15,15 +15,22 @@ import cv2
 import numpy as np
 from PIL import Image
 import os
-os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"  # 忽略TensorFlow的warning信息
+# os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"  # 忽略TensorFlow的warning信息
 import tensorflow as tf
 from tqdm import tqdm
 import matplotlib.pyplot as plt
 from pspnet import Pspnet
+import datetime
 
-gpus = tf.config.experimental.list_physical_devices(device_type='GPU')
-for gpu in gpus:
-    tf.config.experimental.set_memory_growth(gpu, True)
+# 使用GPU,
+# 但在程序刚开始加载 Successfully opened dynamic library cudart64_110.dll 后会卡顿
+# gpus = tf.config.experimental.list_physical_devices(device_type='GPU')
+# for gpu in gpus:
+#     tf.config.experimental.set_memory_growth(gpu, True)
+
+# 使用CPU，
+# 速度也可以接受
+os.environ["CUDA_VISIBLE_DEVICES"] ="-1"
 
 # 图像分块 分成m行n列    
 def divide_method2(img, m, n):
@@ -62,6 +69,8 @@ def display_blocks(divide_image):
     plt.show()
 
 if __name__ == "__main__":
+
+    time1 = datetime.datetime.now()
     # ------------------参数设置区域
     pspnet = Pspnet()
     # if len(sys.argv) ==1:
@@ -172,6 +181,8 @@ if __name__ == "__main__":
             else:
                 pass
     mix = cv2.add(src0, src)
-    # cv2.imwrite(output_save_path, mix)
     cv2.imencode('.jpg', mix)[1].tofile(output_save_path)  # 保存图片，解决了中文路径报错的问题
     print("mix image success!")
+
+    time2 = datetime.datetime.now()
+    print("total time:", str(time2-time1))
