@@ -12,7 +12,7 @@ from keras import backend as K
 #                           Multiply, Reshape)
 
 #   设置使用leaky-relu
-leaky_flag = True
+leaky_flag = False
 #   设置是否加入SE注意力模块
 attention_flag =True
 

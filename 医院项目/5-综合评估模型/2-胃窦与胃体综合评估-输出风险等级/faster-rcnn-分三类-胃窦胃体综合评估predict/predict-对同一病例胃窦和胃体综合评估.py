@@ -40,7 +40,7 @@ if __name__ == "__main__":
 
     # class_max_confidence_weidou 是存放每张图胃窦预测分数的numpy
     class_max_confidence_weidou = numpy.array([],dtype=int)
-    for img_name in tqdm(img_names):
+    for img_name in img_names:
         print("预测中... ", dir_weidou_path, img_name)
         image_path = os.path.join(dir_weidou_path, img_name)
         image = Image.open(image_path)
@@ -80,7 +80,7 @@ if __name__ == "__main__":
             out_scores_max =round(out_scores_max,4)   # 小数点后4位
             a = out_classes
             class_max_confidence = a[locat]  # 预测结果最大值的位置的类别
-            print("class_max_confidence:", class_max_confidence)
+            print("    class_max_confidence:", class_max_confidence)
 
             if class_max_confidence == 0:
                 class_max_confidence = '0-1'
@@ -104,15 +104,15 @@ if __name__ == "__main__":
     # 分析class_max_confidence_weidou，取平均值并四舍五入作为胃窦病例的最终输入结果
     weidou_average = numpy.mean(class_max_confidence_weidou,axis=0)
     weidou_average = Decimal(weidou_average).quantize(Decimal("1."), rounding="ROUND_HALF_UP")
-    print("\n")
     print("胃窦的最终分数为：", weidou_average)
+    print("\n")
 
 ############ ------------ 预测胃体文件夹中所有图片
     img_names = os.listdir(dir_weiti_path)
 
     # class_max_confidence_weiti 是存放每张图胃体预测分数的numpy
     class_max_confidence_weiti = numpy.array([],dtype=int)
-    for img_name in tqdm(img_names):
+    for img_name in img_names:
         print("预测中... ", dir_weiti_path, img_name)
         image_path = os.path.join(dir_weiti_path, img_name)
         image = Image.open(image_path)
@@ -152,7 +152,7 @@ if __name__ == "__main__":
             out_scores_max =round(out_scores_max,4)   # 小数点后4位
             a = out_classes
             class_max_confidence = a[locat]  # 预测结果最大值的位置的类别
-            print("class_max_confidence:", class_max_confidence)
+            print("    class_max_confidence:", class_max_confidence)
 
             if class_max_confidence == 0:
                 class_max_confidence = '0-1'
@@ -176,8 +176,22 @@ if __name__ == "__main__":
     # 分析class_max_confidence_weidou，取平均值并四舍五入作为胃窦病例的最终输入结果
     weiti_average = numpy.mean(class_max_confidence_weiti,axis=0)
     weiti_average = Decimal(weiti_average).quantize(Decimal("1."), rounding="ROUND_HALF_UP")
-    print("\n")
     print("胃体的最终分数为：", weiti_average)
+    print("\n")
 
-    ############  综合评估结果，输出 0-1 / 2 / high risk
+############ ------------ 综合评估结果，输出 0-1 / 2 / high risk
+    final_result = 0
+    if (weidou_average==1) & (weiti_average==1):
+        final_result = 1
+    if (weidou_average==2) & (weiti_average==1):
+        final_result = 2
+    if (weidou_average==1) & (weiti_average==2):
+        final_result = 2
+    if (weidou_average==2) & (weiti_average==2):
+        final_result = 3
+    if (weidou_average==3) | (weiti_average==3):
+        final_result = str("high")
+    print("最终评估结果为：", str(final_result))
+
+
 
