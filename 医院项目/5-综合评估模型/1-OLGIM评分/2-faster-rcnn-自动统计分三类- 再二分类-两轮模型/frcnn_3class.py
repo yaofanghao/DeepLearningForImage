@@ -1,15 +1,16 @@
 import colorsys
 import os
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"  # 忽略TensorFlow的warning信息
 
 import numpy as np
 from keras.applications.imagenet_utils import preprocess_input
 from PIL import ImageDraw, ImageFont
 
-import nets.frcnn2 as frcnn
-from utils.anchors2 import get_anchors
-from utils.utils2 import (cvtColor, get_classes, get_new_img_size, resize_image,
+import nets.frcnn as frcnn
+from utils.anchors import get_anchors
+from utils.utils import (cvtColor, get_classes, get_new_img_size, resize_image,
                          show_config)
-from utils.utils_bbox2 import BBoxUtility
+from utils.utils_bbox import BBoxUtility
 
 #--------------------------------------------#
 #   使用自己训练好的模型预测需要修改2个参数
@@ -18,10 +19,10 @@ from utils.utils_bbox2 import BBoxUtility
 #   一定要注意训练时的NUM_CLASSES、
 #   model_path和classes_path参数的修改
 #--------------------------------------------#
-class FRCNN_2class(object):
+class FRCNN_3class(object):
     _defaults = {
-        "model_path"    : 'logs/best_epoch_weights_2class.h5',
-        "classes_path"  : 'model_data/voc_classes_2class.txt',
+        "model_path"    : 'logs/best_epoch_weights_3class.h5',
+        "classes_path"  : 'model_data/voc_classes_3class.txt',
         "backbone"      : "resnet50",
         "confidence"    : 0.05,
         "nms_iou"       : 0.1,
@@ -81,7 +82,7 @@ class FRCNN_2class(object):
     #---------------------------------------------------#
     #   检测图片
     #---------------------------------------------------#
-    def detect_image(self, image):
+    def detect_image(self, image=None):
         #---------------------------------------------------#
         #   计算输入图片的高和宽
         #---------------------------------------------------#
