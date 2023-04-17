@@ -4,16 +4,17 @@ from PIL import Image
 import os
 from frcnn import FRCNN
 
+########### 设置区域 ###########
+dir_origin_path = "test/"  # 输入图片文件夹路径
+
 if __name__ == "__main__":
     frcnn = FRCNN()
 
-    dir_origin_path = "3/"
     dir_save_path = "img_out"
 
     # 存放全部图片预测结果数据的txt
     f1 = open(os.path.join(os.getcwd(), 'predict_result.txt'), 'a')
 
-    # 创建图片输出的文件夹
     # all_save_path_0 = str(dir_save_path) + "_0-1/"
     all_save_path_2 = str(dir_save_path) + "_2/"
     all_save_path_3 = str(dir_save_path) + "_3/"
@@ -37,24 +38,16 @@ if __name__ == "__main__":
 
     img_names = os.listdir(dir_origin_path)
     # img_names.sort(key=lambda x:int(x.split('.')[0]))  # 按照1，2，3顺序读图片
-
-    # 存放修改后的分数的numpy
-    out_scores_new = numpy.array([])
-
     for img_name in img_names:
         if img_name.lower().endswith(
                 ('.bmp', '.dib', '.png', '.jpg', '.jpeg', '.pbm', '.pgm', '.ppm', '.tif', '.tiff')):
             image_path = os.path.join(dir_origin_path, img_name)
             image = Image.open(image_path)
-
-            print("名字是：------------------------------")
             print(img_name)
 
             # 修改detect_image 的返回值
             r_image, out_scores, out_classes,top,right, left,bottom= frcnn.detect_image(image)
 
-            # 分离名字 进行格式转换
-            filename, extension = os.path.splitext(img_name)
         # -----------------------------------------------------------------------------------------------#
             out_scores_size = out_scores.size
             # print('------------------')
@@ -62,19 +55,9 @@ if __name__ == "__main__":
             print(out_classes)
             f1.write(img_name)
             f1.write("\r")
-            test1 = out_classes
-            test1 = numpy.asarray(test1, dtype=int)
             out_scores = numpy.around(out_scores,3)
 
-            # f1.write("预测的类别为：")
-            # f1.write("\r")
-            # numpy.savetxt(f1,test1)
-            # f1.write("对应的置信度分数为：")
-            # f1.write("\r")
-            # numpy.savetxt(f1,out_scores)
-            # print(out_scores.max()) # 这句不能有，会报错
-
-            if out_scores[0]==0:  # 2023.3.2 解决了部分图片non-iterale的错误问题
+            if out_scores[0]==0:  # 2023.3.2 解决了部分图片non-iterable的错误问题
                 none += 1
                 r_image.save(os.path.join(all_save_path_none, img_name.replace(".jpg", ".png")), quality=95, subsampling=0)
                 f1.write("置信度分数最大的类别为：none")
@@ -131,51 +114,31 @@ if __name__ == "__main__":
                 f1.write("-------------------")
                 f1.write("\r")
 
-            # else: # 没有识别出任何一个框
-            #     none += 1
-            #     r_image.save(os.path.join(all_save_path_none, img_name.replace(".jpg", ".png")), quality=95,subsampling=0)
-            #     f1.write("置信度分数最大的类别为：none")
-            #     f1.write("\r")
-            #     f1.write("分数为：none")
-            #     f1.write("\r")
-            #     f1.write("-------------------")
-            #     f1.write("\r")
-
     # # -----------------------------------------------------------------------------------------------#
-    # print("识别为0-1分：")
-    # print(num0)
-    print("识别为2分：")
-    print(num2)
-    print("识别为3分：")
-    print(num3)
-    print("无结果：")
-    print(none)
-    # print("识别为0-1分的比例：")
-    # print(str((num0 / (num0+num2+num3+none))*100) + '%')
-    print("识别为2分的比例：")
-    print(str((num2 / (num2+num3+none))*100) + '%')
-    print("识别为3分的比例：")
-    print(str((num3 / (num2+num3+none))*100) + '%')
-    print("无结果的比例：")
-    print(str((none / (num2+num3+none))*100) + '%')
+    rate_2 = (num2 / (num2+num3+none)) *100
+    rate_3 = (num3 / (num2+num3+none)) *100
+    rate_none = (none / (num2 + num3 + none)) * 100
+
+    print("识别为2分：", num2)
+    print("识别为3分：", num3)
+    print("无结果：", none)
+    print("识别为2分的比例：", str(rate_2) + '%')
+    print("识别为3分的比例：", str(rate_3) + '%')
+    print("无结果的比例：", str(rate_none) + '%')
 
     f1.close()
     f = open(os.path.join(os.getcwd(), 'predict_report.txt'), 'a')
-    # f.write("识别为0-1分：" + str(num0))
-    # f.write("\r")
     f.write("识别为2分：" + str(num2))
     f.write("\r")
     f.write("识别为3分：" + str(num3))
     f.write("\r")
     f.write("无结果：" + str(none))
     f.write("\r")
-    # f.write("识别为0分的比例：" + str((num0 / (num0+num2+num3+none))*100) + '%')
-    # f.write("\r")
-    f.write("识别为2分的比例：" + str((num2 / (num2+num3+none))*100) + '%')
+    f.write("识别为2分的比例：" + str(rate_2) + '%')
     f.write("\r")
-    f.write("识别为3分的比例：" + str((num3 / (num2+num3+none))*100) + '%')
+    f.write("识别为3分的比例：" + str(rate_3) + '%')
     f.write("\r")
-    f.write("无结果的比例：" + str((none / (num2+num3+none))*100) + '%')
+    f.write("无结果的比例：" + str(rate_none) + '%')
     f.write("\r")
     f.close()
 

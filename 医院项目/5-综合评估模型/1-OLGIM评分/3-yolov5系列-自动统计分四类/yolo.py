@@ -25,7 +25,7 @@ class YOLO(object):
         #   如果出现shape不匹配，同时要注意训练时的model_path和classes_path参数的修改
         #--------------------------------------------------------------------------#
         "model_path"        : 'logs/best_epoch_weights.h5',
-        "classes_path"      : 'model_data/voc_classes.txt',
+        "classes_path"      : 'model_data/voc_classes_3class.txt',
         #---------------------------------------------------------------------#
         #   anchors_path代表先验框对应的txt文件，一般不修改。
         #   anchors_mask用于帮助代码找到对应的先验框，一般不修改。

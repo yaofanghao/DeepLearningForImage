@@ -15,10 +15,6 @@ dir_origin_path = "test/"  # 输入图片文件夹路径
 
 if __name__ == "__main__":
 
-    # 初始化三分类和二分类模型
-    frcnn_3class = FRCNN_3class()
-    frcnn_2class = FRCNN_2class()
-
     dir_save_path = "img_out"
     all_save_path_0 = str(dir_save_path) + "_0-1/"
     all_save_path_2 = str(dir_save_path) + "_2/"
@@ -50,21 +46,8 @@ if __name__ == "__main__":
             image = Image.open(image_path)
             print(img_name)
 
-            # 2023.4.17
-            # 一个需要注意的点！
-            # 需要对image做一份拷贝image_copy
-            # image_copy 用于绘制模型二阶段预测的框
-            # 否则，二分类模型画的框是在三分类模型生成的已有框的基础上继续画的！
-            image_copy = image.copy()
-            # 以下代码测试原图和拷贝图是否相等：
-            # image_array = numpy.array(image)
-            # image_copy_array = numpy.array(image_copy)
-            # if numpy.array_equal(image_array, image_array):
-            #     print("Equal")
-            # else:
-            #     print("Not Equal")
-
             # 三分类模型预测
+            frcnn_3class = FRCNN_3class()
             r_image, out_scores, out_classes, _, _, _, _ = frcnn_3class.detect_image(image)
 
         # -----------------------------------------------------------------------------------------------#
@@ -76,6 +59,7 @@ if __name__ == "__main__":
                 none += 1
                 r_image.save(os.path.join(all_save_path_none, img_name.replace(".jpg", ".png")),
                              quality=95, subsampling=0)
+                del frcnn_3class
 
             if (out_scores.size != 0) & (out_scores[0] > 0):
                 #  ############### 找到置信度最大的类别的算法 ############
@@ -113,6 +97,7 @@ if __name__ == "__main__":
                     num0 += 1
                     r_image.save(os.path.join(all_save_path_0, img_name.replace(".jpg", ".png")),
                                  quality=95, subsampling=0)
+                    del frcnn_3class
 
                 # 2023.4.17 修改，增加模型二阶段判断过程：
                 # 如果三分类模型frcnn_3class 预测出最大为 2 / 3
@@ -121,6 +106,13 @@ if __name__ == "__main__":
                     # 注意！这里 detect_image 输入参数是 image_copy
                     # 是对原图像的备份画框
                     # 而不是再一阶段模型已画框的基础上再画框！
+                    del frcnn_3class
+                    # del image
+                    frcnn_2class = FRCNN_2class()
+                    image_copy_path = os.path.join(dir_origin_path, img_name)
+                    image_copy = Image.open(image_copy_path)
+                    print(image_copy_path)
+
                     r_image_2class, out_scores_2class, out_classes_2class, top, right, left, bottom \
                         = frcnn_2class.detect_image(image_copy)
 
@@ -167,6 +159,7 @@ if __name__ == "__main__":
                             num3 += 1
                             r_image_2class.save(os.path.join(all_save_path_3, img_name.replace(".jpg", ".png")),
                                                 quality=95, subsampling=0)
+                    del frcnn_2class
 
     # -----------------------------------------------------------------------------------------------#
     rate_0_1 = (num0 / (num0+num2+num3+none)) * 100
