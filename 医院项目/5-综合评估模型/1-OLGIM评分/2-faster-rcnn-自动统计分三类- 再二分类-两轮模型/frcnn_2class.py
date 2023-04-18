@@ -12,10 +12,10 @@ from utils.utils import (cvtColor, get_classes, get_new_img_size, resize_image,
                          show_config)
 from utils.utils_bbox import BBoxUtility
 
-class FRCNN_3class(object):
+class FRCNN_2class(object):
     _defaults = {
-        "model_path"    : 'logs/best_epoch_weights_3class.h5',
-        "classes_path"  : 'model_data/voc_classes_3class.txt',
+        "model_path"    : 'logs/best_epoch_weights_2class.h5',
+        "classes_path"  : 'model_data/voc_classes_2class.txt',
         "backbone"      : "resnet50",
         "confidence"    : 0.05,
         "nms_iou"       : 0.1,
@@ -169,3 +169,72 @@ class FRCNN_3class(object):
             bottom = 0
 
         return image, top_conf, top_label, top, right, left, bottom  # 和原版相比，添加了 out_scores, out_classes
+
+    def get_map_txt(self, image_id, image, class_names, map_out_path):
+        f = open(os.path.join(map_out_path, "detection-results/"+image_id+".txt"),"w") 
+        #---------------------------------------------------#
+        #   计算输入图片的高和宽
+        #---------------------------------------------------#
+        image_shape = np.array(np.shape(image)[0:2])
+        #---------------------------------------------------#
+        #   计算输入到网络中进行运算的图片的高和宽
+        #   保证短边是600的
+        #---------------------------------------------------#
+        input_shape = get_new_img_size(image_shape[0], image_shape[1])
+        #---------------------------------------------------------#
+        #   在这里将图像转换成RGB图像，防止灰度图在预测时报错。
+        #   代码仅仅支持RGB图像的预测，所有其它类型的图像都会转化成RGB
+        #---------------------------------------------------------#
+        image       = cvtColor(image)
+        #---------------------------------------------------------#
+        #   给原图像进行resize，resize到短边为600的大小上
+        #---------------------------------------------------------#
+        image_data  = resize_image(image, [input_shape[1], input_shape[0]])
+        #---------------------------------------------------------#
+        #   添加上batch_size维度
+        #---------------------------------------------------------#
+        image_data  = np.expand_dims(preprocess_input(np.array(image_data, dtype='float32')), 0)
+
+        #---------------------------------------------------------#
+        #   获得rpn网络预测结果和base_layer
+        #---------------------------------------------------------#
+        rpn_pred        = self.model_rpn.predict(image_data)
+        #---------------------------------------------------------#
+        #   生成先验框并解码
+        #---------------------------------------------------------#
+        anchors         = get_anchors(input_shape, self.backbone, self.anchors_size)
+        rpn_results     = self.bbox_util.detection_out_rpn(rpn_pred, anchors)
+        
+        #-------------------------------------------------------------#
+        #   利用建议框获得classifier网络预测结果
+        #-------------------------------------------------------------#
+        classifier_pred = self.model_classifier.predict([rpn_pred[2], rpn_results[:, :, [1, 0, 3, 2]]])
+        #-------------------------------------------------------------#
+        #   利用classifier的预测结果对建议框进行解码，获得预测框
+        #-------------------------------------------------------------#
+        results         = self.bbox_util.detection_out_classifier(classifier_pred, rpn_results, image_shape, input_shape, self.confidence)
+
+        #--------------------------------------#
+        #   如果没有检测到物体，则返回原图
+        #--------------------------------------#
+        if len(results[0])<=0:
+            return 
+
+        top_label   = np.array(results[0][:, 5], dtype = 'int32')
+        top_conf    = results[0][:, 4]
+        top_boxes   = results[0][:, :4]
+
+        for i, c in list(enumerate(top_label)):
+            predicted_class = self.class_names[int(c)]
+            box             = top_boxes[i]
+            score           = str(top_conf[i])
+            
+            top, left, bottom, right = box
+
+            if predicted_class not in class_names:
+                continue
+
+            f.write("%s %s %s %s %s %s\n" % (predicted_class, score[:6], str(int(left)), str(int(top)), str(int(right)),str(int(bottom))))
+
+        f.close()
+        return 
