@@ -1,0 +1,12 @@
+对一张图中的多个相同类别的标注只加一次1
+json文件总个数:492
+具体标签统计结果如下：
+     duoyuwu: 156
+     aokeng: 101
+     qipi: 43
+     cashang: 16
+     gubo: 28
+     xiuban: 131
+     baiban: 11
+     yanghuawu: 4
+     huashang: 11
