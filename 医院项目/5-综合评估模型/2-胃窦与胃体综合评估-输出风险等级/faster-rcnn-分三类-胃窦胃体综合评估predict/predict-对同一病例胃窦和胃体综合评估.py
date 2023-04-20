@@ -9,7 +9,7 @@ import numpy
 from PIL import Image
 import os
 import warnings
-os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"  # 忽略TensorFlow的warning信息
+# os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"  # 忽略TensorFlow的warning信息
 warnings.filterwarnings("ignore")
 from tqdm import tqdm
 from decimal import Decimal
