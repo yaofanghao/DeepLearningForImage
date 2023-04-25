@@ -1,0 +1,9 @@
+name: tf2-gpu
+
+dependencies:
+  - python==3.8
+  - pip
+  - cudnn
+  - cudatoolkit==11.3.1
+  - pip:
+    - tensorflow-gpu

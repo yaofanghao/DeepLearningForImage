@@ -1,4 +1,4 @@
-(tf-gpu) ubuntu@ubuntudesktop:~/yao/医院项目二轮-2022.7/1-肠化/11.26-efficientdet-keras-6364$ pip list
+(tf-gpu) ubuntu@ubuntudesktop:~/yao/
 Package                 Version
 ----------------------- -------------------
 absl-py                 0.15.0
