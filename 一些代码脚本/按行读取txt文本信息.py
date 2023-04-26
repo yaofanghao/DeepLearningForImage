@@ -2,7 +2,7 @@
     -*- coding: utf-8 -*-
     @Author: yaofanghao
     @Date: 2023/4/25 16:27
-    @Filename: read_txt.py
+    @Filename: 按行读取txt文本信息.py
     @Software: PyCharm     
 """
 # f = open("class_name.txt", "r")
