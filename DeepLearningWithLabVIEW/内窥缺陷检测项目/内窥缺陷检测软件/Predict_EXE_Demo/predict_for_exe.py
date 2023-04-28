@@ -62,7 +62,7 @@ def load_arg():
 
 
 def gpu_enable(_use_gpu=None):
-    if use_gpu:  # 使用GPU
+    if _use_gpu:  # 使用GPU
         gpus = tf.config.experimental.list_physical_devices(device_type='GPU')
         for gpu in gpus:
             tf.config.experimental.set_memory_growth(gpu, True)
@@ -137,8 +137,8 @@ class HRNetSegmentation(object):
         return preds
 
     #   检测图片
-    def detect_image(self, image=None, name_classes=None, img_name=None,
-                     dir_save_path=None, result_txt=None):
+    def detect_image(self, image=None, name_classes=None, name_classes_gbk=None,
+                     img_name=None, dir_save_path=None, result_txt=None):
         image = cvtColor(image)
         #   对输入图像进行一个备份，后面用于绘图
         old_img = copy.deepcopy(image)
@@ -168,12 +168,12 @@ class HRNetSegmentation(object):
                                   size=np.floor(3e-2 * image.size[1] + 20).astype('int32'))  # 修改字体大小
         draw = ImageDraw.Draw(image)
         classes_nums = np.zeros([self.num_classes])
-        output_class_name = np.array([0])  # 存放预测类别结果的数组
+        output_class_name = np.array([], dtype=int)  # 存放预测类别结果的数组
         for i in range(self.num_classes):
             num = np.sum(pr == i)
             if (num > 0) & (name_classes is not None):
-                # draw.text((50 * i, 50 * i), str(_name_classes_gbk[i]), fill='red', font=font)
-                draw.text((50, 50 * i), str(_name_classes_gbk[i]), fill='red', font=font)
+                # draw.text((50 * i, 50 * i), str(name_classes_gbk[i]), fill='red', font=font)
+                draw.text((50, 50 * i), str(name_classes_gbk[i]), fill='red', font=font)
                 output_class_name = np.append(output_class_name, i)
             classes_nums[i] = num
         max_output_class_name = np.max(output_class_name)
@@ -182,7 +182,7 @@ class HRNetSegmentation(object):
         # 代码原理：最大预测结果类别大于0，说明预测出的不是只有background，此时保存图片
         if max_output_class_name > 0:
             logging.info("\n")
-            logging.info("{}发现缺陷--{}".format(img_name, output_class_name))
+            logging.info("{}-发现缺陷--{}".format(img_name, output_class_name))
             # 存放预测结果的文件夹
             result_txt.write(img_name)
             result_txt.write("\r")
@@ -190,15 +190,16 @@ class HRNetSegmentation(object):
             # 2023.4.25 读取预测出的所有类别 存放到numpy中
             for i in range(output_class_name.shape[0]):
                 if output_class_name[i] > 0:
-                    logging.info("识别出：{}--{}".format(output_class_name[i], _name_classes_gbk[i]))
-                    result_txt.write("    " + str(_name_classes_gbk[i]) + "\t")
+                    temp = output_class_name[i]
+                    logging.info("识别出：{}--{}".format(temp, name_classes_gbk[temp]))
+                    result_txt.write("    " + str(name_classes_gbk[temp]) + "\t")
             result_txt.write("\r")
-            result_txt.write("  预测分数最大的类别为： " + _name_classes_gbk[max_output_class_name])
+            result_txt.write("  预测概率值最高的类别为： " + name_classes_gbk[max_output_class_name])
             result_txt.write("\r")
             image.save(os.path.join(dir_save_path, img_name))
 
 
-def predict_main(mode=None):
+def predict_main(mode=None, name_classes=None, name_classes_gbk=None, timeF=None):
     hrnet = HRNetSegmentation()
     if mode == 0:
         img_name = input('Input image filename:')
@@ -213,8 +214,8 @@ def predict_main(mode=None):
             os.makedirs(dir_save_path)
         f1 = open(os.path.join(dir_save_path, str(filename) + '_predict_result.txt'), 'a', encoding='utf-8')
         logging.info("start image predict")
-        hrnet.detect_image(image, name_classes=_name_classes, img_name=img_name,
-                           dir_save_path=dir_save_path, result_txt=f1)
+        hrnet.detect_image(image, name_classes=name_classes, name_classes_gbk=name_classes_gbk,
+                           img_name=img_name, dir_save_path=dir_save_path, result_txt=f1)
         f1.close()
         logging.info("success, predict done!")
 
@@ -258,8 +259,8 @@ def predict_main(mode=None):
             image_path = os.path.join(output_dir, img_name)
             image = Image.open(image_path)
             # 预测图片，只保存有预测结果图片
-            hrnet.detect_image(image, name_classes=_name_classes, img_name=img_name,
-                               dir_save_path=dir_save_path, result_txt=f1)
+            hrnet.detect_image(image, name_classes=name_classes, name_classes_gbk=name_classes_gbk,
+                               img_name=img_name, dir_save_path=dir_save_path, result_txt=f1)
         f1.close()
         logging.info("success, all predict done!")
 
@@ -267,13 +268,13 @@ def predict_main(mode=None):
 if __name__ == "__main__":
 
     # 输入配置参数
-    _mode, use_gpu, timeF = load_arg()
+    _mode, _use_gpu, _timeF = load_arg()
 
     # gpu or cpu 方式加载程序
-    gpu_enable(_use_gpu=use_gpu)
+    gpu_enable(_use_gpu=_use_gpu)
 
     # 读取标签文件
     _name_classes, _name_classes_gbk = read_txt_lines(_classes_txt=_classes_txt, _classes_gbk_txt=_classes_gbk_txt)
 
     # 进入预测 单张图片/视频
-    predict_main(mode=int(_mode))
+    predict_main(mode=int(_mode), name_classes=_name_classes, name_classes_gbk=_name_classes_gbk, timeF=_timeF)
