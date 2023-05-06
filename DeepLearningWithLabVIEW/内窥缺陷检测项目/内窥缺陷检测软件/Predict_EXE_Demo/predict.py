@@ -2,7 +2,7 @@
     -*- coding: utf-8 -*-
     @Author: yaofanghao
     @Date: 2023/4/25 11:07
-    @Filename: predict_for_exe.py
+    @Filename: predict.py
     @Software: PyCharm     
 """
 # 用于制作exe的py文件 可供labview调用
@@ -35,9 +35,9 @@ argparse_txt = "argparse.txt"  # 配置参数文件
 # parser.add_argument('--mode', '-m', type=int,
 #                     help='mode 0或1 0为单张图片预测 1为视频预测 默认为1',
 #                     default=1)   # required=True,
-# parser.add_argument('--use_gpu', '-u', type=bool,
-#                     help='use_gpu 是否使用GPU环境 默认为True',
-#                     default=True)
+# parser.add_argument('--use_gpu', '-u', type=int,
+#                     help='use_gpu 是否使用GPU环境 默认为1',
+#                     default=1)
 # parser.add_argument('--timeF', '-t', type=int,
 #                     help='timeF 视频帧计数间隔频率 默认为10',
 #                     default=10)
@@ -54,11 +54,15 @@ def load_arg():
     # return args.mode, args.use_gpu, args.timeF
 
     # 方法二 以读取配置文件argparse.txt的方式载入参数
+    # 配置参数说明：
+    # 第一项为预测模式 0或1 0为单张图片预测 1为视频预测 默认为1
+    # 第二项为是否使用gpu环境 True或False
+    # 第三项为视频帧计数间隔频率 影响视频检测速率，可任意设置，建议值10-30之间
     f_arg = open(argparse_txt, "r", encoding='utf-8')
     lines_arg = f_arg.read().splitlines()
     logging.info("success load arg from:{}".format(argparse_txt))
-    logging.info("mode:{} \t use_gpu:{} \t timeF:{} ".format(lines_arg[4], lines_arg[5], lines_arg[6]))
-    return lines_arg[4], lines_arg[5], lines_arg[6]
+    logging.info("mode:{} \t use_gpu:{} \t timeF:{} ".format(lines_arg[0], lines_arg[1], lines_arg[2]))
+    return lines_arg[0], lines_arg[1], lines_arg[2]
 
 
 def gpu_enable(_use_gpu=None):
@@ -84,24 +88,13 @@ def read_txt_lines(_classes_txt=None, _classes_gbk_txt=None):
 
 
 class HRNetSegmentation(object):
-    # _defaults = {
-    #     "model_path": 'logs/best_epoch_weights.h5',  # 模型权重
-    #     "num_classes": 10,  # 所需要区分的类的个数+1
-    #     # ----------------------------------------#
-    #     #   所使用的的主干网络：
-    #     #   hrnetv2_w18
-    #     #   hrnetv2_w32
-    #     #   hrnetv2_w48
-    #     "backbone": "hrnetv2_w32",
-    #     "input_shape": [480, 480],  # 输入图片的大小
-    # }
 
     def __init__(self, **kwargs):
         # self.__dict__.update(self._defaults)
         for name, value in kwargs.items():
             setattr(self, name, value)
 
-        self.model_path = 'logs/best_epoch_weights.h5'
+        self.model_path = 'logs.h5'
         self.num_classes = 10  # 所需要区分的类的个数+1
         #  所使用的的主干网络： hrnetv2_w18 hrnetv2_w32 hrnetv2_w48
         self.backbone = "hrnetv2_w32"
@@ -271,7 +264,7 @@ if __name__ == "__main__":
     _mode, _use_gpu, _timeF = load_arg()
 
     # gpu or cpu 方式加载程序
-    gpu_enable(_use_gpu=_use_gpu)
+    gpu_enable(_use_gpu=int(_use_gpu))
 
     # 读取标签文件
     _name_classes, _name_classes_gbk = read_txt_lines(_classes_txt=_classes_txt, _classes_gbk_txt=_classes_gbk_txt)

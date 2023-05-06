@@ -1,0 +1,16 @@
+程序语言:
+	Python3.8.0
+测试环境：
+	Win11, GPU:RTX3060, CUDA == 11.3.1, CUDNN == 8.2.1
+Python环境的主要依赖库：
+	h5py==3.8.0
+	keras==2.8.0
+	numpy==1.24.2
+	opencv-python==4.7.0.72
+	Pillow==9.5.0
+	tensorflow-gpu==2.8.0
+	tqdm==4.65.0
+
+注意事项：
+	与py程序同一目录下放置data文件夹即可，
+	程序运行完成后，处理后的图片会覆盖原图并同样保存在data文件夹中
