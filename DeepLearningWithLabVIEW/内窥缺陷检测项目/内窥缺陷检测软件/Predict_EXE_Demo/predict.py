@@ -6,6 +6,7 @@
     @Software: PyCharm     
 """
 # 用于制作exe的py文件 可供labview调用
+# 具体参数配置在 argparse.txt 中设置
 
 # -*- coding: utf-8 -*-
 import os
@@ -58,11 +59,13 @@ def load_arg():
     # 第一项为预测模式 0或1 0为单张图片预测 1为视频预测 默认为1
     # 第二项为是否使用gpu环境 True或False
     # 第三项为视频帧计数间隔频率 影响视频检测速率，可任意设置，建议值10-30之间
-    f_arg = open(argparse_txt, "r", encoding='utf-8')
+	# 第四项为待检测图片\视频的相对路径
+    f_arg = open(argparse_txt, "r", encoding='gbk')
     lines_arg = f_arg.read().splitlines()
     logging.info("success load arg from:{}".format(argparse_txt))
     logging.info("mode:{} \t use_gpu:{} \t timeF:{} ".format(lines_arg[0], lines_arg[1], lines_arg[2]))
-    return lines_arg[0], lines_arg[1], lines_arg[2]
+    logging.info("filename:{} \t".format(lines_arg[3]))
+    return lines_arg[0], lines_arg[1], lines_arg[2], lines_arg[3]
 
 
 def gpu_enable(_use_gpu=None):
@@ -192,36 +195,36 @@ class HRNetSegmentation(object):
             image.save(os.path.join(dir_save_path, img_name))
 
 
-def predict_main(mode=None, name_classes=None, name_classes_gbk=None, timeF=None):
+def predict_main(mode=None, name_classes=None, name_classes_gbk=None, timeF=None, filename=None):
     hrnet = HRNetSegmentation()
     if mode == 0:
-        img_name = input('Input image filename:')
-        image = Image.open(str(img_name))
+        # img_name = input('Input image filename:')
+        image = Image.open(str(filename))
         try:
-            logging.info('success read image ' + str(img_name))
-            filename, _ = os.path.splitext(img_name)
+            logging.info('success read image ' + str(filename))
+            file_rootname, _ = os.path.splitext(filename)
         except Exception as e:
             raise Exception(e)
-        dir_save_path = str(filename) + "_img_out/"
+        dir_save_path = str(file_rootname) + "_img_out/"
         if not os.path.exists(dir_save_path):
             os.makedirs(dir_save_path)
-        f1 = open(os.path.join(dir_save_path, str(filename) + '_predict_result.txt'), 'a', encoding='utf-8')
+        f1 = open(os.path.join(dir_save_path, str(file_rootname) + '_predict_result.txt'), 'a', encoding='gbk')
         logging.info("start image predict")
         hrnet.detect_image(image, name_classes=name_classes, name_classes_gbk=name_classes_gbk,
-                           img_name=img_name, dir_save_path=dir_save_path, result_txt=f1)
+                           img_name=filename, dir_save_path=dir_save_path, result_txt=f1)
         f1.close()
         logging.info("success, predict done!")
 
     if mode == 1:
-        video_name = input("Input video filename:")
+        # video_name = input("Input video filename:")
         try:
-            logging.info('success read video ' + str(video_name))
-            filename, _ = os.path.splitext(video_name)
+            logging.info('success read video ' + str(filename))
+            file_rootname, _ = os.path.splitext(filename)
         except Exception as e:
             raise Exception(e)
-        output_dir = str(filename) + '_img/'  # 保存图片文件夹路径
+        output_dir = str(file_rootname) + '_img/'  # 保存图片文件夹路径
         output_img_type = '.jpg'  # 保存图片的格式
-        vc = cv2.VideoCapture(video_name)
+        vc = cv2.VideoCapture(filename)
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
         if vc.isOpened():
@@ -242,12 +245,12 @@ def predict_main(mode=None, name_classes=None, name_classes_gbk=None, timeF=None
         vc.release()
         # ------------------对img_out文件中图片批量预测
         logging.info("start video predict")
-        dir_save_path = str(filename) + "_img_out/"
+        dir_save_path = str(file_rootname) + "_img_out/"
         if not os.path.exists(dir_save_path):
             os.makedirs(dir_save_path)
         img_names = os.listdir(output_dir)
         img_names.sort(key=lambda x: int(x.split('.')[0]))  # 按照1，2，3 顺序读图片
-        f1 = open(os.path.join(dir_save_path, str(filename) + '_predict_result.txt'), 'a', encoding='utf-8')
+        f1 = open(os.path.join(dir_save_path, str(file_rootname) + '_predict_result.txt'), 'a', encoding='gbk')
         for img_name in tqdm(img_names):
             image_path = os.path.join(output_dir, img_name)
             image = Image.open(image_path)
@@ -261,7 +264,7 @@ def predict_main(mode=None, name_classes=None, name_classes_gbk=None, timeF=None
 if __name__ == "__main__":
 
     # 输入配置参数
-    _mode, _use_gpu, _timeF = load_arg()
+    _mode, _use_gpu, _timeF, _filename = load_arg()
 
     # gpu or cpu 方式加载程序
     gpu_enable(_use_gpu=int(_use_gpu))
@@ -270,4 +273,4 @@ if __name__ == "__main__":
     _name_classes, _name_classes_gbk = read_txt_lines(_classes_txt=_classes_txt, _classes_gbk_txt=_classes_gbk_txt)
 
     # 进入预测 单张图片/视频
-    predict_main(mode=int(_mode), name_classes=_name_classes, name_classes_gbk=_name_classes_gbk, timeF=_timeF)
+    predict_main(mode=int(_mode), name_classes=_name_classes, name_classes_gbk=_name_classes_gbk, timeF=_timeF, filename=_filename)
