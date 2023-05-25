@@ -90,8 +90,8 @@ if __name__ == "__main__":
         image = Image.open(img_name)
     except:
         raise AssertionError('Fail to open image!')
-    m = 2
-    n = 10
+    m = 1
+    n = 1
 
     filename, _ = os.path.splitext(img_name)
     name_classes = ["background","grid"]
@@ -106,7 +106,7 @@ if __name__ == "__main__":
     # ------------------图像分块
     img = cv2.imdecode(np.fromfile(img_name, dtype=np.uint8), cv2.IMREAD_COLOR)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    print("start divide image... / m (row) is 2, n (column) is 10.")
+    print("start divide image... / m (row) is {}, n (column) is {}.".format(m,n))
     divide_image2 = divide_method2(img, m+1, n+1)  # 该函数中m+1和n+1表示网格点个数，m和n分别表示分块的块数
     display_blocks(divide_image2)
     print("divide image success!")
@@ -176,8 +176,8 @@ if __name__ == "__main__":
         for j in range(_j):
             if (to_image_array[i,j]>250):
                 src[i,j] = 255  # 对深度学习预测得到的图片中的白色部分排除为缺陷的可能，设置为白色
-            if (cdstP[i, j][0] == 0) & (cdstP[i, j][1] == 0) & (cdstP[i, j][2] == 255):
-                src[i, j] = 255  # # 对霍夫P线检测中的红色部分排除为缺陷的可能，设置为白色
+            # if (cdstP[i, j][0] == 0) & (cdstP[i, j][1] == 0) & (cdstP[i, j][2] == 255):
+            #     src[i, j] = 255  # # 对霍夫P线检测中的红色部分排除为缺陷的可能，设置为白色
             else:
                 pass
     mix = cv2.add(src0, src)

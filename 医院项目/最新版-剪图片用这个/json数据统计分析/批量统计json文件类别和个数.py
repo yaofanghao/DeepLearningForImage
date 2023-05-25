@@ -11,7 +11,7 @@ from tqdm import tqdm
 
 # 待统计图片的标签类别设置
 class_name = ["duoyuwu", "aokeng", "qipi", "cashang", "gubo",
-              "xiuban", "baiban", "yanghuawu", "huashang"]
+              "xiuban", "baiban", "yanghuawu", "huashang","hanjiequexian"]   # 修改点
 
 # 统计模式设置
 # count_mode 为 0
@@ -26,8 +26,8 @@ def count_json_label():
     filelist = os.listdir(base_path)
 
     dir_count = 0
-    d_count, a_count, q_count, c_count, g_count, x_count, b_count, y_count, h_count \
-        = 0, 0, 0, 0, 0, 0, 0, 0, 0
+    d_count, a_count, q_count, c_count, g_count, x_count, b_count, y_count, h_count, hj_count \
+        = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0   # 修改点
     f = open(os.path.join(os.getcwd(), 'json_class_result_mode' + str(count_mode) + '.txt'), 'a')
 
     if count_mode == 0:
@@ -42,7 +42,7 @@ def count_json_label():
                     fullname = base_path + filename + filename_suffix
                     dataJson = json.load(open("{}".format(fullname), encoding='UTF-8'))
                     label_name = dataJson["shapes"]
-                    d, a, q, c, g, x, b, y, h = 0, 0, 0, 0, 0, 0, 0, 0, 0
+                    d, a, q, c, g, x, b, y, h, hj = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0  # 修改点
                     for _ in label_name:
                         d = d + 1 if _["label"] == class_name[0] else d
                         a = a + 1 if _["label"] == class_name[1] else a
@@ -53,6 +53,7 @@ def count_json_label():
                         b = b + 1 if _["label"] == class_name[6] else b
                         y = y + 1 if _["label"] == class_name[7] else y
                         h = h + 1 if _["label"] == class_name[8] else h
+                        hj = hj + 1 if _["label"] == class_name[9] else hj  # 修改点
                     d_count = d_count + d
                     a_count = a_count + a
                     q_count = q_count + q
@@ -62,6 +63,7 @@ def count_json_label():
                     b_count = b_count + b
                     y_count = y_count + y
                     h_count = h_count + h
+                    hj_count = hj_count + hj   # 修改点
                 else:
                     pass
     if count_mode == 1:
@@ -76,7 +78,7 @@ def count_json_label():
                     fullname = base_path + filename + filename_suffix
                     dataJson = json.load(open("{}".format(fullname), encoding='UTF-8'))
                     label_name = dataJson["shapes"]
-                    d, a, q, c, g, x, b, y, h = 0, 0, 0, 0, 0, 0, 0, 0, 0
+                    d, a, q, c, g, x, b, y, h, hj = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0  # 修改点
                     for _ in label_name:
                         d = d + 1 if _["label"] == class_name[0] else d
                         a = a + 1 if _["label"] == class_name[1] else a
@@ -87,6 +89,7 @@ def count_json_label():
                         b = b + 1 if _["label"] == class_name[6] else b
                         y = y + 1 if _["label"] == class_name[7] else y
                         h = h + 1 if _["label"] == class_name[8] else h
+                        hj = hj + 1 if _["label"] == class_name[9] else hj  # 修改点
 
                     # 对同个图片中的同个标注，只统计一次
                     d = 1 if d > 1 else d
@@ -98,6 +101,7 @@ def count_json_label():
                     b = 1 if b > 1 else b
                     y = 1 if y > 1 else y
                     h = 1 if h > 1 else h
+                    hj = 1 if hj > 1 else hj  # 修改点
 
                     d_count = d_count + d
                     a_count = a_count + a
@@ -108,6 +112,7 @@ def count_json_label():
                     b_count = b_count + b
                     y_count = y_count + y
                     h_count = h_count + h
+                    hj_count = hj_count + hj   # 修改点
                 else:
                     pass
     else:
@@ -115,38 +120,41 @@ def count_json_label():
 
     print("json文件总个数:" + str(dir_count))
     print("具体标签统计结果如下：")
-    print("     duoyuwu: " + str(d_count))
-    print("     aokeng: " + str(a_count))
-    print("     qipi: " + str(q_count))
-    print("     cashang: " + str(c_count))
-    print("     gubo: " + str(g_count))
-    print("     xiuban: " + str(x_count))
-    print("     baiban: " + str(b_count))
-    print("     yanghuawu: " + str(y_count))
-    print("     huashang: " + str(h_count))
+    print("     " + str(class_name[0]) + ": " + str(d_count))
+    print("     " + str(class_name[1]) + ": " + str(a_count))
+    print("     " + str(class_name[2]) + ": " + str(q_count))
+    print("     " + str(class_name[3]) + ": " + str(c_count))
+    print("     " + str(class_name[4]) + ": " + str(g_count))
+    print("     " + str(class_name[5]) + ": " + str(x_count))
+    print("     " + str(class_name[6]) + ": " + str(b_count))
+    print("     " + str(class_name[7]) + ": " + str(y_count))
+    print("     " + str(class_name[8]) + ": " + str(h_count))
+    print("     " + str(class_name[9]) + ": " + str(hj_count)) # 修改点
 
     f.write("\n")
     f.write("json文件总个数:" + str(dir_count))
     f.write("\n")
     f.write("具体标签统计结果如下：")
     f.write("\n")
-    f.write("     duoyuwu: " + str(d_count))
+    f.write("     " + str(class_name[0]) + ": " + str(d_count))
     f.write("\n")
-    f.write("     aokeng: " + str(a_count))
+    f.write("     " + str(class_name[1]) + ": " + str(a_count))
     f.write("\n")
-    f.write("     qipi: " + str(q_count))
+    f.write("     " + str(class_name[2]) + ": " + str(q_count))
     f.write("\n")
-    f.write("     cashang: " + str(c_count))
+    f.write("     " + str(class_name[3]) + ": " + str(c_count))
     f.write("\n")
-    f.write("     gubo: " + str(g_count))
+    f.write("     " + str(class_name[4]) + ": " + str(g_count))
     f.write("\n")
-    f.write("     xiuban: " + str(x_count))
+    f.write("     " + str(class_name[5]) + ": " + str(x_count))
     f.write("\n")
-    f.write("     baiban: " + str(b_count))
+    f.write("     " + str(class_name[6]) + ": " + str(b_count))
     f.write("\n")
-    f.write("     yanghuawu: " + str(y_count))
+    f.write("     " + str(class_name[7]) + ": " + str(y_count))
     f.write("\n")
-    f.write("     huashang: " + str(h_count))
+    f.write("     " + str(class_name[8]) + ": " + str(h_count))
+    f.write("\n")
+    f.write("     " + str(class_name[9]) + ": " + str(hj_count))  # 修改点
 
 
 if __name__ == '__main__':
