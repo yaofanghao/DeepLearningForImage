@@ -90,8 +90,8 @@ if __name__ == "__main__":
         image = Image.open(img_name)
     except:
         raise AssertionError('Fail to open image!')
-    m = 1
-    n = 1
+    m = 2
+    n = 10
 
     filename, _ = os.path.splitext(img_name)
     name_classes = ["background","grid"]
