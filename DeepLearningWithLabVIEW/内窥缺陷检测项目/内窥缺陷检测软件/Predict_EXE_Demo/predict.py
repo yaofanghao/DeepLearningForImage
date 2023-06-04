@@ -10,7 +10,9 @@
 
 # -*- coding: utf-8 -*-
 import os
-os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"  # 忽略TensorFlow的warning信息
+import sys
+
+# os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"  # 忽略TensorFlow的warning信息
 from tqdm import tqdm
 import colorsys
 import copy
@@ -60,20 +62,24 @@ def load_arg():
     # 第二项为是否使用gpu环境 True或False
     # 第三项为视频帧计数间隔频率 影响视频检测速率，可任意设置，建议值10-30之间
 	# 第四项为待检测图片\视频的相对路径
+
     f_arg = open(argparse_txt, "r", encoding='gbk')
     lines_arg = f_arg.read().splitlines()
-    logging.info("success load arg from:{}".format(argparse_txt))
-    logging.info("mode:{} \t use_gpu:{} \t timeF:{} ".format(lines_arg[0], lines_arg[1], lines_arg[2]))
-    logging.info("filename:{} \t".format(lines_arg[3]))
+    logging.info("success load arg from: {}".format(argparse_txt))
+    logging.info("setting mode: {} \t use_gpu:{} \t timeF:{} "
+                 .format(lines_arg[0], lines_arg[1], lines_arg[2]))
+    logging.info("success read filename: {} \t".format(lines_arg[3]))
     return lines_arg[0], lines_arg[1], lines_arg[2], lines_arg[3]
 
 
 def gpu_enable(_use_gpu=None):
     if _use_gpu:  # 使用GPU
+        logging.info("use gpu")
         gpus = tf.config.experimental.list_physical_devices(device_type='GPU')
         for gpu in gpus:
             tf.config.experimental.set_memory_growth(gpu, True)
     else:  # 使用CPU
+        logging.info("use cpu")
         os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 
@@ -98,7 +104,7 @@ class HRNetSegmentation(object):
             setattr(self, name, value)
 
         self.model_path = 'logs.h5'
-        self.num_classes = 10  # 所需要区分的类的个数+1
+        self.num_classes = 11  # 所需要区分的类的个数+1
         #  所使用的的主干网络： hrnetv2_w18 hrnetv2_w32 hrnetv2_w48
         self.backbone = "hrnetv2_w32"
         self.input_shape = [480, 480]  # 输入模型的图片尺寸
@@ -115,7 +121,7 @@ class HRNetSegmentation(object):
             #                (64, 0, 128), (192, 0, 128), (64, 128, 128), (192, 128, 128), (0, 64, 0), (128, 64, 0),
             #                (0, 192, 0), (128, 192, 0), (0, 64, 128), (128, 64, 12)]
             self.colors = [(0, 0, 0), (128, 0, 0), (0, 128, 0), (128, 128, 0), (0, 0, 128), (128, 0, 128),
-                           (0, 128, 128), (128, 128, 128), (64, 0, 0), (192, 0, 0)]
+                           (0, 128, 128), (128, 128, 128), (64, 0, 0), (192, 0, 0), (64, 128, 0)]
         else:
             hsv_tuples = [(x / self.num_classes, 1., 1.) for x in range(self.num_classes)]
             self.colors = list(map(lambda x: colorsys.hsv_to_rgb(*x), hsv_tuples))
@@ -124,7 +130,7 @@ class HRNetSegmentation(object):
         #   加载模型
         self.model = HRnet([self.input_shape[0], self.input_shape[1], 3], self.num_classes, backbone=self.backbone)
         self.model.load_weights(self.model_path)
-        logging.info('{} model loaded.'.format(self.model_path))
+        logging.info('success load model: {}'.format(self.model_path))
         show_config(**self._defaults)
 
     @tf.function
@@ -161,36 +167,49 @@ class HRNetSegmentation(object):
 
         # 修改显示字体格式
         font = ImageFont.truetype(font='model_data/simhei.ttf',
-                                  size=np.floor(3e-2 * image.size[1] + 20).astype('int32'))  # 修改字体大小
+                                  size=np.floor(3e-2 * image.size[1] + 15).astype('int32'))  # 修改字体大小
         draw = ImageDraw.Draw(image)
         classes_nums = np.zeros([self.num_classes])
         output_class_name = np.array([], dtype=int)  # 存放预测类别结果的数组
+        step = 0  # 在图上绘制预测类别的显示间隔
         for i in range(self.num_classes):
             num = np.sum(pr == i)
-            if (num > 0) & (name_classes is not None):
+            if (num > 0) & (name_classes is not None) & (i > 0):
                 # draw.text((50 * i, 50 * i), str(name_classes_gbk[i]), fill='red', font=font)
-                draw.text((50, 50 * i), str(name_classes_gbk[i]), fill='red', font=font)
+                draw.text((30, 30 * step), str(name_classes_gbk[i]), fill='red', font=font)
+                step = step + 1
                 output_class_name = np.append(output_class_name, i)
             classes_nums[i] = num
-        max_output_class_name = np.max(output_class_name)
 
-        # 2023.3.3 只保存有预测结果的图片（只有background不算作有预测结果）
-        # 代码原理：最大预测结果类别大于0，说明预测出的不是只有background，此时保存图片
-        if max_output_class_name > 0:
-            logging.info("\n")
-            logging.info("{}-发现缺陷--{}".format(img_name, output_class_name))
-            # 存放预测结果的文件夹
-            result_txt.write(img_name)
-            result_txt.write("\r")
-            result_txt.write("  识别出的种类有： ")
-            # 2023.4.25 读取预测出的所有类别 存放到numpy中
-            for i in range(output_class_name.shape[0]):
-                if output_class_name[i] > 0:
-                    temp = output_class_name[i]
-                    logging.info("识别出：{}--{}".format(temp, name_classes_gbk[temp]))
-                    result_txt.write("    " + str(name_classes_gbk[temp]) + "\t")
-            result_txt.write("\r")
-            result_txt.write("  预测概率值最高的类别为： " + name_classes_gbk[max_output_class_name])
+        #  这张图要有检测结果才进入该循环
+        if output_class_name.size > 0:
+            max_output_class_name = np.max(output_class_name)
+
+            # 2023.3.3 只保存有预测结果的图片（只有background不算作有预测结果）
+            # 代码原理：最大预测结果类别大于0，说明预测出的不是只有background，此时保存图片
+            if max_output_class_name > 0:
+                logging.info("\n")
+                logging.info("{}-发现缺陷--{}".format(img_name, output_class_name))
+                # 存放预测结果的文件夹
+                result_txt.write(img_name)
+                result_txt.write("\r")
+                result_txt.write("  识别出的种类有： ")
+                # 2023.4.25 读取预测出的所有类别 存放到numpy中
+                for i in range(output_class_name.shape[0]):
+                    if output_class_name[i] > 0:
+                        temp = output_class_name[i]
+                        logging.info("识别出：{}--{}".format(temp, name_classes_gbk[temp]))
+                        result_txt.write("    " + str(name_classes_gbk[temp]) + "\t")
+
+                    # 2023.6.3 补充焊接缺陷的判定
+                    if output_class_name[i] == 10:  # 标签中对应第10号是是焊接缺陷
+                        logging.error("识别出焊接缺陷！程序立即停止！")
+                        result_txt.write("\n  识别出焊接缺陷！程序立即停止！")
+                        image.save(os.path.join(dir_save_path, img_name))
+                        sys.exit(1)  # 异常退出，程序终止
+
+                result_txt.write("\r")
+                result_txt.write("  预测概率值最高的类别为： " + name_classes_gbk[max_output_class_name])
             result_txt.write("\r")
             image.save(os.path.join(dir_save_path, img_name))
 
@@ -201,14 +220,14 @@ def predict_main(mode=None, name_classes=None, name_classes_gbk=None, timeF=None
         # img_name = input('Input image filename:')
         image = Image.open(str(filename))
         try:
-            logging.info('success read image ' + str(filename))
+            logging.info('success read image: ' + str(filename))
             file_rootname, _ = os.path.splitext(filename)
         except Exception as e:
             raise Exception(e)
         dir_save_path = str(file_rootname) + "_img_out/"
         if not os.path.exists(dir_save_path):
             os.makedirs(dir_save_path)
-        f1 = open(os.path.join(dir_save_path, str(file_rootname) + '_predict_result.txt'), 'a', encoding='gbk')
+        f1 = open(os.path.join(dir_save_path, str(file_rootname) + '_predict_result.txt'), 'w', encoding='gbk')
         logging.info("start image predict")
         hrnet.detect_image(image, name_classes=name_classes, name_classes_gbk=name_classes_gbk,
                            img_name=filename, dir_save_path=dir_save_path, result_txt=f1)

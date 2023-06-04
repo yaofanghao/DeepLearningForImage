@@ -9,8 +9,8 @@ gpus = tf.config.experimental.list_physical_devices(device_type='GPU')
 for gpu in gpus:
     tf.config.experimental.set_memory_growth(gpu, True)
 
-envpath = '/home/ubuntu/anaconda3/envs/tf-gpu/lib/python3.9/site-packages/cv2/qt/plugins/platforms'
-os.environ['QT_QPA_PLATFORM_PLUGIN_PATH'] = envpath
+# envpath = '/home/ubuntu/anaconda3/envs/tf-gpu/lib/python3.9/site-packages/cv2/qt/plugins/platforms'
+# os.environ['QT_QPA_PLATFORM_PLUGIN_PATH'] = envpath
 
 
 '''
@@ -19,11 +19,12 @@ os.environ['QT_QPA_PLATFORM_PLUGIN_PATH'] = envpath
 2、该文件计算的是验证集的miou，当前该库将测试集当作验证集使用，不单独划分测试集
 '''
 if __name__ == "__main__":
-    num_classes     = 8    #   分类个数+1、如2+1
-    name_classes    = ["background","duoyuwu","aokeng","qipi","cashang","gubo","xiuban","baiban"]    #   区分的种类，和json_to_dataset里面的一样
+    num_classes     = 11    #   分类个数+1、如2+1
+    name_classes    = ["background","duoyuwu","aokeng","qipi","cashang","gubo","xiuban","baiban","yanghuawu",
+                       "huashang","hanjiequexian"]    #   区分的种类，和json_to_dataset里面的一样
     VOCdevkit_path  = 'VOCdevkit'
 
-    image_ids       = open(os.path.join(VOCdevkit_path, "VOC2007/ImageSets/Segmentation/val.txt"),'r').read().splitlines() 
+    image_ids       = open(os.path.join(VOCdevkit_path, "VOC2007/ImageSets/Main/val.txt"),'r').read().splitlines()
     gt_dir          = os.path.join(VOCdevkit_path, "VOC2007/SegmentationClass/")
     miou_out_path   = "miou_out"
     pred_dir        = os.path.join(miou_out_path, 'detection-results')

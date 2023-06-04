@@ -1,0 +1,139 @@
+D:\MyGithub\DeepLearningForImage\DeepLearningWithLabVIEW\内窥缺陷检测项目\内窥缺陷检测软件>predict.exe
+2023-06-04 10:18:08.090664: I tensorflow/stream_executor/platform/default/dso_loader.cc:53] Successfully opened dynamic library cudart64_110.dll
+2023-06-04 10:19:20,401 success load arg from: argparse.txt
+2023-06-04 10:19:20,412 setting mode: 1          use_gpu:1       timeF:10
+2023-06-04 10:19:20,412 success read filename: test.mp4
+2023-06-04 10:19:20.416888: I tensorflow/stream_executor/platform/default/dso_loader.cc:53] Successfully opened dynamic library nvcuda.dll
+2023-06-04 10:19:20.962728: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1733] Found device 0 with properties:
+pciBusID: 0000:01:00.0 name: NVIDIA GeForce RTX 3060 Laptop GPU computeCapability: 8.6
+coreClock: 1.425GHz coreCount: 30 deviceMemorySize: 6.00GiB deviceMemoryBandwidth: 312.97GiB/s
+2023-06-04 10:19:20.963834: I tensorflow/stream_executor/platform/default/dso_loader.cc:53] Successfully opened dynamic library cudart64_110.dll
+2023-06-04 10:19:20.997430: I tensorflow/stream_executor/platform/default/dso_loader.cc:53] Successfully opened dynamic library cublas64_11.dll
+2023-06-04 10:19:20.997962: I tensorflow/stream_executor/platform/default/dso_loader.cc:53] Successfully opened dynamic library cublasLt64_11.dll
+2023-06-04 10:19:21.010573: I tensorflow/stream_executor/platform/default/dso_loader.cc:53] Successfully opened dynamic library cufft64_10.dll
+2023-06-04 10:19:21.018524: I tensorflow/stream_executor/platform/default/dso_loader.cc:53] Successfully opened dynamic library curand64_10.dll
+2023-06-04 10:19:21.030234: I tensorflow/stream_executor/platform/default/dso_loader.cc:53] Successfully opened dynamic library cusolver64_11.dll
+2023-06-04 10:19:21.043021: I tensorflow/stream_executor/platform/default/dso_loader.cc:53] Successfully opened dynamic library cusparse64_11.dll
+2023-06-04 10:19:21.047014: I tensorflow/stream_executor/platform/default/dso_loader.cc:53] Successfully opened dynamic library cudnn64_8.dll
+2023-06-04 10:19:21.048537: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1871] Adding visible gpu devices: 0
+2023-06-04 10:19:21.069302: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX AVX2
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2023-06-04 10:19:21.072004: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1733] Found device 0 with properties:
+pciBusID: 0000:01:00.0 name: NVIDIA GeForce RTX 3060 Laptop GPU computeCapability: 8.6
+coreClock: 1.425GHz coreCount: 30 deviceMemorySize: 6.00GiB deviceMemoryBandwidth: 312.97GiB/s
+2023-06-04 10:19:21.072396: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1871] Adding visible gpu devices: 0
+2023-06-04 10:19:22.022512: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1258] Device interconnect StreamExecutor with strength 1 edge matrix:
+2023-06-04 10:19:22.022912: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1264]      0
+2023-06-04 10:19:22.023138: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1277] 0:   N
+2023-06-04 10:19:22.023644: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1418] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 3485 MB memory) -> physical GPU (device: 0, name: NVIDIA GeForce RTX 3060 Laptop GPU, pci bus id: 0000:01:00.0, compute capability: 8.6)
+WARNING:tensorflow:AutoGraph could not transform <bound method UpsampleLike.call of <nets.backbone.UpsampleLike object at 0x000001EF59FA8808>> and will run it as-is.
+Please report this to the TensorFlow team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output.
+Cause: Unable to locate the source code of <bound method UpsampleLike.call of <nets.backbone.UpsampleLike object at 0x000001EF59FA8808>>. Note that functions defined in certain environments, like the interactive Python shell do not expose their source code. If that is the case, you should to define them in a .py source file. If you are certain the code is graph-compatible, wrap the call using @tf.autograph.do_not_convert. Original error: could not get source code
+To silence this warning, decorate the function with @tf.autograph.experimental.do_not_convert
+2023-06-04 10:19:22,661 AutoGraph could not transform <bound method UpsampleLike.call of <nets.backbone.UpsampleLike object at 0x000001EF59FA8808>> and will run it as-is.
+Please report this to the TensorFlow team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output.
+Cause: Unable to locate the source code of <bound method UpsampleLike.call of <nets.backbone.UpsampleLike object at 0x000001EF59FA8808>>. Note that functions defined in certain environments, like the interactive Python shell do not expose their source code. If that is the case, you should to define them in a .py source file. If you are certain the code is graph-compatible, wrap the call using @tf.autograph.do_not_convert. Original error: could not get source code
+To silence this warning, decorate the function with @tf.autograph.experimental.do_not_convert
+2023-06-04 10:19:29,049 Creating converter from 3 to 5
+2023-06-04 10:19:30,771 success load model: logs.h5
+Configurations:
+----------------------------------------------------------------------
+|                     keys |                                   values|
+----------------------------------------------------------------------
+|               model_path |                                  logs.h5|
+|              num_classes |                                       11|
+|                 backbone |                              hrnetv2_w32|
+|              input_shape |                               [480, 480]|
+----------------------------------------------------------------------
+2023-06-04 10:19:30,774 success read video test.mp4
+2023-06-04 10:19:32,907 success read frame No.10
+2023-06-04 10:19:33,113 success read frame No.20
+2023-06-04 10:19:33,315 success read frame No.30
+2023-06-04 10:19:33,515 success read frame No.40
+2023-06-04 10:19:33,730 success read frame No.50
+2023-06-04 10:19:33,928 success read frame No.60
+2023-06-04 10:19:34,146 success read frame No.70
+2023-06-04 10:19:34,353 success read frame No.80
+2023-06-04 10:19:34,556 success read frame No.90
+2023-06-04 10:19:34,763 success read frame No.100
+2023-06-04 10:19:34,978 success read frame No.110
+2023-06-04 10:19:35,180 success read frame No.120
+2023-06-04 10:19:35,391 success read frame No.130
+2023-06-04 10:19:35,605 success read frame No.140
+2023-06-04 10:19:35,803 success read frame No.150
+2023-06-04 10:19:36,010 success read frame No.160
+2023-06-04 10:19:36,222 success read frame No.170
+2023-06-04 10:19:36,429 success read frame No.180
+2023-06-04 10:19:36,629 success read frame No.190
+2023-06-04 10:19:36,841 success read frame No.200
+2023-06-04 10:19:37,052 success read frame No.210
+2023-06-04 10:19:37,257 success read frame No.220
+2023-06-04 10:19:37,479 success read frame No.230
+2023-06-04 10:19:37,693 success read frame No.240
+2023-06-04 10:19:37,891 success read frame No.250
+2023-06-04 10:19:38,094 success read frame No.260
+2023-06-04 10:19:38,305 success read frame No.270
+2023-06-04 10:19:38,518 success read frame No.280
+2023-06-04 10:19:38,723 success read frame No.290
+2023-06-04 10:19:38,919 success read frame No.300
+2023-06-04 10:19:39,137 success read frame No.310
+2023-06-04 10:19:39,348 success read frame No.320
+2023-06-04 10:19:39,551 success read frame No.330
+2023-06-04 10:19:39,772 success read frame No.340
+2023-06-04 10:19:39,978 success read frame No.350
+2023-06-04 10:19:40,178 success read frame No.360
+2023-06-04 10:19:40,378 success read frame No.370
+2023-06-04 10:19:40,596 success read frame No.380
+2023-06-04 10:19:40,804 success read frame No.390
+2023-06-04 10:19:41,004 success read frame No.400
+2023-06-04 10:19:41,215 success read frame No.410
+2023-06-04 10:19:41,420 success read frame No.420
+2023-06-04 10:19:41,628 success read frame No.430
+2023-06-04 10:19:41,829 success read frame No.440
+2023-06-04 10:19:42,049 success read frame No.450
+2023-06-04 10:19:42,250 success read frame No.460
+2023-06-04 10:19:42,455 success read frame No.470
+2023-06-04 10:19:42,656 success read frame No.480
+2023-06-04 10:19:42,867 success read frame No.490
+2023-06-04 10:19:43,073 success read frame No.500
+2023-06-04 10:19:43,271 success read frame No.510
+2023-06-04 10:19:43,469 success read frame No.520
+2023-06-04 10:19:43,689 success read frame No.530
+2023-06-04 10:19:43,889 success read frame No.540
+2023-06-04 10:19:44,108 success read frame No.550
+2023-06-04 10:19:44,316 success read frame No.560
+2023-06-04 10:19:44,522 success read frame No.570
+2023-06-04 10:19:44,723 success read frame No.580
+2023-06-04 10:19:44,936 success read frame No.590
+2023-06-04 10:19:45,129 success read frame No.600
+2023-06-04 10:19:45,336 success read frame No.610
+2023-06-04 10:19:45,534 success read frame No.620
+2023-06-04 10:19:45,746 success read frame No.630
+2023-06-04 10:19:45,948 success read frame No.640
+2023-06-04 10:19:46,151 success read frame No.650
+2023-06-04 10:19:46,351 success read frame No.660
+2023-06-04 10:19:46,554 success read frame No.670
+2023-06-04 10:19:46,626 start video predict
+  0%|                                                                                          | 0/67 [00:00<?, ?it/s]WARNING:tensorflow:AutoGraph could not transform <bound method HRNetSegmentation.get_pred of <tensorflow.python.eager.function.TfMethodTarget object at 0x000001EF8C0C98C8>> and will run it as-is.
+Please report this to the TensorFlow team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output.
+Cause: Unable to locate the source code of <bound method HRNetSegmentation.get_pred of <tensorflow.python.eager.function.TfMethodTarget object at 0x000001EF8C0C98C8>>. Note that functions defined in certain environments, like the interactive Python shell do not expose their source code. If that is the case, you should to define them in a .py source file. If you are certain the code is graph-compatible, wrap the call using @tf.autograph.do_not_convert. Original error: could not get source code
+To silence this warning, decorate the function with @tf.autograph.experimental.do_not_convert
+2023-06-04 10:19:47,408 AutoGraph could not transform <bound method HRNetSegmentation.get_pred of <tensorflow.python.eager.function.TfMethodTarget object at 0x000001EF8C0C98C8>> and will run it as-is.
+Please report this to the TensorFlow team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output.
+Cause: Unable to locate the source code of <bound method HRNetSegmentation.get_pred of <tensorflow.python.eager.function.TfMethodTarget object at 0x000001EF8C0C98C8>>. Note that functions defined in certain environments, like the interactive Python shell do not expose their source code. If that is the case, you should to define them in a .py source file. If you are certain the code is graph-compatible, wrap the call using @tf.autograph.do_not_convert. Original error: could not get source code
+To silence this warning, decorate the function with @tf.autograph.experimental.do_not_convert
+2023-06-04 10:19:49.803011: I tensorflow/compiler/mlir/mlir_graph_optimization_pass.cc:176] None of the MLIR Optimization Passes are enabled (registered 2)
+2023-06-04 10:19:51.729253: I tensorflow/stream_executor/platform/default/dso_loader.cc:53] Successfully opened dynamic library cudnn64_8.dll
+2023-06-04 10:19:53.061498: I tensorflow/stream_executor/cuda/cuda_dnn.cc:359] Loaded cuDNN version 8201
+2023-06-04 10:19:55.243936: I tensorflow/stream_executor/platform/default/dso_loader.cc:53] Successfully opened dynamic library cublas64_11.dll
+2023-06-04 10:19:56.831467: I tensorflow/stream_executor/platform/default/dso_loader.cc:53] Successfully opened dynamic library cublasLt64_11.dll
+  0%|                                                                                          | 0/67 [00:10<?, ?it/s]
+Traceback (most recent call last):
+  File "predict.py", line 290, in <module>
+  File "predict.py", line 273, in predict_main
+  File "predict.py", line 181, in detect_image
+  File "<__array_function__ internals>", line 6, in amax
+  File "numpy\core\fromnumeric.py", line 2706, in amax
+  File "numpy\core\fromnumeric.py", line 87, in _wrapreduction
+ValueError: zero-size array to reduction operation maximum which has no identity
+[12432] Failed to execute script 'predict' due to unhandled exception!

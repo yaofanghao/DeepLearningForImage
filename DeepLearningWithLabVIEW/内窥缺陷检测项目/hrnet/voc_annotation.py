@@ -12,7 +12,7 @@ from tqdm import tqdm
 #   当前该库将测试集当作验证集使用，不单独划分测试集
 #-------------------------------------------------------#
 trainval_percent    = 1
-train_percent       = 0.9
+train_percent       = 0
 #-------------------------------------------------------#
 #   指向VOC数据集所在的文件夹
 #   默认指向根目录下的VOC数据集
@@ -23,7 +23,7 @@ if __name__ == "__main__":
     random.seed(0)
     print("Generate txt in ImageSets.")
     segfilepath     = os.path.join(VOCdevkit_path, 'VOC2007/SegmentationClass')
-    saveBasePath    = os.path.join(VOCdevkit_path, 'VOC2007/ImageSets/Segmentation')
+    saveBasePath    = os.path.join(VOCdevkit_path, 'VOC2007/ImageSets/Main')
     
     temp_seg = os.listdir(segfilepath)
     total_seg = []
