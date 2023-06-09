@@ -10,7 +10,6 @@
 		<Property Name="server.vi.callsEnabled" Type="Bool">true</Property>
 		<Property Name="server.vi.propertiesEnabled" Type="Bool">true</Property>
 		<Property Name="specify.custom.address" Type="Bool">false</Property>
-		<Item Name="11.ico" Type="Document" URL="../11.ico"/>
 		<Item Name="ini配置文件读取（DBL）.vi" Type="VI" URL="../ini配置文件读取（DBL）.vi"/>
 		<Item Name="灰度图像平滑去毛刺处理.vi" Type="VI" URL="../灰度图像平滑去毛刺处理.vi"/>
 		<Item Name="控件 1.ctl" Type="VI" URL="../控件 1.ctl"/>
@@ -23,7 +22,6 @@
 		<Item Name="子VI-窗位窗宽调整.vi" Type="VI" URL="../子VI-窗位窗宽调整.vi"/>
 		<Item Name="子VI-读取缺陷测量长宽和面积.vi" Type="VI" URL="../子VI-读取缺陷测量长宽和面积.vi"/>
 		<Item Name="子VI-工件信息输入.vi" Type="VI" URL="../子VI-工件信息输入.vi"/>
-		<Item Name="子VI-计算框中心XY坐标值.vi" Type="VI" URL="../子VI-计算框中心XY坐标值.vi"/>
 		<Item Name="子VI-深度学习自动检测.vi" Type="VI" URL="../子VI-深度学习自动检测.vi"/>
 		<Item Name="子VI-深度学习自动检测结果分析.vi" Type="VI" URL="../子VI-深度学习自动检测结果分析.vi"/>
 		<Item Name="子VI-图像预处理.vi" Type="VI" URL="../子VI-图像预处理.vi"/>
@@ -234,7 +232,7 @@
 				<Property Name="INST_defaultDir" Type="Str">{11D0D112-CFFF-4D42-8C97-AABA4388E4B5}</Property>
 				<Property Name="INST_language" Type="Int">2052</Property>
 				<Property Name="INST_productName" Type="Str">缺陷标注软件</Property>
-				<Property Name="INST_productVersion" Type="Str">1.0.10</Property>
+				<Property Name="INST_productVersion" Type="Str">1.0.6</Property>
 				<Property Name="InstSpecBitness" Type="Str">32-bit</Property>
 				<Property Name="InstSpecVersion" Type="Str">18008012</Property>
 				<Property Name="MSI_autoselectDrivers" Type="Bool">true</Property>
@@ -275,7 +273,7 @@
 				<Property Name="Bld_localDestDir" Type="Path">../builds/NI_AB_PROJECTNAME/我的应用程序</Property>
 				<Property Name="Bld_localDestDirType" Type="Str">relativeToCommon</Property>
 				<Property Name="Bld_previewCacheID" Type="Str">{E563BE52-590D-4BCE-88A0-9A28ECE10AB5}</Property>
-				<Property Name="Bld_version.build" Type="Int">9</Property>
+				<Property Name="Bld_version.build" Type="Int">6</Property>
 				<Property Name="Bld_version.major" Type="Int">1</Property>
 				<Property Name="Destination[0].destName" Type="Str">缺陷标注软件.exe</Property>
 				<Property Name="Destination[0].path" Type="Path">../builds/NI_AB_PROJECTNAME/我的应用程序/缺陷标注软件.exe</Property>
@@ -284,8 +282,7 @@
 				<Property Name="Destination[1].destName" Type="Str">支持目录</Property>
 				<Property Name="Destination[1].path" Type="Path">../builds/NI_AB_PROJECTNAME/我的应用程序/data</Property>
 				<Property Name="DestinationCount" Type="Int">2</Property>
-				<Property Name="Exe_iconItemID" Type="Ref">/我的电脑/11.ico</Property>
-				<Property Name="Source[0].itemID" Type="Str">{935E7B29-C6D0-49C2-824D-E9C1765A3763}</Property>
+				<Property Name="Source[0].itemID" Type="Str">{A24EE51A-078E-41D7-B24B-C20B299D6C81}</Property>
 				<Property Name="Source[0].type" Type="Str">Container</Property>
 				<Property Name="Source[1].destinationIndex" Type="Int">0</Property>
 				<Property Name="Source[1].itemID" Type="Ref">/我的电脑/主程序-复材超声C扫缺陷分析评定软件.vi</Property>
