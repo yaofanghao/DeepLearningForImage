@@ -28,7 +28,7 @@ def count_json_label():
     dir_count = 0
     d_count, a_count, q_count, c_count, g_count, x_count, b_count, y_count, h_count, hj_count \
         = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0   # 修改点
-    f = open(os.path.join(os.getcwd(), 'json_class_result_mode' + str(count_mode) + '.txt'), 'a')
+    f = open(os.path.join(os.getcwd(), 'json_class_result_mode' + str(count_mode) + '.txt'), 'w')
 
     if count_mode == 0:
         print("一张图中如果有多个相同类别的标注，在统计中对这些每个标注都会加1")
@@ -66,6 +66,7 @@ def count_json_label():
                     hj_count = hj_count + hj   # 修改点
                 else:
                     pass
+
     if count_mode == 1:
         print("对一张图中的多个相同类别的标注只加一次1")
         f.write("对一张图中的多个相同类别的标注只加一次1")
@@ -79,6 +80,8 @@ def count_json_label():
                     dataJson = json.load(open("{}".format(fullname), encoding='UTF-8'))
                     label_name = dataJson["shapes"]
                     d, a, q, c, g, x, b, y, h, hj = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0  # 修改点
+
+
                     for _ in label_name:
                         d = d + 1 if _["label"] == class_name[0] else d
                         a = a + 1 if _["label"] == class_name[1] else a
@@ -90,7 +93,6 @@ def count_json_label():
                         y = y + 1 if _["label"] == class_name[7] else y
                         h = h + 1 if _["label"] == class_name[8] else h
                         hj = hj + 1 if _["label"] == class_name[9] else hj  # 修改点
-
                     # 对同个图片中的同个标注，只统计一次
                     d = 1 if d > 1 else d
                     a = 1 if a > 1 else a
@@ -156,6 +158,39 @@ def count_json_label():
     f.write("\n")
     f.write("     " + str(class_name[9]) + ": " + str(hj_count))  # 修改点
 
+# 将标签duoyvwu替换为duoyuwu
+def replace_label_name():
+    json_dir = 'before/'  # 写入json文件的文件夹路径
+    json_files = os.listdir(json_dir)
+
+    # 写自己的旧标签名和新标签名
+    old_name = "duoyvwu"
+    new_name = "duoyuwu"
+
+    for json_file in json_files:
+        json_file_ext = os.path.splitext(json_file)
+
+        if json_file_ext[1] == '.json':
+            jsonfile = json_dir + json_file
+
+            with open(jsonfile, 'r', encoding='utf-8') as jf:
+                info = json.load(jf)
+
+                for i, label in enumerate(info['shapes']):
+                    if info['shapes'][i]['label'] == old_name:
+                        info['shapes'][i]['label'] = new_name
+                        # 找到位置进行修改
+                # 使用新字典替换修改后的字典
+                json_dict = info
+
+            # 将替换后的内容写入原文件
+            with open(jsonfile, 'w') as new_jf:
+                json.dump(json_dict, new_jf)
+
+        print('{} change name over!'.format(json_file))
 
 if __name__ == '__main__':
+
+    replace_label_name()
+
     count_json_label()
