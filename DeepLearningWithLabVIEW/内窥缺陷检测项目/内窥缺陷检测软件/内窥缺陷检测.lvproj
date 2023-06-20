@@ -11,8 +11,10 @@
 		<Property Name="server.vi.propertiesEnabled" Type="Bool">true</Property>
 		<Property Name="specify.custom.address" Type="Bool">false</Property>
 		<Item Name="IMAQ Load Image Dialog" Type="VI" URL="/&lt;vilib&gt;/vision/Files.llb/IMAQ Load Image Dialog"/>
-		<Item Name="主程序-内窥缺陷检测.vi" Type="VI" URL="../主程序-内窥缺陷检测.vi"/>
+		<Item Name="起始界面.vi" Type="VI" URL="../起始界面.vi"/>
+		<Item Name="主界面-内窥缺陷检测.vi" Type="VI" URL="../主界面-内窥缺陷检测.vi"/>
 		<Item Name="子VI-检测模式配置.vi" Type="VI" URL="../子VI-检测模式配置.vi"/>
+		<Item Name="子VI-信息说明界面.vi" Type="VI" URL="../子VI-信息说明界面.vi"/>
 		<Item Name="依赖关系" Type="Dependencies">
 			<Item Name="vi.lib" Type="Folder">
 				<Item Name="Application Directory.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/file.llb/Application Directory.vi"/>

@@ -1,4 +1,0 @@
-battery
-bottle
-can
-cigarette
