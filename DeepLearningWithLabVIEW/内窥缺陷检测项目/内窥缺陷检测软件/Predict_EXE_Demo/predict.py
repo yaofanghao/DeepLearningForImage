@@ -23,6 +23,10 @@ from PIL import Image, ImageFont, ImageDraw
 from nets.hrnet import HRnet
 from utils.utils import cvtColor, preprocess_input, resize_image, show_config
 
+# 数据库读写模块
+import pyodbc
+from datetime import datetime
+
 # 日志调试模块
 import logging
 # logging.basicConfig(format='%(asctime)s %(levelname)s %(name)s %(message)s',level=logging.DEBUG)
@@ -33,6 +37,9 @@ logging.basicConfig(format='%(asctime)s %(message)s', level=logging.DEBUG)
 _classes_txt = "class_name.txt"  # 分类标签文件
 _classes_gbk_txt = "class_name_gbk.txt"  # 分类标签文件中文版
 argparse_txt = "argparse.txt"  # 配置参数文件
+current_dir = os.path.dirname(os.path.abspath(__file__))
+db_file_path = os.path.join(current_dir, 'predict_result.accdb')  # 构造数据库文件，并连接到Access数据库，DBQ需要是绝对路径
+
 # import argparse, sys
 # parser = argparse.ArgumentParser(description='Test for argparse')
 # parser.add_argument('--mode', '-m', type=int,
@@ -48,7 +55,6 @@ argparse_txt = "argparse.txt"  # 配置参数文件
 
 
 def load_arg():
-
     # 方法一 2023.4.26 以argparse方式载入参数
     # try:
     #     logging.info("mode:{} \t use_gpu:{} \t timeF:{} ".format(args.mode, args.use_gpu, args.timeF))
@@ -61,7 +67,7 @@ def load_arg():
     # 第一项为预测模式 0或1 0为单张图片预测 1为视频预测 默认为1
     # 第二项为是否使用gpu环境 True或False
     # 第三项为视频帧计数间隔频率 影响视频检测速率，可任意设置，建议值10-30之间
-	# 第四项为待检测图片\视频的相对路径
+    # 第四项为待检测图片\视频的相对路径
 
     f_arg = open(argparse_txt, "r", encoding='gbk')
     lines_arg = f_arg.read().splitlines()
@@ -94,6 +100,27 @@ def read_txt_lines(_classes_txt=None, _classes_gbk_txt=None):
         __name_classes.append(lines[i])
         __name_classes_gbk.append(lines_gbk[i])
     return __name_classes, __name_classes_gbk
+
+
+# 检测表名是否已存在的函数
+def table_exists(table_name, db_file_path):
+    conn_str = r'Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=' + db_file_path
+    conn = pyodbc.connect(conn_str)
+    cursor = conn.cursor()
+
+    # 获取数据库中的所有表
+    tables = cursor.tables(tableType='TABLE')
+
+    # 遍历表列表，判断特定表是否存在
+    for table in tables:
+        if table.table_name == table_name:
+            cursor.close()
+            conn.close()
+            return True
+
+    cursor.close()
+    conn.close()
+    return False
 
 
 class HRNetSegmentation(object):
@@ -140,7 +167,7 @@ class HRNetSegmentation(object):
 
     #   检测图片
     def detect_image(self, image=None, name_classes=None, name_classes_gbk=None,
-                     img_name=None, dir_save_path=None, result_txt=None):
+                     file_name = None, img_name=None, dir_save_path=None, result_txt=None):
         image = cvtColor(image)
         #   对输入图像进行一个备份，后面用于绘图
         old_img = copy.deepcopy(image)
@@ -155,7 +182,7 @@ class HRNetSegmentation(object):
         pr = self.get_pred(image_data)[0].numpy()
         #   将灰条部分截取掉
         pr = pr[int((self.input_shape[0] - nh) // 2): int((self.input_shape[0] - nh) // 2 + nh),
-                int((self.input_shape[1] - nw) // 2): int((self.input_shape[1] - nw) // 2 + nw)]
+             int((self.input_shape[1] - nw) // 2): int((self.input_shape[1] - nw) // 2 + nw)]
         #   进行图片的resize
         pr = cv2.resize(pr, (orininal_w, orininal_h), interpolation=cv2.INTER_LINEAR)
         #   取出每一个像素点的种类
@@ -171,12 +198,13 @@ class HRNetSegmentation(object):
         draw = ImageDraw.Draw(image)
         classes_nums = np.zeros([self.num_classes])
         output_class_name = np.array([], dtype=int)  # 存放预测类别结果的数组
-        step = 0  # 在图上绘制预测类别的显示间隔
+        step = 1  # 在图上绘制预测类别的显示间隔
         for i in range(self.num_classes):
             num = np.sum(pr == i)
+            draw.text((30, 30 * 0), str("【预测结果】"), fill='red', font=font)
             if (num > 0) & (name_classes is not None) & (i > 0):
                 # draw.text((50 * i, 50 * i), str(name_classes_gbk[i]), fill='red', font=font)
-                draw.text((30, 30 * step), str(name_classes_gbk[i]), fill='red', font=font)
+                draw.text((70, 30 * step), str(name_classes_gbk[i]), fill='red', font=font)
                 step = step + 1
                 output_class_name = np.append(output_class_name, i)
             classes_nums[i] = num
@@ -194,22 +222,81 @@ class HRNetSegmentation(object):
                 result_txt.write(img_name)
                 result_txt.write("\r")
                 result_txt.write("  识别出的种类有： ")
-                # 2023.4.25 读取预测出的所有类别 存放到numpy中
+
+                # 2023.6.29 【新要求】补充 ----------数据库读写模块
+                # 插入数据库中检测结果的字符串
+                insert_detect_result = ""
+
+                # 连接数据库
+                conn_str = r'Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=' + str(db_file_path)
+                logging.info("成功创建并打开数据库，路径为{}".format(db_file_path))
+                # logging.info(conn_str)
+                conn = pyodbc.connect(conn_str)
+                # 创建游标
+                cursor = conn.cursor()
+
+                # 如果不存在名为file_name的表，则创建新表
+                # 因为数据库表名通常不支持点号，所以将.替换为_
+                if not table_exists(table_name=file_name.replace(".", "_"), db_file_path=db_file_path):
+                    create_table_sql = '''
+                        CREATE TABLE {} (
+                            时间 DATETIME,
+                            图片名 VARCHAR(50),
+                            检测结果 VARCHAR(50)
+                        )
+                    '''.format(file_name.replace(".", "_"))
+                    cursor.execute(create_table_sql)
+                    logging.info("创建完成！")
+                if table_exists(table_name=file_name.replace(".", "_"), db_file_path=db_file_path):
+                    logging.info("已有表！")
+
+
                 for i in range(output_class_name.shape[0]):
-                    if output_class_name[i] > 0:
+                    if (output_class_name[i] > 0) & (output_class_name[i] != 7):
                         temp = output_class_name[i]
                         logging.info("识别出：{}--{}".format(temp, name_classes_gbk[temp]))
                         result_txt.write("    " + str(name_classes_gbk[temp]) + "\t")
+                        insert_detect_result = insert_detect_result + " " + str(name_classes_gbk[temp])
+
+                    # 2023.6.29 【新要求】如果识别预测结果为白班，则视为多余物
+                    # 白班是class_name.txt中的第7项
+                    if (output_class_name[i] > 0) & (output_class_name[i] == 7):
+                        temp = 1  # 多余物是class_name.txt中的第1项（从0开始计数）
+                        logging.info("识别出：{}--{}".format(temp, name_classes_gbk[temp]))
+                        result_txt.write("    " + str(name_classes_gbk[temp]) + "\t")
+                        insert_detect_result = insert_detect_result + " " + str(name_classes_gbk[temp])
 
                     # 2023.6.3 补充焊接缺陷的判定
                     if output_class_name[i] == 10:  # 标签中对应第10号是是焊接缺陷
                         logging.error("识别出焊接缺陷！程序立即停止！")
                         result_txt.write("\n  识别出焊接缺陷！程序立即停止！")
                         image.save(os.path.join(dir_save_path, img_name))
+                        insert_detect_result = insert_detect_result + " " + str(name_classes_gbk[10])
                         sys.exit(1)  # 异常退出，程序终止
 
+                # 2023.6.29 【新要求】如果识别预测结果为白班，则视为多余物
+                # 白班是class_name.txt中的第7项
+                if max_output_class_name == 7:
+                    max_output_class_name = 1
                 result_txt.write("\r")
                 result_txt.write("  预测概率值最高的类别为： " + name_classes_gbk[max_output_class_name])
+
+                # 2023.6.29 【新要求】插入数据到数据库表中
+                # 格式示例： 时间 图片名 检测结果
+                insert_data_sql = '''
+                    INSERT INTO {} VALUES (?, ?, ?)
+                '''.format(file_name.replace(".", "_"))
+                values = (datetime.now(), img_name, insert_detect_result)
+                cursor.execute(insert_data_sql, values)
+
+                conn.commit()
+                # 关闭连接
+                cursor.close()
+                conn.close()
+                logging.info("成功写入数据 [名称:{}] [检测结果:{}] 到数据库的表 [{}] 中！"
+                             .format(img_name, insert_detect_result, file_name.replace(".", "_")))
+                # logging.info("写入数据库模块结束！")
+
             result_txt.write("\r")
             image.save(os.path.join(dir_save_path, img_name))
 
@@ -228,9 +315,10 @@ def predict_main(mode=None, name_classes=None, name_classes_gbk=None, timeF=None
         if not os.path.exists(dir_save_path):
             os.makedirs(dir_save_path)
         f1 = open(os.path.join(dir_save_path, str(file_rootname) + '_predict_result.txt'), 'w', encoding='gbk')
+
         logging.info("start image predict")
         hrnet.detect_image(image, name_classes=name_classes, name_classes_gbk=name_classes_gbk,
-                           img_name=filename, dir_save_path=dir_save_path, result_txt=f1)
+                           file_name = filename, img_name=filename, dir_save_path=dir_save_path, result_txt=f1)
         f1.close()
         logging.info("success, predict done!")
 
@@ -275,13 +363,12 @@ def predict_main(mode=None, name_classes=None, name_classes_gbk=None, timeF=None
             image = Image.open(image_path)
             # 预测图片，只保存有预测结果图片
             hrnet.detect_image(image, name_classes=name_classes, name_classes_gbk=name_classes_gbk,
-                               img_name=img_name, dir_save_path=dir_save_path, result_txt=f1)
+                               file_name = filename, img_name=img_name, dir_save_path=dir_save_path, result_txt=f1)
         f1.close()
         logging.info("success, all predict done!")
 
 
 if __name__ == "__main__":
-
     # 输入配置参数
     _mode, _use_gpu, _timeF, _filename = load_arg()
 
@@ -289,7 +376,9 @@ if __name__ == "__main__":
     gpu_enable(_use_gpu=int(_use_gpu))
 
     # 读取标签文件
-    _name_classes, _name_classes_gbk = read_txt_lines(_classes_txt=_classes_txt, _classes_gbk_txt=_classes_gbk_txt)
+    _name_classes, _name_classes_gbk = read_txt_lines(_classes_txt=_classes_txt,
+                                                      _classes_gbk_txt=_classes_gbk_txt)
 
     # 进入预测 单张图片/视频
-    predict_main(mode=int(_mode), name_classes=_name_classes, name_classes_gbk=_name_classes_gbk, timeF=_timeF, filename=_filename)
+    predict_main(mode=int(_mode), name_classes=_name_classes, name_classes_gbk=_name_classes_gbk,
+                 timeF=_timeF, filename=_filename)

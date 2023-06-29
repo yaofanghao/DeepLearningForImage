@@ -20,9 +20,10 @@ class_name = ["duoyuwu", "aokeng", "qipi", "cashang", "gubo",
 #   对一张图中的多个相同类别的标注只加一次1
 count_mode = 1
 
+dir_name = "6.25-before/"
 
 def count_json_label():
-    base_path = "before/"
+    base_path = dir_name
     filelist = os.listdir(base_path)
 
     dir_count = 0
@@ -93,6 +94,7 @@ def count_json_label():
                         y = y + 1 if _["label"] == class_name[7] else y
                         h = h + 1 if _["label"] == class_name[8] else h
                         hj = hj + 1 if _["label"] == class_name[9] else hj  # 修改点
+
                     # 对同个图片中的同个标注，只统计一次
                     d = 1 if d > 1 else d
                     a = 1 if a > 1 else a
@@ -160,7 +162,7 @@ def count_json_label():
 
 # 将标签duoyvwu替换为duoyuwu
 def replace_label_name():
-    json_dir = 'before/'  # 写入json文件的文件夹路径
+    json_dir = dir_name  # 写入json文件的文件夹路径
     json_files = os.listdir(json_dir)
 
     # 写自己的旧标签名和新标签名
@@ -180,6 +182,10 @@ def replace_label_name():
                     if info['shapes'][i]['label'] == old_name:
                         info['shapes'][i]['label'] = new_name
                         # 找到位置进行修改
+                        print('{} change name over!'.format(json_file))
+                    # else:
+                        # print('{} do not change name!'.format(json_file))
+
                 # 使用新字典替换修改后的字典
                 json_dict = info
 
@@ -187,7 +193,7 @@ def replace_label_name():
             with open(jsonfile, 'w') as new_jf:
                 json.dump(json_dict, new_jf)
 
-        print('{} change name over!'.format(json_file))
+
 
 if __name__ == '__main__':
 

@@ -103,6 +103,6 @@ def fit_one_epoch(net, loss, loss_history, eval_callback, optimizer, epoch, epoc
         
     if len(loss_history.val_loss) <= 1 or (val_loss / epoch_step_val) <= min(loss_history.val_loss):
         print('Save best model to best_epoch_weights.pth')
-        net.save_weights(os.path.join(save_dir, "best_epoch_weights.h5"))
+        net.save_weights(os.path.join(save_dir, "logs.h5"))
             
     net.save_weights(os.path.join(save_dir, "last_epoch_weights.h5"))
