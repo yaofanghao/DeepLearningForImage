@@ -38,7 +38,7 @@ _classes_txt = "class_name.txt"  # 分类标签文件
 _classes_gbk_txt = "class_name_gbk.txt"  # 分类标签文件中文版
 argparse_txt = "argparse.txt"  # 配置参数文件
 current_dir = os.path.dirname(os.path.abspath(__file__))
-db_file_path = os.path.join(current_dir, 'predict_result.accdb')  # 构造数据库文件，并连接到Access数据库，DBQ需要是绝对路径
+db_file_path = os.path.join(current_dir, 'predict_result.mdb')  # 构造数据库文件，并连接到Access数据库，DBQ需要是绝对路径
 
 # import argparse, sys
 # parser = argparse.ArgumentParser(description='Test for argparse')
