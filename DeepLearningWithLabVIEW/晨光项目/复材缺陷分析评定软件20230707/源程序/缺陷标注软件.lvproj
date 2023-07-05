@@ -22,6 +22,7 @@
 		<Item Name="子VI-查看某框.vi" Type="VI" URL="../子VI-查看某框.vi"/>
 		<Item Name="子VI-窗位窗宽调整.vi" Type="VI" URL="../子VI-窗位窗宽调整.vi"/>
 		<Item Name="子VI-读取缺陷测量长宽和面积.vi" Type="VI" URL="../子VI-读取缺陷测量长宽和面积.vi"/>
+		<Item Name="子VI-分层缺陷面积筛选.vi" Type="VI" URL="../子VI-分层缺陷面积筛选.vi"/>
 		<Item Name="子VI-工件信息输入.vi" Type="VI" URL="../子VI-工件信息输入.vi"/>
 		<Item Name="子VI-计算框中心XY坐标值.vi" Type="VI" URL="../子VI-计算框中心XY坐标值.vi"/>
 		<Item Name="子VI-深度学习自动检测.vi" Type="VI" URL="../子VI-深度学习自动检测.vi"/>
@@ -234,7 +235,7 @@
 				<Property Name="INST_defaultDir" Type="Str">{11D0D112-CFFF-4D42-8C97-AABA4388E4B5}</Property>
 				<Property Name="INST_language" Type="Int">2052</Property>
 				<Property Name="INST_productName" Type="Str">缺陷标注软件</Property>
-				<Property Name="INST_productVersion" Type="Str">1.0.15</Property>
+				<Property Name="INST_productVersion" Type="Str">1.0.17</Property>
 				<Property Name="InstSpecBitness" Type="Str">32-bit</Property>
 				<Property Name="InstSpecVersion" Type="Str">18008012</Property>
 				<Property Name="MSI_autoselectDrivers" Type="Bool">true</Property>
@@ -277,7 +278,7 @@
 				<Property Name="Bld_previewCacheID" Type="Str">{E563BE52-590D-4BCE-88A0-9A28ECE10AB5}</Property>
 				<Property Name="Bld_supportedLanguage[0]" Type="Str">ChineseS</Property>
 				<Property Name="Bld_supportedLanguageCount" Type="Int">1</Property>
-				<Property Name="Bld_version.build" Type="Int">15</Property>
+				<Property Name="Bld_version.build" Type="Int">17</Property>
 				<Property Name="Bld_version.major" Type="Int">1</Property>
 				<Property Name="Destination[0].destName" Type="Str">缺陷标注软件.exe</Property>
 				<Property Name="Destination[0].path" Type="Path">../builds/NI_AB_PROJECTNAME/我的应用程序/缺陷标注软件.exe</Property>
@@ -287,7 +288,7 @@
 				<Property Name="Destination[1].path" Type="Path">../builds/NI_AB_PROJECTNAME/我的应用程序/data</Property>
 				<Property Name="DestinationCount" Type="Int">2</Property>
 				<Property Name="Exe_iconItemID" Type="Ref">/我的电脑/11.ico</Property>
-				<Property Name="Source[0].itemID" Type="Str">{23C8BF5D-2F4C-4440-A0EE-7B0A63155A13}</Property>
+				<Property Name="Source[0].itemID" Type="Str">{99FC0D8D-C9F3-44EB-B60E-156FBB92CAB1}</Property>
 				<Property Name="Source[0].type" Type="Str">Container</Property>
 				<Property Name="Source[1].destinationIndex" Type="Int">0</Property>
 				<Property Name="Source[1].itemID" Type="Ref">/我的电脑/主程序-复材超声C扫缺陷分析评定软件.vi</Property>
@@ -340,6 +341,10 @@
 				<Property Name="Source[20].destinationIndex" Type="Int">0</Property>
 				<Property Name="Source[20].itemID" Type="Ref">/我的电脑/11.ico</Property>
 				<Property Name="Source[20].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="Source[21].destinationIndex" Type="Int">0</Property>
+				<Property Name="Source[21].itemID" Type="Ref">/我的电脑/子VI-分层缺陷面积筛选.vi</Property>
+				<Property Name="Source[21].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="Source[21].type" Type="Str">VI</Property>
 				<Property Name="Source[3].destinationIndex" Type="Int">0</Property>
 				<Property Name="Source[3].itemID" Type="Ref">/我的电脑/灰度图像平滑去毛刺处理.vi</Property>
 				<Property Name="Source[3].sourceInclusion" Type="Str">Include</Property>
@@ -368,7 +373,7 @@
 				<Property Name="Source[9].itemID" Type="Ref">/我的电脑/子VI-查看某框.vi</Property>
 				<Property Name="Source[9].sourceInclusion" Type="Str">Include</Property>
 				<Property Name="Source[9].type" Type="Str">VI</Property>
-				<Property Name="SourceCount" Type="Int">21</Property>
+				<Property Name="SourceCount" Type="Int">22</Property>
 				<Property Name="TgtF_fileDescription" Type="Str">我的应用程序</Property>
 				<Property Name="TgtF_internalName" Type="Str">我的应用程序</Property>
 				<Property Name="TgtF_legalCopyright" Type="Str">版权 2023 </Property>

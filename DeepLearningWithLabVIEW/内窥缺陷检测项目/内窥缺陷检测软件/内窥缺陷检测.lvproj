@@ -14,6 +14,7 @@
 		<Item Name="启动界面.vi" Type="VI" URL="../启动界面.vi"/>
 		<Item Name="子VI-检测模式配置.vi" Type="VI" URL="../子VI-检测模式配置.vi"/>
 		<Item Name="子VI-缺陷检测界面.vi" Type="VI" URL="../子VI-缺陷检测界面.vi"/>
+		<Item Name="子VI-数据库显示.vi" Type="VI" URL="../子VI-数据库显示.vi"/>
 		<Item Name="子VI-信息说明界面.vi" Type="VI" URL="../子VI-信息说明界面.vi"/>
 		<Item Name="依赖关系" Type="Dependencies">
 			<Item Name="vi.lib" Type="Folder">
