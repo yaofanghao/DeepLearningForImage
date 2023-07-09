@@ -14,6 +14,8 @@ from labelme import utils
 import base64
 from tqdm import tqdm
 
+origin_dir = "./before/"
+
 output_dir = "./output"
 jpg_dir = "./JPEGImages"
 png_dir = "./SegmentationClass"
@@ -25,8 +27,8 @@ if not os.path.exists(png_dir):
     os.makedirs(png_dir)
 
 # 待统计图片的标签类别设置
-class_name = ["duoyuwu", "aokeng", "qipi", "cashang", "gubo",
-              "xiuban", "baiban", "yanghuawu", "huashang","hanjiequexian"]   # 修改点
+class_name = ["duoyuwu", "yanghuawu", "gubo", "huashang",
+              "qipi", "xiuban", "aokeng", "hanjiequexian"]   # 修改点
 
 # 统计模式设置
 # count_mode 为 0
@@ -37,7 +39,7 @@ count_mode = 1
 
 def json_to_dataset():
     image_num = 0
-    count = os.listdir("./before/")
+    count = os.listdir(origin_dir)
     for i in range(0, len(count)):
         path = os.path.join("./before", count[i])
         png_name = count[i].split('.')[0]
@@ -96,7 +98,7 @@ def json_to_dataset():
 
 def get_jpg_and_png():
     # 读取原文件夹
-    count = os.listdir("./before/")
+    count = os.listdir(origin_dir)
     for i in range(0, len(count)):
         # 如果里的文件以jpg结尾
         # 则寻找它对应的png
@@ -279,6 +281,6 @@ def count_json_label():
 
 
 if __name__ == '__main__':
-    json_to_dataset()
+    # json_to_dataset()
     get_jpg_and_png()  # 生成数据集的jpg和png文件
     count_json_label()  # 批量统计json文件类别和个数

@@ -32,6 +32,9 @@ import logging
 # logging.basicConfig(format='%(asctime)s %(levelname)s %(name)s %(message)s',level=logging.DEBUG)
 logging.basicConfig(format='%(asctime)s %(message)s', level=logging.DEBUG)
 
+# 计时模块
+import datetime
+
 
 # #########################参数设置区域
 _classes_txt = "class_name.txt"  # 分类标签文件
@@ -79,6 +82,10 @@ def load_arg():
 
 
 def gpu_enable(_use_gpu=None):
+
+    current_time = datetime.datetime.now()
+    print("Current time 0:", current_time.strftime("%Y-%m-%d %H:%M:%S"))
+
     if _use_gpu:  # 使用GPU
         logging.info("use gpu")
         gpus = tf.config.experimental.list_physical_devices(device_type='GPU')
@@ -126,39 +133,17 @@ def table_exists(table_name, db_file_path):
 class HRNetSegmentation(object):
 
     def __init__(self, **kwargs):
-        # self.__dict__.update(self._defaults)
-        for name, value in kwargs.items():
-            setattr(self, name, value)
-
         self.model_path = 'logs.h5'
-        self.num_classes = 11  # 所需要区分的类的个数+1
-        #  所使用的的主干网络： hrnetv2_w18 hrnetv2_w32 hrnetv2_w48
-        self.backbone = "hrnetv2_w32"
+        self.num_classes = 9  # 所需要区分的类的个数+1
+        self.backbone = "hrnetv2_w32"  # 主干特征提取网络 hrnetv2_w18 hrnetv2_w32 hrnetv2_w48
         self.input_shape = [480, 480]  # 输入模型的图片尺寸
-        self._defaults = {
-            "model_path": self.model_path,
-            "num_classes": self.num_classes,
-            "backbone": self.backbone,
-            "input_shape": self.input_shape,
-        }
-
-        if self.num_classes <= 21:
-            # self.colors = [(0, 0, 0), (128, 0, 0), (0, 128, 0), (128, 128, 0), (0, 0, 128), (128, 0, 128),
-            #                (0, 128, 128), (128, 128, 128), (64, 0, 0), (192, 0, 0), (64, 128, 0), (192, 128, 0),
-            #                (64, 0, 128), (192, 0, 128), (64, 128, 128), (192, 128, 128), (0, 64, 0), (128, 64, 0),
-            #                (0, 192, 0), (128, 192, 0), (0, 64, 128), (128, 64, 12)]
-            self.colors = [(0, 0, 0), (128, 0, 0), (0, 128, 0), (128, 128, 0), (0, 0, 128), (128, 0, 128),
-                           (0, 128, 128), (128, 128, 128), (64, 0, 0), (192, 0, 0), (64, 128, 0)]
-        else:
-            hsv_tuples = [(x / self.num_classes, 1., 1.) for x in range(self.num_classes)]
-            self.colors = list(map(lambda x: colorsys.hsv_to_rgb(*x), hsv_tuples))
-            self.colors = list(map(lambda x: (int(x[0] * 255), int(x[1] * 255), int(x[2] * 255)), self.colors))
+        self.colors = [(0, 0, 0), (128, 0, 0), (0, 128, 0), (128, 128, 0), (0, 0, 128), (128, 0, 128),
+                       (0, 128, 128), (128, 128, 128), (64, 0, 0)]
 
         #   加载模型
         self.model = HRnet([self.input_shape[0], self.input_shape[1], 3], self.num_classes, backbone=self.backbone)
         self.model.load_weights(self.model_path)
         logging.info('success load model: {}'.format(self.model_path))
-        show_config(**self._defaults)
 
     @tf.function
     def get_pred(self, photo):
@@ -190,7 +175,7 @@ class HRNetSegmentation(object):
 
         seg_img = np.reshape(np.array(self.colors, np.uint8)[np.reshape(pr, [-1])], [orininal_h, orininal_w, -1])
         image = Image.fromarray(np.uint8(seg_img))
-        image = Image.blend(old_img, image, 0.7)
+        image = Image.blend(old_img, image, 0.5)
 
         # 修改显示字体格式
         font = ImageFont.truetype(font='model_data/simhei.ttf',
@@ -252,22 +237,23 @@ class HRNetSegmentation(object):
 
 
                 for i in range(output_class_name.shape[0]):
-                    if (output_class_name[i] > 0) & (output_class_name[i] != 7):
+                    if (output_class_name[i] > 0) :
                         temp = output_class_name[i]
                         logging.info("识别出：{}--{}".format(temp, name_classes_gbk[temp]))
                         result_txt.write("    " + str(name_classes_gbk[temp]) + "\t")
                         insert_detect_result = insert_detect_result + " " + str(name_classes_gbk[temp])
 
-                    # 2023.6.29 【新要求】如果识别预测结果为白班，则视为多余物
-                    # 白班是class_name.txt中的第7项
-                    if (output_class_name[i] > 0) & (output_class_name[i] == 7):
-                        temp = 1  # 多余物是class_name.txt中的第1项（从0开始计数）
-                        logging.info("识别出：{}--{}".format(temp, name_classes_gbk[temp]))
-                        result_txt.write("    " + str(name_classes_gbk[temp]) + "\t")
-                        insert_detect_result = insert_detect_result + " " + str(name_classes_gbk[temp])
+                    # 已废弃代码 不用：
+                    # # 2023.6.29 【新要求】如果识别预测结果为白班，则视为多余物
+                    # # 白班是class_name.txt中的第7项
+                    # if (output_class_name[i] > 0) & (output_class_name[i] == 7):
+                    #     temp = 1  # 多余物是class_name.txt中的第1项（从0开始计数）
+                    #     logging.info("识别出：{}--{}".format(temp, name_classes_gbk[temp]))
+                    #     result_txt.write("    " + str(name_classes_gbk[temp]) + "\t")
+                    #     insert_detect_result = insert_detect_result + " " + str(name_classes_gbk[temp])
 
                     # 2023.6.3 补充焊接缺陷的判定
-                    if output_class_name[i] == 10:  # 标签中对应第10号是是焊接缺陷
+                    if output_class_name[i] == 8:  # 标签中对应第10号是是焊接缺陷
                         result_txt.write("\n  识别出焊接缺陷！程序立即停止！")
                         image.save(os.path.join(dir_save_path, img_name))
                         insert_detect_result = insert_detect_result + " " + str(name_classes_gbk[10])
@@ -286,10 +272,12 @@ class HRNetSegmentation(object):
                         logging.error("识别出焊接缺陷！程序立即停止！")
                         sys.exit(1)  # 异常退出，程序立即终止
 
-                # 2023.6.29 【新要求】如果识别预测结果为白班，则视为多余物
-                # 白班是class_name.txt中的第7项
-                if max_output_class_name == 7:
-                    max_output_class_name = 1
+                # 已废弃代码 不用：
+                # # 2023.6.29 【新要求】如果识别预测结果为白班，则视为多余物
+                # # 白班是class_name.txt中的第7项
+                # if max_output_class_name == 7:
+                #     max_output_class_name = 1
+
                 result_txt.write("\r")
                 result_txt.write("  预测概率值最高的类别为： " + name_classes_gbk[max_output_class_name])
 
@@ -313,10 +301,80 @@ class HRNetSegmentation(object):
             image.save(os.path.join(dir_save_path, img_name))
 
 
+    def detect_image_no_access(self, image=None, name_classes=None, name_classes_gbk=None,
+                     img_name=None, dir_save_path=None):
+        image = cvtColor(image)
+        #   对输入图像进行一个备份，后面用于绘图
+        old_img = copy.deepcopy(image)
+        orininal_h = np.array(image).shape[0]
+        orininal_w = np.array(image).shape[1]
+        #   给图像增加灰条，实现不失真的resize
+        image_data, nw, nh = resize_image(image, (self.input_shape[1], self.input_shape[0]))
+        #   归一化+添加上batch_size维度
+        image_data = np.expand_dims(preprocess_input(np.array(image_data, np.float32)), 0)
+
+        #   图片传入网络进行预测
+        pr = self.get_pred(image_data)[0].numpy()
+        #   将灰条部分截取掉
+        pr = pr[int((self.input_shape[0] - nh) // 2): int((self.input_shape[0] - nh) // 2 + nh),
+             int((self.input_shape[1] - nw) // 2): int((self.input_shape[1] - nw) // 2 + nw)]
+        #   进行图片的resize
+        pr = cv2.resize(pr, (orininal_w, orininal_h), interpolation=cv2.INTER_LINEAR)
+        #   取出每一个像素点的种类
+        pr = pr.argmax(axis=-1)
+
+        seg_img = np.reshape(np.array(self.colors, np.uint8)[np.reshape(pr, [-1])], [orininal_h, orininal_w, -1])
+        image = Image.fromarray(np.uint8(seg_img))
+        image = Image.blend(old_img, image, 0.7)
+
+        # 修改显示字体格式
+        font = ImageFont.truetype(font='model_data/simhei.ttf',
+                                  size=np.floor(3e-2 * image.size[1] + 15).astype('int32'))  # 修改字体大小
+        draw = ImageDraw.Draw(image)
+        classes_nums = np.zeros([self.num_classes])
+        output_class_name = np.array([], dtype=int)  # 存放预测类别结果的数组
+        step = 1  # 在图上绘制预测类别的显示间隔
+        for i in range(self.num_classes):
+            num = np.sum(pr == i)
+            draw.text((30, 30 * 0), str("【预测结果】"), fill='red', font=font)
+            if (num > 0) & (name_classes is not None) & (i > 0):
+                # draw.text((50 * i, 50 * i), str(name_classes_gbk[i]), fill='red', font=font)
+                draw.text((70, 30 * step), str(name_classes_gbk[i]), fill='red', font=font)
+                step = step + 1
+                output_class_name = np.append(output_class_name, i)
+            classes_nums[i] = num
+
+        #  这张图要有检测结果才进入该循环
+        if output_class_name.size > 0:
+            max_output_class_name = np.max(output_class_name)
+
+            # 2023.3.3 只保存有预测结果的图片（只有background不算作有预测结果）
+            # 代码原理：最大预测结果类别大于0，说明预测出的不是只有background，此时保存图片
+            if max_output_class_name > 0:
+                logging.info("{}-发现缺陷--{}".format(img_name, output_class_name))
+
+                for i in range(output_class_name.shape[0]):
+                    if (output_class_name[i] > 0) :
+                        temp = output_class_name[i]
+                        logging.info("识别出：{}--{}".format(temp, name_classes_gbk[temp]))
+
+                    # 2023.6.3 补充焊接缺陷的判定
+                    if output_class_name[i] == 8:  # 标签中对应第10号是是焊接缺陷
+                        image.save(os.path.join(dir_save_path, img_name))
+
+                        logging.error("识别出焊接缺陷！程序立即停止！")
+                        sys.exit(1)  # 异常退出，程序立即终止
+
+            image.save(os.path.join(dir_save_path, img_name))
+
+
 def predict_main(mode=None, name_classes=None, name_classes_gbk=None, timeF=None, filename=None):
+
+    current_time = datetime.datetime.now()
+    print("Current time 1:", current_time.strftime("%Y-%m-%d %H:%M:%S"))
+
     hrnet = HRNetSegmentation()
     if mode == 0:
-        # img_name = input('Input image filename:')
         image = Image.open(str(filename))
         try:
             logging.info('success read image: ' + str(filename))
@@ -329,10 +387,11 @@ def predict_main(mode=None, name_classes=None, name_classes_gbk=None, timeF=None
         f1 = open(os.path.join(dir_save_path, str(file_rootname) + '_predict_result.txt'), 'w', encoding='gbk')
 
         logging.info("start image predict")
-        hrnet.detect_image(image, name_classes=name_classes, name_classes_gbk=name_classes_gbk,
-                           file_name = filename, img_name=filename, dir_save_path=dir_save_path, result_txt=f1)
+        hrnet.detect_image(image=image, name_classes=name_classes, name_classes_gbk=name_classes_gbk,
+                           file_name=filename, img_name=filename, dir_save_path=dir_save_path, result_txt=f1)
         f1.close()
         logging.info("success, predict done!")
+        logging.info("\n")
 
     if mode == 1:
         # video_name = input("Input video filename:")
@@ -357,7 +416,6 @@ def predict_main(mode=None, name_classes=None, name_classes_gbk=None, timeF=None
                 break
             if c % int(timeF) == 0:  # 每隔timeF帧进行存储
                 cv2.imwrite(output_dir + str(c) + output_img_type, frame)
-            if c % int(timeF) == 0:
                 logging.info('success read frame No.' + str(c))
             c = c + 1
             cv2.waitKey(1)
@@ -378,6 +436,40 @@ def predict_main(mode=None, name_classes=None, name_classes_gbk=None, timeF=None
                                file_name = filename, img_name=img_name, dir_save_path=dir_save_path, result_txt=f1)
         f1.close()
         logging.info("success, all predict done!")
+
+    # 2023.7.7 连续运行，输入图片预测
+    if mode == 2:
+        while True:
+            img = input('Input image filename:')
+            if img == "q":
+                sys.exit(1)  # 程序退出
+
+            try:
+                image = Image.open(str(img))
+                print('success read image:{} '.format(str(img)))
+                file_rootname, _ = os.path.splitext(img)
+            except:
+                print('Open Error! Try again!')
+                continue
+            else:
+                dir_save_path = str(file_rootname) + "_img_out/"
+                if not os.path.exists(dir_save_path):
+                    os.makedirs(dir_save_path)
+                f1 = open(os.path.join(dir_save_path, str(file_rootname) + '_predict_result.txt'), 'w',
+                          encoding='gbk')
+
+                current_time = datetime.datetime.now()
+                print("Current time 3:", current_time.strftime("%Y-%m-%d %H:%M:%S"))
+
+                logging.info("start image predict")
+                hrnet.detect_image_no_access(image=image, name_classes=name_classes, name_classes_gbk=name_classes_gbk,
+                                   img_name=img, dir_save_path=dir_save_path)
+
+                current_time = datetime.datetime.now()
+                print("Current time 4:", current_time.strftime("%Y-%m-%d %H:%M:%S"))
+
+                f1.close()
+                logging.info("success, predict done!")
 
 
 if __name__ == "__main__":
