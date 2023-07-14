@@ -14,11 +14,14 @@
   * Aurelien Geron《机器学习实战》参考代码
 
 * PyQt
-  * Qt的学习日记、代码
+  * PyQt的学习日记、代码
+
+* test_onnx
+  * onnx模型推理部署示例
   
 * 其他常用脚本、示例、参考书
 
-## 环境依赖说明
+## 环境依赖说明 详见env文件夹
 * RTX3090 / Ubuntu20.04LTS / Python3.9
   * 依赖包参考 env/3090-tf-gpu-env.txt
   * 大致流程：

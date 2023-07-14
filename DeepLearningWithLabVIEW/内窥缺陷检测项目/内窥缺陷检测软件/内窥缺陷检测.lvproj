@@ -11,9 +11,10 @@
 		<Property Name="server.vi.propertiesEnabled" Type="Bool">true</Property>
 		<Property Name="specify.custom.address" Type="Bool">false</Property>
 		<Item Name="IMAQ Load Image Dialog" Type="VI" URL="/&lt;vilib&gt;/vision/Files.llb/IMAQ Load Image Dialog"/>
-		<Item Name="测试-循环输入给python程序.vi" Type="VI" URL="../测试-循环输入给python程序.vi"/>
 		<Item Name="启动界面.vi" Type="VI" URL="../启动界面.vi"/>
+		<Item Name="子VI-计算时间.vi" Type="VI" URL="../子VI-计算时间.vi"/>
 		<Item Name="子VI-检测模式配置.vi" Type="VI" URL="../子VI-检测模式配置.vi"/>
+		<Item Name="子VI-配置信息显示.vi" Type="VI" URL="../子VI-配置信息显示.vi"/>
 		<Item Name="子VI-缺陷检测界面.vi" Type="VI" URL="../子VI-缺陷检测界面.vi"/>
 		<Item Name="子VI-数据库显示.vi" Type="VI" URL="../子VI-数据库显示.vi"/>
 		<Item Name="子VI-信息说明界面.vi" Type="VI" URL="../子VI-信息说明界面.vi"/>

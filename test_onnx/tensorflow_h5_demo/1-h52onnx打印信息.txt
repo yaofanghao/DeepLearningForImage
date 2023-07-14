@@ -1,0 +1,3439 @@
+C:\Users\Rainy\.conda\envs\tf2-gpu\python.exe C:\Users\Rainy\Desktop\h5转onnx\1-h52onnx.py
+2023-07-12 11:35:25.382220: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX AVX2
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2023-07-12 11:35:25.994369: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1525] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 3491 MB memory:  -> device: 0, name: NVIDIA GeForce RTX 3060 Laptop GPU, pci bus id: 0000:01:00.0, compute capability: 8.6
+Model: "HRnet"
+__________________________________________________________________________________________________
+ Layer (type)                   Output Shape         Param #     Connected to
+==================================================================================================
+ input_1 (InputLayer)           [(None, 480, 480, 3  0           []
+                                )]
+
+ zero_padding2d (ZeroPadding2D)  (None, 482, 482, 3)  0          ['input_1[0][0]']
+
+ conv1 (Conv2D)                 (None, 240, 240, 64  1728        ['zero_padding2d[0][0]']
+                                )
+
+ bn1 (BatchNormalization)       (None, 240, 240, 64  256         ['conv1[0][0]']
+                                )
+
+ activation (Activation)        (None, 240, 240, 64  0           ['bn1[0][0]']
+                                )
+
+ zero_padding2d_1 (ZeroPadding2  (None, 242, 242, 64  0          ['activation[0][0]']
+ D)                             )
+
+ conv2 (Conv2D)                 (None, 120, 120, 64  36864       ['zero_padding2d_1[0][0]']
+                                )
+
+ bn2 (BatchNormalization)       (None, 120, 120, 64  256         ['conv2[0][0]']
+                                )
+
+ activation_1 (Activation)      (None, 120, 120, 64  0           ['bn2[0][0]']
+                                )
+
+ layer1.0.conv1 (Conv2D)        (None, 120, 120, 64  4096        ['activation_1[0][0]']
+                                )
+
+ layer1.0.bn1 (BatchNormalizati  (None, 120, 120, 64  256        ['layer1.0.conv1[0][0]']
+ on)                            )
+
+ activation_2 (Activation)      (None, 120, 120, 64  0           ['layer1.0.bn1[0][0]']
+                                )
+
+ layer1.0.conv2 (Conv2D)        (None, 120, 120, 64  36864       ['activation_2[0][0]']
+                                )
+
+ layer1.0.bn2 (BatchNormalizati  (None, 120, 120, 64  256        ['layer1.0.conv2[0][0]']
+ on)                            )
+
+ activation_3 (Activation)      (None, 120, 120, 64  0           ['layer1.0.bn2[0][0]']
+                                )
+
+ layer1.0.conv3 (Conv2D)        (None, 120, 120, 25  16384       ['activation_3[0][0]']
+                                6)
+
+ layer1.0.downsample.0 (Conv2D)  (None, 120, 120, 25  16384      ['activation_1[0][0]']
+                                6)
+
+ layer1.0.bn3 (BatchNormalizati  (None, 120, 120, 25  1024       ['layer1.0.conv3[0][0]']
+ on)                            6)
+
+ layer1.0.downsample.1 (BatchNo  (None, 120, 120, 25  1024       ['layer1.0.downsample.0[0][0]']
+ rmalization)                   6)
+
+ add (Add)                      (None, 120, 120, 25  0           ['layer1.0.bn3[0][0]',
+                                6)                                'layer1.0.downsample.1[0][0]']
+
+ activation_4 (Activation)      (None, 120, 120, 25  0           ['add[0][0]']
+                                6)
+
+ layer1.1.conv1 (Conv2D)        (None, 120, 120, 64  16384       ['activation_4[0][0]']
+                                )
+
+ layer1.1.bn1 (BatchNormalizati  (None, 120, 120, 64  256        ['layer1.1.conv1[0][0]']
+ on)                            )
+
+ activation_5 (Activation)      (None, 120, 120, 64  0           ['layer1.1.bn1[0][0]']
+                                )
+
+ layer1.1.conv2 (Conv2D)        (None, 120, 120, 64  36864       ['activation_5[0][0]']
+                                )
+
+ layer1.1.bn2 (BatchNormalizati  (None, 120, 120, 64  256        ['layer1.1.conv2[0][0]']
+ on)                            )
+
+ activation_6 (Activation)      (None, 120, 120, 64  0           ['layer1.1.bn2[0][0]']
+                                )
+
+ layer1.1.conv3 (Conv2D)        (None, 120, 120, 25  16384       ['activation_6[0][0]']
+                                6)
+
+ layer1.1.bn3 (BatchNormalizati  (None, 120, 120, 25  1024       ['layer1.1.conv3[0][0]']
+ on)                            6)
+
+ add_1 (Add)                    (None, 120, 120, 25  0           ['layer1.1.bn3[0][0]',
+                                6)                                'activation_4[0][0]']
+
+ activation_7 (Activation)      (None, 120, 120, 25  0           ['add_1[0][0]']
+                                6)
+
+ layer1.2.conv1 (Conv2D)        (None, 120, 120, 64  16384       ['activation_7[0][0]']
+                                )
+
+ layer1.2.bn1 (BatchNormalizati  (None, 120, 120, 64  256        ['layer1.2.conv1[0][0]']
+ on)                            )
+
+ activation_8 (Activation)      (None, 120, 120, 64  0           ['layer1.2.bn1[0][0]']
+                                )
+
+ layer1.2.conv2 (Conv2D)        (None, 120, 120, 64  36864       ['activation_8[0][0]']
+                                )
+
+ layer1.2.bn2 (BatchNormalizati  (None, 120, 120, 64  256        ['layer1.2.conv2[0][0]']
+ on)                            )
+
+ activation_9 (Activation)      (None, 120, 120, 64  0           ['layer1.2.bn2[0][0]']
+                                )
+
+ layer1.2.conv3 (Conv2D)        (None, 120, 120, 25  16384       ['activation_9[0][0]']
+                                6)
+
+ layer1.2.bn3 (BatchNormalizati  (None, 120, 120, 25  1024       ['layer1.2.conv3[0][0]']
+ on)                            6)
+
+ add_2 (Add)                    (None, 120, 120, 25  0           ['layer1.2.bn3[0][0]',
+                                6)                                'activation_7[0][0]']
+
+ activation_10 (Activation)     (None, 120, 120, 25  0           ['add_2[0][0]']
+                                6)
+
+ layer1.3.conv1 (Conv2D)        (None, 120, 120, 64  16384       ['activation_10[0][0]']
+                                )
+
+ layer1.3.bn1 (BatchNormalizati  (None, 120, 120, 64  256        ['layer1.3.conv1[0][0]']
+ on)                            )
+
+ activation_11 (Activation)     (None, 120, 120, 64  0           ['layer1.3.bn1[0][0]']
+                                )
+
+ layer1.3.conv2 (Conv2D)        (None, 120, 120, 64  36864       ['activation_11[0][0]']
+                                )
+
+ layer1.3.bn2 (BatchNormalizati  (None, 120, 120, 64  256        ['layer1.3.conv2[0][0]']
+ on)                            )
+
+ activation_12 (Activation)     (None, 120, 120, 64  0           ['layer1.3.bn2[0][0]']
+                                )
+
+ layer1.3.conv3 (Conv2D)        (None, 120, 120, 25  16384       ['activation_12[0][0]']
+                                6)
+
+ layer1.3.bn3 (BatchNormalizati  (None, 120, 120, 25  1024       ['layer1.3.conv3[0][0]']
+ on)                            6)
+
+ add_3 (Add)                    (None, 120, 120, 25  0           ['layer1.3.bn3[0][0]',
+                                6)                                'activation_10[0][0]']
+
+ activation_13 (Activation)     (None, 120, 120, 25  0           ['add_3[0][0]']
+                                6)
+
+ zero_padding2d_2 (ZeroPadding2  (None, 122, 122, 25  0          ['activation_13[0][0]']
+ D)                             6)
+
+ transition1.0.0 (Conv2D)       (None, 120, 120, 32  73728       ['activation_13[0][0]']
+                                )
+
+ transition1.1.0.0 (Conv2D)     (None, 60, 60, 64)   147456      ['zero_padding2d_2[0][0]']
+
+ transition1.0.1 (BatchNormaliz  (None, 120, 120, 32  128        ['transition1.0.0[0][0]']
+ ation)                         )
+
+ transition1.1.0.1 (BatchNormal  (None, 60, 60, 64)  256         ['transition1.1.0.0[0][0]']
+ ization)
+
+ activation_14 (Activation)     (None, 120, 120, 32  0           ['transition1.0.1[0][0]']
+                                )
+
+ activation_15 (Activation)     (None, 60, 60, 64)   0           ['transition1.1.0.1[0][0]']
+
+ stage2.0.branches.0.0.conv1 (C  (None, 120, 120, 32  9216       ['activation_14[0][0]']
+ onv2D)                         )
+
+ stage2.0.branches.1.0.conv1 (C  (None, 60, 60, 64)  36864       ['activation_15[0][0]']
+ onv2D)
+
+ stage2.0.branches.0.0.bn1 (Bat  (None, 120, 120, 32  128        ['stage2.0.branches.0.0.conv1[0][
+ chNormalization)               )                                0]']
+
+ stage2.0.branches.1.0.bn1 (Bat  (None, 60, 60, 64)  256         ['stage2.0.branches.1.0.conv1[0][
+ chNormalization)                                                0]']
+
+ activation_16 (Activation)     (None, 120, 120, 32  0           ['stage2.0.branches.0.0.bn1[0][0]
+                                )                                ']
+
+ activation_24 (Activation)     (None, 60, 60, 64)   0           ['stage2.0.branches.1.0.bn1[0][0]
+                                                                 ']
+
+ stage2.0.branches.0.0.conv2 (C  (None, 120, 120, 32  9216       ['activation_16[0][0]']
+ onv2D)                         )
+
+ stage2.0.branches.1.0.conv2 (C  (None, 60, 60, 64)  36864       ['activation_24[0][0]']
+ onv2D)
+
+ stage2.0.branches.0.0.bn2 (Bat  (None, 120, 120, 32  128        ['stage2.0.branches.0.0.conv2[0][
+ chNormalization)               )                                0]']
+
+ stage2.0.branches.1.0.bn2 (Bat  (None, 60, 60, 64)  256         ['stage2.0.branches.1.0.conv2[0][
+ chNormalization)                                                0]']
+
+ add_4 (Add)                    (None, 120, 120, 32  0           ['stage2.0.branches.0.0.bn2[0][0]
+                                )                                ',
+                                                                  'activation_14[0][0]']
+
+ add_8 (Add)                    (None, 60, 60, 64)   0           ['stage2.0.branches.1.0.bn2[0][0]
+                                                                 ',
+                                                                  'activation_15[0][0]']
+
+ activation_17 (Activation)     (None, 120, 120, 32  0           ['add_4[0][0]']
+                                )
+
+ activation_25 (Activation)     (None, 60, 60, 64)   0           ['add_8[0][0]']
+
+ stage2.0.branches.0.1.conv1 (C  (None, 120, 120, 32  9216       ['activation_17[0][0]']
+ onv2D)                         )
+
+ stage2.0.branches.1.1.conv1 (C  (None, 60, 60, 64)  36864       ['activation_25[0][0]']
+ onv2D)
+
+ stage2.0.branches.0.1.bn1 (Bat  (None, 120, 120, 32  128        ['stage2.0.branches.0.1.conv1[0][
+ chNormalization)               )                                0]']
+
+ stage2.0.branches.1.1.bn1 (Bat  (None, 60, 60, 64)  256         ['stage2.0.branches.1.1.conv1[0][
+ chNormalization)                                                0]']
+
+ activation_18 (Activation)     (None, 120, 120, 32  0           ['stage2.0.branches.0.1.bn1[0][0]
+                                )                                ']
+
+ activation_26 (Activation)     (None, 60, 60, 64)   0           ['stage2.0.branches.1.1.bn1[0][0]
+                                                                 ']
+
+ stage2.0.branches.0.1.conv2 (C  (None, 120, 120, 32  9216       ['activation_18[0][0]']
+ onv2D)                         )
+
+ stage2.0.branches.1.1.conv2 (C  (None, 60, 60, 64)  36864       ['activation_26[0][0]']
+ onv2D)
+
+ stage2.0.branches.0.1.bn2 (Bat  (None, 120, 120, 32  128        ['stage2.0.branches.0.1.conv2[0][
+ chNormalization)               )                                0]']
+
+ stage2.0.branches.1.1.bn2 (Bat  (None, 60, 60, 64)  256         ['stage2.0.branches.1.1.conv2[0][
+ chNormalization)                                                0]']
+
+ add_5 (Add)                    (None, 120, 120, 32  0           ['stage2.0.branches.0.1.bn2[0][0]
+                                )                                ',
+                                                                  'activation_17[0][0]']
+
+ add_9 (Add)                    (None, 60, 60, 64)   0           ['stage2.0.branches.1.1.bn2[0][0]
+                                                                 ',
+                                                                  'activation_25[0][0]']
+
+ activation_19 (Activation)     (None, 120, 120, 32  0           ['add_5[0][0]']
+                                )
+
+ activation_27 (Activation)     (None, 60, 60, 64)   0           ['add_9[0][0]']
+
+ stage2.0.branches.0.2.conv1 (C  (None, 120, 120, 32  9216       ['activation_19[0][0]']
+ onv2D)                         )
+
+ stage2.0.branches.1.2.conv1 (C  (None, 60, 60, 64)  36864       ['activation_27[0][0]']
+ onv2D)
+
+ stage2.0.branches.0.2.bn1 (Bat  (None, 120, 120, 32  128        ['stage2.0.branches.0.2.conv1[0][
+ chNormalization)               )                                0]']
+
+ stage2.0.branches.1.2.bn1 (Bat  (None, 60, 60, 64)  256         ['stage2.0.branches.1.2.conv1[0][
+ chNormalization)                                                0]']
+
+ activation_20 (Activation)     (None, 120, 120, 32  0           ['stage2.0.branches.0.2.bn1[0][0]
+                                )                                ']
+
+ activation_28 (Activation)     (None, 60, 60, 64)   0           ['stage2.0.branches.1.2.bn1[0][0]
+                                                                 ']
+
+ stage2.0.branches.0.2.conv2 (C  (None, 120, 120, 32  9216       ['activation_20[0][0]']
+ onv2D)                         )
+
+ stage2.0.branches.1.2.conv2 (C  (None, 60, 60, 64)  36864       ['activation_28[0][0]']
+ onv2D)
+
+ stage2.0.branches.0.2.bn2 (Bat  (None, 120, 120, 32  128        ['stage2.0.branches.0.2.conv2[0][
+ chNormalization)               )                                0]']
+
+ stage2.0.branches.1.2.bn2 (Bat  (None, 60, 60, 64)  256         ['stage2.0.branches.1.2.conv2[0][
+ chNormalization)                                                0]']
+
+ add_6 (Add)                    (None, 120, 120, 32  0           ['stage2.0.branches.0.2.bn2[0][0]
+                                )                                ',
+                                                                  'activation_19[0][0]']
+
+ add_10 (Add)                   (None, 60, 60, 64)   0           ['stage2.0.branches.1.2.bn2[0][0]
+                                                                 ',
+                                                                  'activation_27[0][0]']
+
+ activation_21 (Activation)     (None, 120, 120, 32  0           ['add_6[0][0]']
+                                )
+
+ activation_29 (Activation)     (None, 60, 60, 64)   0           ['add_10[0][0]']
+
+ stage2.0.branches.0.3.conv1 (C  (None, 120, 120, 32  9216       ['activation_21[0][0]']
+ onv2D)                         )
+
+ stage2.0.branches.1.3.conv1 (C  (None, 60, 60, 64)  36864       ['activation_29[0][0]']
+ onv2D)
+
+ stage2.0.branches.0.3.bn1 (Bat  (None, 120, 120, 32  128        ['stage2.0.branches.0.3.conv1[0][
+ chNormalization)               )                                0]']
+
+ stage2.0.branches.1.3.bn1 (Bat  (None, 60, 60, 64)  256         ['stage2.0.branches.1.3.conv1[0][
+ chNormalization)                                                0]']
+
+ activation_22 (Activation)     (None, 120, 120, 32  0           ['stage2.0.branches.0.3.bn1[0][0]
+                                )                                ']
+
+ activation_30 (Activation)     (None, 60, 60, 64)   0           ['stage2.0.branches.1.3.bn1[0][0]
+                                                                 ']
+
+ stage2.0.branches.0.3.conv2 (C  (None, 120, 120, 32  9216       ['activation_22[0][0]']
+ onv2D)                         )
+
+ stage2.0.branches.1.3.conv2 (C  (None, 60, 60, 64)  36864       ['activation_30[0][0]']
+ onv2D)
+
+ stage2.0.branches.0.3.bn2 (Bat  (None, 120, 120, 32  128        ['stage2.0.branches.0.3.conv2[0][
+ chNormalization)               )                                0]']
+
+ stage2.0.branches.1.3.bn2 (Bat  (None, 60, 60, 64)  256         ['stage2.0.branches.1.3.conv2[0][
+ chNormalization)                                                0]']
+
+ add_7 (Add)                    (None, 120, 120, 32  0           ['stage2.0.branches.0.3.bn2[0][0]
+                                )                                ',
+                                                                  'activation_21[0][0]']
+
+ add_11 (Add)                   (None, 60, 60, 64)   0           ['stage2.0.branches.1.3.bn2[0][0]
+                                                                 ',
+                                                                  'activation_29[0][0]']
+
+ activation_23 (Activation)     (None, 120, 120, 32  0           ['add_7[0][0]']
+                                )
+
+ activation_31 (Activation)     (None, 60, 60, 64)   0           ['add_11[0][0]']
+
+ stage2.0.fuse_layers.0.1.0 (Co  (None, 60, 60, 32)  2048        ['activation_31[0][0]']
+ nv2D)
+
+ zero_padding2d_3 (ZeroPadding2  (None, 122, 122, 32  0          ['activation_23[0][0]']
+ D)                             )
+
+ stage2.0.fuse_layers.0.1.1 (Ba  (None, 60, 60, 32)  128         ['stage2.0.fuse_layers.0.1.0[0][0
+ tchNormalization)                                               ]']
+
+ stage2.0.fuse_layers.1.0.0.0 (  (None, 60, 60, 64)  18432       ['zero_padding2d_3[0][0]']
+ Conv2D)
+
+ Upsample1 (UpsampleLike)       (None, 120, 120, 32  0           ['stage2.0.fuse_layers.0.1.1[0][0
+                                )                                ]',
+                                                                  'activation_23[0][0]']
+
+ stage2.0.fuse_layers.1.0.0.1 (  (None, 60, 60, 64)  256         ['stage2.0.fuse_layers.1.0.0.0[0]
+ BatchNormalization)                                             [0]']
+
+ add_12 (Add)                   (None, 120, 120, 32  0           ['activation_23[0][0]',
+                                )                                 'Upsample1[0][0]']
+
+ add_13 (Add)                   (None, 60, 60, 64)   0           ['stage2.0.fuse_layers.1.0.0.1[0]
+                                                                 [0]',
+                                                                  'activation_31[0][0]']
+
+ activation_32 (Activation)     (None, 120, 120, 32  0           ['add_12[0][0]']
+                                )
+
+ activation_33 (Activation)     (None, 60, 60, 64)   0           ['add_13[0][0]']
+
+ stage3.0.branches.0.0.conv1 (C  (None, 120, 120, 32  9216       ['activation_32[0][0]']
+ onv2D)                         )
+
+ zero_padding2d_4 (ZeroPadding2  (None, 62, 62, 64)  0           ['activation_33[0][0]']
+ D)
+
+ stage3.0.branches.0.0.bn1 (Bat  (None, 120, 120, 32  128        ['stage3.0.branches.0.0.conv1[0][
+ chNormalization)               )                                0]']
+
+ transition2.2.0.0 (Conv2D)     (None, 30, 30, 128)  73728       ['zero_padding2d_4[0][0]']
+
+ activation_35 (Activation)     (None, 120, 120, 32  0           ['stage3.0.branches.0.0.bn1[0][0]
+                                )                                ']
+
+ transition2.2.0.1 (BatchNormal  (None, 30, 30, 128)  512        ['transition2.2.0.0[0][0]']
+ ization)
+
+ stage3.0.branches.0.0.conv2 (C  (None, 120, 120, 32  9216       ['activation_35[0][0]']
+ onv2D)                         )
+
+ activation_34 (Activation)     (None, 30, 30, 128)  0           ['transition2.2.0.1[0][0]']
+
+ stage3.0.branches.0.0.bn2 (Bat  (None, 120, 120, 32  128        ['stage3.0.branches.0.0.conv2[0][
+ chNormalization)               )                                0]']
+
+ stage3.0.branches.1.0.conv1 (C  (None, 60, 60, 64)  36864       ['activation_33[0][0]']
+ onv2D)
+
+ stage3.0.branches.2.0.conv1 (C  (None, 30, 30, 128)  147456     ['activation_34[0][0]']
+ onv2D)
+
+ add_14 (Add)                   (None, 120, 120, 32  0           ['stage3.0.branches.0.0.bn2[0][0]
+                                )                                ',
+                                                                  'activation_32[0][0]']
+
+ stage3.0.branches.1.0.bn1 (Bat  (None, 60, 60, 64)  256         ['stage3.0.branches.1.0.conv1[0][
+ chNormalization)                                                0]']
+
+ stage3.0.branches.2.0.bn1 (Bat  (None, 30, 30, 128)  512        ['stage3.0.branches.2.0.conv1[0][
+ chNormalization)                                                0]']
+
+ activation_36 (Activation)     (None, 120, 120, 32  0           ['add_14[0][0]']
+                                )
+
+ activation_43 (Activation)     (None, 60, 60, 64)   0           ['stage3.0.branches.1.0.bn1[0][0]
+                                                                 ']
+
+ activation_51 (Activation)     (None, 30, 30, 128)  0           ['stage3.0.branches.2.0.bn1[0][0]
+                                                                 ']
+
+ stage3.0.branches.0.1.conv1 (C  (None, 120, 120, 32  9216       ['activation_36[0][0]']
+ onv2D)                         )
+
+ stage3.0.branches.1.0.conv2 (C  (None, 60, 60, 64)  36864       ['activation_43[0][0]']
+ onv2D)
+
+ stage3.0.branches.2.0.conv2 (C  (None, 30, 30, 128)  147456     ['activation_51[0][0]']
+ onv2D)
+
+ stage3.0.branches.0.1.bn1 (Bat  (None, 120, 120, 32  128        ['stage3.0.branches.0.1.conv1[0][
+ chNormalization)               )                                0]']
+
+ stage3.0.branches.1.0.bn2 (Bat  (None, 60, 60, 64)  256         ['stage3.0.branches.1.0.conv2[0][
+ chNormalization)                                                0]']
+
+ stage3.0.branches.2.0.bn2 (Bat  (None, 30, 30, 128)  512        ['stage3.0.branches.2.0.conv2[0][
+ chNormalization)                                                0]']
+
+ activation_37 (Activation)     (None, 120, 120, 32  0           ['stage3.0.branches.0.1.bn1[0][0]
+                                )                                ']
+
+ add_18 (Add)                   (None, 60, 60, 64)   0           ['stage3.0.branches.1.0.bn2[0][0]
+                                                                 ',
+                                                                  'activation_33[0][0]']
+
+ add_22 (Add)                   (None, 30, 30, 128)  0           ['stage3.0.branches.2.0.bn2[0][0]
+                                                                 ',
+                                                                  'activation_34[0][0]']
+
+ stage3.0.branches.0.1.conv2 (C  (None, 120, 120, 32  9216       ['activation_37[0][0]']
+ onv2D)                         )
+
+ activation_44 (Activation)     (None, 60, 60, 64)   0           ['add_18[0][0]']
+
+ activation_52 (Activation)     (None, 30, 30, 128)  0           ['add_22[0][0]']
+
+ stage3.0.branches.0.1.bn2 (Bat  (None, 120, 120, 32  128        ['stage3.0.branches.0.1.conv2[0][
+ chNormalization)               )                                0]']
+
+ stage3.0.branches.1.1.conv1 (C  (None, 60, 60, 64)  36864       ['activation_44[0][0]']
+ onv2D)
+
+ stage3.0.branches.2.1.conv1 (C  (None, 30, 30, 128)  147456     ['activation_52[0][0]']
+ onv2D)
+
+ add_15 (Add)                   (None, 120, 120, 32  0           ['stage3.0.branches.0.1.bn2[0][0]
+                                )                                ',
+                                                                  'activation_36[0][0]']
+
+ stage3.0.branches.1.1.bn1 (Bat  (None, 60, 60, 64)  256         ['stage3.0.branches.1.1.conv1[0][
+ chNormalization)                                                0]']
+
+ stage3.0.branches.2.1.bn1 (Bat  (None, 30, 30, 128)  512        ['stage3.0.branches.2.1.conv1[0][
+ chNormalization)                                                0]']
+
+ activation_38 (Activation)     (None, 120, 120, 32  0           ['add_15[0][0]']
+                                )
+
+ activation_45 (Activation)     (None, 60, 60, 64)   0           ['stage3.0.branches.1.1.bn1[0][0]
+                                                                 ']
+
+ activation_53 (Activation)     (None, 30, 30, 128)  0           ['stage3.0.branches.2.1.bn1[0][0]
+                                                                 ']
+
+ stage3.0.branches.0.2.conv1 (C  (None, 120, 120, 32  9216       ['activation_38[0][0]']
+ onv2D)                         )
+
+ stage3.0.branches.1.1.conv2 (C  (None, 60, 60, 64)  36864       ['activation_45[0][0]']
+ onv2D)
+
+ stage3.0.branches.2.1.conv2 (C  (None, 30, 30, 128)  147456     ['activation_53[0][0]']
+ onv2D)
+
+ stage3.0.branches.0.2.bn1 (Bat  (None, 120, 120, 32  128        ['stage3.0.branches.0.2.conv1[0][
+ chNormalization)               )                                0]']
+
+ stage3.0.branches.1.1.bn2 (Bat  (None, 60, 60, 64)  256         ['stage3.0.branches.1.1.conv2[0][
+ chNormalization)                                                0]']
+
+ stage3.0.branches.2.1.bn2 (Bat  (None, 30, 30, 128)  512        ['stage3.0.branches.2.1.conv2[0][
+ chNormalization)                                                0]']
+
+ activation_39 (Activation)     (None, 120, 120, 32  0           ['stage3.0.branches.0.2.bn1[0][0]
+                                )                                ']
+
+ add_19 (Add)                   (None, 60, 60, 64)   0           ['stage3.0.branches.1.1.bn2[0][0]
+                                                                 ',
+                                                                  'activation_44[0][0]']
+
+ add_23 (Add)                   (None, 30, 30, 128)  0           ['stage3.0.branches.2.1.bn2[0][0]
+                                                                 ',
+                                                                  'activation_52[0][0]']
+
+ stage3.0.branches.0.2.conv2 (C  (None, 120, 120, 32  9216       ['activation_39[0][0]']
+ onv2D)                         )
+
+ activation_46 (Activation)     (None, 60, 60, 64)   0           ['add_19[0][0]']
+
+ activation_54 (Activation)     (None, 30, 30, 128)  0           ['add_23[0][0]']
+
+ stage3.0.branches.0.2.bn2 (Bat  (None, 120, 120, 32  128        ['stage3.0.branches.0.2.conv2[0][
+ chNormalization)               )                                0]']
+
+ stage3.0.branches.1.2.conv1 (C  (None, 60, 60, 64)  36864       ['activation_46[0][0]']
+ onv2D)
+
+ stage3.0.branches.2.2.conv1 (C  (None, 30, 30, 128)  147456     ['activation_54[0][0]']
+ onv2D)
+
+ add_16 (Add)                   (None, 120, 120, 32  0           ['stage3.0.branches.0.2.bn2[0][0]
+                                )                                ',
+                                                                  'activation_38[0][0]']
+
+ stage3.0.branches.1.2.bn1 (Bat  (None, 60, 60, 64)  256         ['stage3.0.branches.1.2.conv1[0][
+ chNormalization)                                                0]']
+
+ stage3.0.branches.2.2.bn1 (Bat  (None, 30, 30, 128)  512        ['stage3.0.branches.2.2.conv1[0][
+ chNormalization)                                                0]']
+
+ activation_40 (Activation)     (None, 120, 120, 32  0           ['add_16[0][0]']
+                                )
+
+ activation_47 (Activation)     (None, 60, 60, 64)   0           ['stage3.0.branches.1.2.bn1[0][0]
+                                                                 ']
+
+ activation_55 (Activation)     (None, 30, 30, 128)  0           ['stage3.0.branches.2.2.bn1[0][0]
+                                                                 ']
+
+ stage3.0.branches.0.3.conv1 (C  (None, 120, 120, 32  9216       ['activation_40[0][0]']
+ onv2D)                         )
+
+ stage3.0.branches.1.2.conv2 (C  (None, 60, 60, 64)  36864       ['activation_47[0][0]']
+ onv2D)
+
+ stage3.0.branches.2.2.conv2 (C  (None, 30, 30, 128)  147456     ['activation_55[0][0]']
+ onv2D)
+
+ stage3.0.branches.0.3.bn1 (Bat  (None, 120, 120, 32  128        ['stage3.0.branches.0.3.conv1[0][
+ chNormalization)               )                                0]']
+
+ stage3.0.branches.1.2.bn2 (Bat  (None, 60, 60, 64)  256         ['stage3.0.branches.1.2.conv2[0][
+ chNormalization)                                                0]']
+
+ stage3.0.branches.2.2.bn2 (Bat  (None, 30, 30, 128)  512        ['stage3.0.branches.2.2.conv2[0][
+ chNormalization)                                                0]']
+
+ activation_41 (Activation)     (None, 120, 120, 32  0           ['stage3.0.branches.0.3.bn1[0][0]
+                                )                                ']
+
+ add_20 (Add)                   (None, 60, 60, 64)   0           ['stage3.0.branches.1.2.bn2[0][0]
+                                                                 ',
+                                                                  'activation_46[0][0]']
+
+ add_24 (Add)                   (None, 30, 30, 128)  0           ['stage3.0.branches.2.2.bn2[0][0]
+                                                                 ',
+                                                                  'activation_54[0][0]']
+
+ stage3.0.branches.0.3.conv2 (C  (None, 120, 120, 32  9216       ['activation_41[0][0]']
+ onv2D)                         )
+
+ activation_48 (Activation)     (None, 60, 60, 64)   0           ['add_20[0][0]']
+
+ activation_56 (Activation)     (None, 30, 30, 128)  0           ['add_24[0][0]']
+
+ stage3.0.branches.0.3.bn2 (Bat  (None, 120, 120, 32  128        ['stage3.0.branches.0.3.conv2[0][
+ chNormalization)               )                                0]']
+
+ stage3.0.branches.1.3.conv1 (C  (None, 60, 60, 64)  36864       ['activation_48[0][0]']
+ onv2D)
+
+ stage3.0.branches.2.3.conv1 (C  (None, 30, 30, 128)  147456     ['activation_56[0][0]']
+ onv2D)
+
+ add_17 (Add)                   (None, 120, 120, 32  0           ['stage3.0.branches.0.3.bn2[0][0]
+                                )                                ',
+                                                                  'activation_40[0][0]']
+
+ stage3.0.branches.1.3.bn1 (Bat  (None, 60, 60, 64)  256         ['stage3.0.branches.1.3.conv1[0][
+ chNormalization)                                                0]']
+
+ stage3.0.branches.2.3.bn1 (Bat  (None, 30, 30, 128)  512        ['stage3.0.branches.2.3.conv1[0][
+ chNormalization)                                                0]']
+
+ activation_42 (Activation)     (None, 120, 120, 32  0           ['add_17[0][0]']
+                                )
+
+ activation_49 (Activation)     (None, 60, 60, 64)   0           ['stage3.0.branches.1.3.bn1[0][0]
+                                                                 ']
+
+ activation_57 (Activation)     (None, 30, 30, 128)  0           ['stage3.0.branches.2.3.bn1[0][0]
+                                                                 ']
+
+ stage3.0.branches.1.3.conv2 (C  (None, 60, 60, 64)  36864       ['activation_49[0][0]']
+ onv2D)
+
+ stage3.0.branches.2.3.conv2 (C  (None, 30, 30, 128)  147456     ['activation_57[0][0]']
+ onv2D)
+
+ zero_padding2d_6 (ZeroPadding2  (None, 122, 122, 32  0          ['activation_42[0][0]']
+ D)                             )
+
+ stage3.0.branches.1.3.bn2 (Bat  (None, 60, 60, 64)  256         ['stage3.0.branches.1.3.conv2[0][
+ chNormalization)                                                0]']
+
+ stage3.0.branches.2.3.bn2 (Bat  (None, 30, 30, 128)  512        ['stage3.0.branches.2.3.conv2[0][
+ chNormalization)                                                0]']
+
+ stage3.0.fuse_layers.2.0.0.0 (  (None, 60, 60, 32)  9216        ['zero_padding2d_6[0][0]']
+ Conv2D)
+
+ add_21 (Add)                   (None, 60, 60, 64)   0           ['stage3.0.branches.1.3.bn2[0][0]
+                                                                 ',
+                                                                  'activation_48[0][0]']
+
+ add_25 (Add)                   (None, 30, 30, 128)  0           ['stage3.0.branches.2.3.bn2[0][0]
+                                                                 ',
+                                                                  'activation_56[0][0]']
+
+ stage3.0.fuse_layers.2.0.0.1 (  (None, 60, 60, 32)  128         ['stage3.0.fuse_layers.2.0.0.0[0]
+ BatchNormalization)                                             [0]']
+
+ activation_50 (Activation)     (None, 60, 60, 64)   0           ['add_21[0][0]']
+
+ activation_58 (Activation)     (None, 30, 30, 128)  0           ['add_25[0][0]']
+
+ activation_61 (Activation)     (None, 60, 60, 32)   0           ['stage3.0.fuse_layers.2.0.0.1[0]
+                                                                 [0]']
+
+ stage3.0.fuse_layers.0.1.0 (Co  (None, 60, 60, 32)  2048        ['activation_50[0][0]']
+ nv2D)
+
+ stage3.0.fuse_layers.0.2.0 (Co  (None, 30, 30, 32)  4096        ['activation_58[0][0]']
+ nv2D)
+
+ zero_padding2d_5 (ZeroPadding2  (None, 122, 122, 32  0          ['activation_42[0][0]']
+ D)                             )
+
+ stage3.0.fuse_layers.1.2.0 (Co  (None, 30, 30, 64)  8192        ['activation_58[0][0]']
+ nv2D)
+
+ zero_padding2d_7 (ZeroPadding2  (None, 62, 62, 32)  0           ['activation_61[0][0]']
+ D)
+
+ zero_padding2d_8 (ZeroPadding2  (None, 62, 62, 64)  0           ['activation_50[0][0]']
+ D)
+
+ stage3.0.fuse_layers.0.1.1 (Ba  (None, 60, 60, 32)  128         ['stage3.0.fuse_layers.0.1.0[0][0
+ tchNormalization)                                               ]']
+
+ stage3.0.fuse_layers.0.2.1 (Ba  (None, 30, 30, 32)  128         ['stage3.0.fuse_layers.0.2.0[0][0
+ tchNormalization)                                               ]']
+
+ stage3.0.fuse_layers.1.0.0.0 (  (None, 60, 60, 64)  18432       ['zero_padding2d_5[0][0]']
+ Conv2D)
+
+ stage3.0.fuse_layers.1.2.1 (Ba  (None, 30, 30, 64)  256         ['stage3.0.fuse_layers.1.2.0[0][0
+ tchNormalization)                                               ]']
+
+ stage3.0.fuse_layers.2.0.1.0 (  (None, 30, 30, 128)  36864      ['zero_padding2d_7[0][0]']
+ Conv2D)
+
+ stage3.0.fuse_layers.2.1.0.0 (  (None, 30, 30, 128)  73728      ['zero_padding2d_8[0][0]']
+ Conv2D)
+
+ Upsample.0.2 (UpsampleLike)    (None, 120, 120, 32  0           ['stage3.0.fuse_layers.0.1.1[0][0
+                                )                                ]',
+                                                                  'activation_42[0][0]']
+
+ Upsample.0.3 (UpsampleLike)    (None, 120, 120, 32  0           ['stage3.0.fuse_layers.0.2.1[0][0
+                                )                                ]',
+                                                                  'activation_42[0][0]']
+
+ stage3.0.fuse_layers.1.0.0.1 (  (None, 60, 60, 64)  256         ['stage3.0.fuse_layers.1.0.0.0[0]
+ BatchNormalization)                                             [0]']
+
+ Upsample.0.4 (UpsampleLike)    (None, 60, 60, 64)   0           ['stage3.0.fuse_layers.1.2.1[0][0
+                                                                 ]',
+                                                                  'activation_50[0][0]']
+
+ stage3.0.fuse_layers.2.0.1.1 (  (None, 30, 30, 128)  512        ['stage3.0.fuse_layers.2.0.1.0[0]
+ BatchNormalization)                                             [0]']
+
+ stage3.0.fuse_layers.2.1.0.1 (  (None, 30, 30, 128)  512        ['stage3.0.fuse_layers.2.1.0.0[0]
+ BatchNormalization)                                             [0]']
+
+ add_26 (Add)                   (None, 120, 120, 32  0           ['activation_42[0][0]',
+                                )                                 'Upsample.0.2[0][0]',
+                                                                  'Upsample.0.3[0][0]']
+
+ add_27 (Add)                   (None, 60, 60, 64)   0           ['stage3.0.fuse_layers.1.0.0.1[0]
+                                                                 [0]',
+                                                                  'activation_50[0][0]',
+                                                                  'Upsample.0.4[0][0]']
+
+ add_28 (Add)                   (None, 30, 30, 128)  0           ['stage3.0.fuse_layers.2.0.1.1[0]
+                                                                 [0]',
+                                                                  'stage3.0.fuse_layers.2.1.0.1[0]
+                                                                 [0]',
+                                                                  'activation_58[0][0]']
+
+ activation_59 (Activation)     (None, 120, 120, 32  0           ['add_26[0][0]']
+                                )
+
+ activation_60 (Activation)     (None, 60, 60, 64)   0           ['add_27[0][0]']
+
+ activation_62 (Activation)     (None, 30, 30, 128)  0           ['add_28[0][0]']
+
+ stage3.1.branches.0.0.conv1 (C  (None, 120, 120, 32  9216       ['activation_59[0][0]']
+ onv2D)                         )
+
+ stage3.1.branches.1.0.conv1 (C  (None, 60, 60, 64)  36864       ['activation_60[0][0]']
+ onv2D)
+
+ stage3.1.branches.2.0.conv1 (C  (None, 30, 30, 128)  147456     ['activation_62[0][0]']
+ onv2D)
+
+ stage3.1.branches.0.0.bn1 (Bat  (None, 120, 120, 32  128        ['stage3.1.branches.0.0.conv1[0][
+ chNormalization)               )                                0]']
+
+ stage3.1.branches.1.0.bn1 (Bat  (None, 60, 60, 64)  256         ['stage3.1.branches.1.0.conv1[0][
+ chNormalization)                                                0]']
+
+ stage3.1.branches.2.0.bn1 (Bat  (None, 30, 30, 128)  512        ['stage3.1.branches.2.0.conv1[0][
+ chNormalization)                                                0]']
+
+ activation_63 (Activation)     (None, 120, 120, 32  0           ['stage3.1.branches.0.0.bn1[0][0]
+                                )                                ']
+
+ activation_71 (Activation)     (None, 60, 60, 64)   0           ['stage3.1.branches.1.0.bn1[0][0]
+                                                                 ']
+
+ activation_79 (Activation)     (None, 30, 30, 128)  0           ['stage3.1.branches.2.0.bn1[0][0]
+                                                                 ']
+
+ stage3.1.branches.0.0.conv2 (C  (None, 120, 120, 32  9216       ['activation_63[0][0]']
+ onv2D)                         )
+
+ stage3.1.branches.1.0.conv2 (C  (None, 60, 60, 64)  36864       ['activation_71[0][0]']
+ onv2D)
+
+ stage3.1.branches.2.0.conv2 (C  (None, 30, 30, 128)  147456     ['activation_79[0][0]']
+ onv2D)
+
+ stage3.1.branches.0.0.bn2 (Bat  (None, 120, 120, 32  128        ['stage3.1.branches.0.0.conv2[0][
+ chNormalization)               )                                0]']
+
+ stage3.1.branches.1.0.bn2 (Bat  (None, 60, 60, 64)  256         ['stage3.1.branches.1.0.conv2[0][
+ chNormalization)                                                0]']
+
+ stage3.1.branches.2.0.bn2 (Bat  (None, 30, 30, 128)  512        ['stage3.1.branches.2.0.conv2[0][
+ chNormalization)                                                0]']
+
+ add_29 (Add)                   (None, 120, 120, 32  0           ['stage3.1.branches.0.0.bn2[0][0]
+                                )                                ',
+                                                                  'activation_59[0][0]']
+
+ add_33 (Add)                   (None, 60, 60, 64)   0           ['stage3.1.branches.1.0.bn2[0][0]
+                                                                 ',
+                                                                  'activation_60[0][0]']
+
+ add_37 (Add)                   (None, 30, 30, 128)  0           ['stage3.1.branches.2.0.bn2[0][0]
+                                                                 ',
+                                                                  'activation_62[0][0]']
+
+ activation_64 (Activation)     (None, 120, 120, 32  0           ['add_29[0][0]']
+                                )
+
+ activation_72 (Activation)     (None, 60, 60, 64)   0           ['add_33[0][0]']
+
+ activation_80 (Activation)     (None, 30, 30, 128)  0           ['add_37[0][0]']
+
+ stage3.1.branches.0.1.conv1 (C  (None, 120, 120, 32  9216       ['activation_64[0][0]']
+ onv2D)                         )
+
+ stage3.1.branches.1.1.conv1 (C  (None, 60, 60, 64)  36864       ['activation_72[0][0]']
+ onv2D)
+
+ stage3.1.branches.2.1.conv1 (C  (None, 30, 30, 128)  147456     ['activation_80[0][0]']
+ onv2D)
+
+ stage3.1.branches.0.1.bn1 (Bat  (None, 120, 120, 32  128        ['stage3.1.branches.0.1.conv1[0][
+ chNormalization)               )                                0]']
+
+ stage3.1.branches.1.1.bn1 (Bat  (None, 60, 60, 64)  256         ['stage3.1.branches.1.1.conv1[0][
+ chNormalization)                                                0]']
+
+ stage3.1.branches.2.1.bn1 (Bat  (None, 30, 30, 128)  512        ['stage3.1.branches.2.1.conv1[0][
+ chNormalization)                                                0]']
+
+ activation_65 (Activation)     (None, 120, 120, 32  0           ['stage3.1.branches.0.1.bn1[0][0]
+                                )                                ']
+
+ activation_73 (Activation)     (None, 60, 60, 64)   0           ['stage3.1.branches.1.1.bn1[0][0]
+                                                                 ']
+
+ activation_81 (Activation)     (None, 30, 30, 128)  0           ['stage3.1.branches.2.1.bn1[0][0]
+                                                                 ']
+
+ stage3.1.branches.0.1.conv2 (C  (None, 120, 120, 32  9216       ['activation_65[0][0]']
+ onv2D)                         )
+
+ stage3.1.branches.1.1.conv2 (C  (None, 60, 60, 64)  36864       ['activation_73[0][0]']
+ onv2D)
+
+ stage3.1.branches.2.1.conv2 (C  (None, 30, 30, 128)  147456     ['activation_81[0][0]']
+ onv2D)
+
+ stage3.1.branches.0.1.bn2 (Bat  (None, 120, 120, 32  128        ['stage3.1.branches.0.1.conv2[0][
+ chNormalization)               )                                0]']
+
+ stage3.1.branches.1.1.bn2 (Bat  (None, 60, 60, 64)  256         ['stage3.1.branches.1.1.conv2[0][
+ chNormalization)                                                0]']
+
+ stage3.1.branches.2.1.bn2 (Bat  (None, 30, 30, 128)  512        ['stage3.1.branches.2.1.conv2[0][
+ chNormalization)                                                0]']
+
+ add_30 (Add)                   (None, 120, 120, 32  0           ['stage3.1.branches.0.1.bn2[0][0]
+                                )                                ',
+                                                                  'activation_64[0][0]']
+
+ add_34 (Add)                   (None, 60, 60, 64)   0           ['stage3.1.branches.1.1.bn2[0][0]
+                                                                 ',
+                                                                  'activation_72[0][0]']
+
+ add_38 (Add)                   (None, 30, 30, 128)  0           ['stage3.1.branches.2.1.bn2[0][0]
+                                                                 ',
+                                                                  'activation_80[0][0]']
+
+ activation_66 (Activation)     (None, 120, 120, 32  0           ['add_30[0][0]']
+                                )
+
+ activation_74 (Activation)     (None, 60, 60, 64)   0           ['add_34[0][0]']
+
+ activation_82 (Activation)     (None, 30, 30, 128)  0           ['add_38[0][0]']
+
+ stage3.1.branches.0.2.conv1 (C  (None, 120, 120, 32  9216       ['activation_66[0][0]']
+ onv2D)                         )
+
+ stage3.1.branches.1.2.conv1 (C  (None, 60, 60, 64)  36864       ['activation_74[0][0]']
+ onv2D)
+
+ stage3.1.branches.2.2.conv1 (C  (None, 30, 30, 128)  147456     ['activation_82[0][0]']
+ onv2D)
+
+ stage3.1.branches.0.2.bn1 (Bat  (None, 120, 120, 32  128        ['stage3.1.branches.0.2.conv1[0][
+ chNormalization)               )                                0]']
+
+ stage3.1.branches.1.2.bn1 (Bat  (None, 60, 60, 64)  256         ['stage3.1.branches.1.2.conv1[0][
+ chNormalization)                                                0]']
+
+ stage3.1.branches.2.2.bn1 (Bat  (None, 30, 30, 128)  512        ['stage3.1.branches.2.2.conv1[0][
+ chNormalization)                                                0]']
+
+ activation_67 (Activation)     (None, 120, 120, 32  0           ['stage3.1.branches.0.2.bn1[0][0]
+                                )                                ']
+
+ activation_75 (Activation)     (None, 60, 60, 64)   0           ['stage3.1.branches.1.2.bn1[0][0]
+                                                                 ']
+
+ activation_83 (Activation)     (None, 30, 30, 128)  0           ['stage3.1.branches.2.2.bn1[0][0]
+                                                                 ']
+
+ stage3.1.branches.0.2.conv2 (C  (None, 120, 120, 32  9216       ['activation_67[0][0]']
+ onv2D)                         )
+
+ stage3.1.branches.1.2.conv2 (C  (None, 60, 60, 64)  36864       ['activation_75[0][0]']
+ onv2D)
+
+ stage3.1.branches.2.2.conv2 (C  (None, 30, 30, 128)  147456     ['activation_83[0][0]']
+ onv2D)
+
+ stage3.1.branches.0.2.bn2 (Bat  (None, 120, 120, 32  128        ['stage3.1.branches.0.2.conv2[0][
+ chNormalization)               )                                0]']
+
+ stage3.1.branches.1.2.bn2 (Bat  (None, 60, 60, 64)  256         ['stage3.1.branches.1.2.conv2[0][
+ chNormalization)                                                0]']
+
+ stage3.1.branches.2.2.bn2 (Bat  (None, 30, 30, 128)  512        ['stage3.1.branches.2.2.conv2[0][
+ chNormalization)                                                0]']
+
+ add_31 (Add)                   (None, 120, 120, 32  0           ['stage3.1.branches.0.2.bn2[0][0]
+                                )                                ',
+                                                                  'activation_66[0][0]']
+
+ add_35 (Add)                   (None, 60, 60, 64)   0           ['stage3.1.branches.1.2.bn2[0][0]
+                                                                 ',
+                                                                  'activation_74[0][0]']
+
+ add_39 (Add)                   (None, 30, 30, 128)  0           ['stage3.1.branches.2.2.bn2[0][0]
+                                                                 ',
+                                                                  'activation_82[0][0]']
+
+ activation_68 (Activation)     (None, 120, 120, 32  0           ['add_31[0][0]']
+                                )
+
+ activation_76 (Activation)     (None, 60, 60, 64)   0           ['add_35[0][0]']
+
+ activation_84 (Activation)     (None, 30, 30, 128)  0           ['add_39[0][0]']
+
+ stage3.1.branches.0.3.conv1 (C  (None, 120, 120, 32  9216       ['activation_68[0][0]']
+ onv2D)                         )
+
+ stage3.1.branches.1.3.conv1 (C  (None, 60, 60, 64)  36864       ['activation_76[0][0]']
+ onv2D)
+
+ stage3.1.branches.2.3.conv1 (C  (None, 30, 30, 128)  147456     ['activation_84[0][0]']
+ onv2D)
+
+ stage3.1.branches.0.3.bn1 (Bat  (None, 120, 120, 32  128        ['stage3.1.branches.0.3.conv1[0][
+ chNormalization)               )                                0]']
+
+ stage3.1.branches.1.3.bn1 (Bat  (None, 60, 60, 64)  256         ['stage3.1.branches.1.3.conv1[0][
+ chNormalization)                                                0]']
+
+ stage3.1.branches.2.3.bn1 (Bat  (None, 30, 30, 128)  512        ['stage3.1.branches.2.3.conv1[0][
+ chNormalization)                                                0]']
+
+ activation_69 (Activation)     (None, 120, 120, 32  0           ['stage3.1.branches.0.3.bn1[0][0]
+                                )                                ']
+
+ activation_77 (Activation)     (None, 60, 60, 64)   0           ['stage3.1.branches.1.3.bn1[0][0]
+                                                                 ']
+
+ activation_85 (Activation)     (None, 30, 30, 128)  0           ['stage3.1.branches.2.3.bn1[0][0]
+                                                                 ']
+
+ stage3.1.branches.0.3.conv2 (C  (None, 120, 120, 32  9216       ['activation_69[0][0]']
+ onv2D)                         )
+
+ stage3.1.branches.1.3.conv2 (C  (None, 60, 60, 64)  36864       ['activation_77[0][0]']
+ onv2D)
+
+ stage3.1.branches.2.3.conv2 (C  (None, 30, 30, 128)  147456     ['activation_85[0][0]']
+ onv2D)
+
+ stage3.1.branches.0.3.bn2 (Bat  (None, 120, 120, 32  128        ['stage3.1.branches.0.3.conv2[0][
+ chNormalization)               )                                0]']
+
+ stage3.1.branches.1.3.bn2 (Bat  (None, 60, 60, 64)  256         ['stage3.1.branches.1.3.conv2[0][
+ chNormalization)                                                0]']
+
+ stage3.1.branches.2.3.bn2 (Bat  (None, 30, 30, 128)  512        ['stage3.1.branches.2.3.conv2[0][
+ chNormalization)                                                0]']
+
+ add_32 (Add)                   (None, 120, 120, 32  0           ['stage3.1.branches.0.3.bn2[0][0]
+                                )                                ',
+                                                                  'activation_68[0][0]']
+
+ add_36 (Add)                   (None, 60, 60, 64)   0           ['stage3.1.branches.1.3.bn2[0][0]
+                                                                 ',
+                                                                  'activation_76[0][0]']
+
+ add_40 (Add)                   (None, 30, 30, 128)  0           ['stage3.1.branches.2.3.bn2[0][0]
+                                                                 ',
+                                                                  'activation_84[0][0]']
+
+ activation_70 (Activation)     (None, 120, 120, 32  0           ['add_32[0][0]']
+                                )
+
+ activation_78 (Activation)     (None, 60, 60, 64)   0           ['add_36[0][0]']
+
+ activation_86 (Activation)     (None, 30, 30, 128)  0           ['add_40[0][0]']
+
+ stage3.1.fuse_layers.0.1.0 (Co  (None, 60, 60, 32)  2048        ['activation_78[0][0]']
+ nv2D)
+
+ stage3.1.fuse_layers.0.2.0 (Co  (None, 30, 30, 32)  4096        ['activation_86[0][0]']
+ nv2D)
+
+ zero_padding2d_10 (ZeroPadding  (None, 122, 122, 32  0          ['activation_70[0][0]']
+ 2D)                            )
+
+ stage3.1.fuse_layers.0.1.1 (Ba  (None, 60, 60, 32)  128         ['stage3.1.fuse_layers.0.1.0[0][0
+ tchNormalization)                                               ]']
+
+ stage3.1.fuse_layers.0.2.1 (Ba  (None, 30, 30, 32)  128         ['stage3.1.fuse_layers.0.2.0[0][0
+ tchNormalization)                                               ]']
+
+ stage3.1.fuse_layers.2.0.0.0 (  (None, 60, 60, 32)  9216        ['zero_padding2d_10[0][0]']
+ Conv2D)
+
+ Upsample.1.2 (UpsampleLike)    (None, 120, 120, 32  0           ['stage3.1.fuse_layers.0.1.1[0][0
+                                )                                ]',
+                                                                  'activation_70[0][0]']
+
+ Upsample.1.3 (UpsampleLike)    (None, 120, 120, 32  0           ['stage3.1.fuse_layers.0.2.1[0][0
+                                )                                ]',
+                                                                  'activation_70[0][0]']
+
+ stage3.1.fuse_layers.2.0.0.1 (  (None, 60, 60, 32)  128         ['stage3.1.fuse_layers.2.0.0.0[0]
+ BatchNormalization)                                             [0]']
+
+ add_41 (Add)                   (None, 120, 120, 32  0           ['activation_70[0][0]',
+                                )                                 'Upsample.1.2[0][0]',
+                                                                  'Upsample.1.3[0][0]']
+
+ activation_89 (Activation)     (None, 60, 60, 32)   0           ['stage3.1.fuse_layers.2.0.0.1[0]
+                                                                 [0]']
+
+ activation_87 (Activation)     (None, 120, 120, 32  0           ['add_41[0][0]']
+                                )
+
+ zero_padding2d_9 (ZeroPadding2  (None, 122, 122, 32  0          ['activation_70[0][0]']
+ D)                             )
+
+ stage3.1.fuse_layers.1.2.0 (Co  (None, 30, 30, 64)  8192        ['activation_86[0][0]']
+ nv2D)
+
+ zero_padding2d_11 (ZeroPadding  (None, 62, 62, 32)  0           ['activation_89[0][0]']
+ 2D)
+
+ zero_padding2d_12 (ZeroPadding  (None, 62, 62, 64)  0           ['activation_78[0][0]']
+ 2D)
+
+ stage3.2.branches.0.0.conv1 (C  (None, 120, 120, 32  9216       ['activation_87[0][0]']
+ onv2D)                         )
+
+ stage3.1.fuse_layers.1.0.0.0 (  (None, 60, 60, 64)  18432       ['zero_padding2d_9[0][0]']
+ Conv2D)
+
+ stage3.1.fuse_layers.1.2.1 (Ba  (None, 30, 30, 64)  256         ['stage3.1.fuse_layers.1.2.0[0][0
+ tchNormalization)                                               ]']
+
+ stage3.1.fuse_layers.2.0.1.0 (  (None, 30, 30, 128)  36864      ['zero_padding2d_11[0][0]']
+ Conv2D)
+
+ stage3.1.fuse_layers.2.1.0.0 (  (None, 30, 30, 128)  73728      ['zero_padding2d_12[0][0]']
+ Conv2D)
+
+ stage3.2.branches.0.0.bn1 (Bat  (None, 120, 120, 32  128        ['stage3.2.branches.0.0.conv1[0][
+ chNormalization)               )                                0]']
+
+ stage3.1.fuse_layers.1.0.0.1 (  (None, 60, 60, 64)  256         ['stage3.1.fuse_layers.1.0.0.0[0]
+ BatchNormalization)                                             [0]']
+
+ Upsample.1.4 (UpsampleLike)    (None, 60, 60, 64)   0           ['stage3.1.fuse_layers.1.2.1[0][0
+                                                                 ]',
+                                                                  'activation_78[0][0]']
+
+ stage3.1.fuse_layers.2.0.1.1 (  (None, 30, 30, 128)  512        ['stage3.1.fuse_layers.2.0.1.0[0]
+ BatchNormalization)                                             [0]']
+
+ stage3.1.fuse_layers.2.1.0.1 (  (None, 30, 30, 128)  512        ['stage3.1.fuse_layers.2.1.0.0[0]
+ BatchNormalization)                                             [0]']
+
+ activation_91 (Activation)     (None, 120, 120, 32  0           ['stage3.2.branches.0.0.bn1[0][0]
+                                )                                ']
+
+ add_42 (Add)                   (None, 60, 60, 64)   0           ['stage3.1.fuse_layers.1.0.0.1[0]
+                                                                 [0]',
+                                                                  'activation_78[0][0]',
+                                                                  'Upsample.1.4[0][0]']
+
+ add_43 (Add)                   (None, 30, 30, 128)  0           ['stage3.1.fuse_layers.2.0.1.1[0]
+                                                                 [0]',
+                                                                  'stage3.1.fuse_layers.2.1.0.1[0]
+                                                                 [0]',
+                                                                  'activation_86[0][0]']
+
+ stage3.2.branches.0.0.conv2 (C  (None, 120, 120, 32  9216       ['activation_91[0][0]']
+ onv2D)                         )
+
+ activation_88 (Activation)     (None, 60, 60, 64)   0           ['add_42[0][0]']
+
+ activation_90 (Activation)     (None, 30, 30, 128)  0           ['add_43[0][0]']
+
+ stage3.2.branches.0.0.bn2 (Bat  (None, 120, 120, 32  128        ['stage3.2.branches.0.0.conv2[0][
+ chNormalization)               )                                0]']
+
+ stage3.2.branches.1.0.conv1 (C  (None, 60, 60, 64)  36864       ['activation_88[0][0]']
+ onv2D)
+
+ stage3.2.branches.2.0.conv1 (C  (None, 30, 30, 128)  147456     ['activation_90[0][0]']
+ onv2D)
+
+ add_44 (Add)                   (None, 120, 120, 32  0           ['stage3.2.branches.0.0.bn2[0][0]
+                                )                                ',
+                                                                  'activation_87[0][0]']
+
+ stage3.2.branches.1.0.bn1 (Bat  (None, 60, 60, 64)  256         ['stage3.2.branches.1.0.conv1[0][
+ chNormalization)                                                0]']
+
+ stage3.2.branches.2.0.bn1 (Bat  (None, 30, 30, 128)  512        ['stage3.2.branches.2.0.conv1[0][
+ chNormalization)                                                0]']
+
+ activation_92 (Activation)     (None, 120, 120, 32  0           ['add_44[0][0]']
+                                )
+
+ activation_99 (Activation)     (None, 60, 60, 64)   0           ['stage3.2.branches.1.0.bn1[0][0]
+                                                                 ']
+
+ activation_107 (Activation)    (None, 30, 30, 128)  0           ['stage3.2.branches.2.0.bn1[0][0]
+                                                                 ']
+
+ stage3.2.branches.0.1.conv1 (C  (None, 120, 120, 32  9216       ['activation_92[0][0]']
+ onv2D)                         )
+
+ stage3.2.branches.1.0.conv2 (C  (None, 60, 60, 64)  36864       ['activation_99[0][0]']
+ onv2D)
+
+ stage3.2.branches.2.0.conv2 (C  (None, 30, 30, 128)  147456     ['activation_107[0][0]']
+ onv2D)
+
+ stage3.2.branches.0.1.bn1 (Bat  (None, 120, 120, 32  128        ['stage3.2.branches.0.1.conv1[0][
+ chNormalization)               )                                0]']
+
+ stage3.2.branches.1.0.bn2 (Bat  (None, 60, 60, 64)  256         ['stage3.2.branches.1.0.conv2[0][
+ chNormalization)                                                0]']
+
+ stage3.2.branches.2.0.bn2 (Bat  (None, 30, 30, 128)  512        ['stage3.2.branches.2.0.conv2[0][
+ chNormalization)                                                0]']
+
+ activation_93 (Activation)     (None, 120, 120, 32  0           ['stage3.2.branches.0.1.bn1[0][0]
+                                )                                ']
+
+ add_48 (Add)                   (None, 60, 60, 64)   0           ['stage3.2.branches.1.0.bn2[0][0]
+                                                                 ',
+                                                                  'activation_88[0][0]']
+
+ add_52 (Add)                   (None, 30, 30, 128)  0           ['stage3.2.branches.2.0.bn2[0][0]
+                                                                 ',
+                                                                  'activation_90[0][0]']
+
+ stage3.2.branches.0.1.conv2 (C  (None, 120, 120, 32  9216       ['activation_93[0][0]']
+ onv2D)                         )
+
+ activation_100 (Activation)    (None, 60, 60, 64)   0           ['add_48[0][0]']
+
+ activation_108 (Activation)    (None, 30, 30, 128)  0           ['add_52[0][0]']
+
+ stage3.2.branches.0.1.bn2 (Bat  (None, 120, 120, 32  128        ['stage3.2.branches.0.1.conv2[0][
+ chNormalization)               )                                0]']
+
+ stage3.2.branches.1.1.conv1 (C  (None, 60, 60, 64)  36864       ['activation_100[0][0]']
+ onv2D)
+
+ stage3.2.branches.2.1.conv1 (C  (None, 30, 30, 128)  147456     ['activation_108[0][0]']
+ onv2D)
+
+ add_45 (Add)                   (None, 120, 120, 32  0           ['stage3.2.branches.0.1.bn2[0][0]
+                                )                                ',
+                                                                  'activation_92[0][0]']
+
+ stage3.2.branches.1.1.bn1 (Bat  (None, 60, 60, 64)  256         ['stage3.2.branches.1.1.conv1[0][
+ chNormalization)                                                0]']
+
+ stage3.2.branches.2.1.bn1 (Bat  (None, 30, 30, 128)  512        ['stage3.2.branches.2.1.conv1[0][
+ chNormalization)                                                0]']
+
+ activation_94 (Activation)     (None, 120, 120, 32  0           ['add_45[0][0]']
+                                )
+
+ activation_101 (Activation)    (None, 60, 60, 64)   0           ['stage3.2.branches.1.1.bn1[0][0]
+                                                                 ']
+
+ activation_109 (Activation)    (None, 30, 30, 128)  0           ['stage3.2.branches.2.1.bn1[0][0]
+                                                                 ']
+
+ stage3.2.branches.0.2.conv1 (C  (None, 120, 120, 32  9216       ['activation_94[0][0]']
+ onv2D)                         )
+
+ stage3.2.branches.1.1.conv2 (C  (None, 60, 60, 64)  36864       ['activation_101[0][0]']
+ onv2D)
+
+ stage3.2.branches.2.1.conv2 (C  (None, 30, 30, 128)  147456     ['activation_109[0][0]']
+ onv2D)
+
+ stage3.2.branches.0.2.bn1 (Bat  (None, 120, 120, 32  128        ['stage3.2.branches.0.2.conv1[0][
+ chNormalization)               )                                0]']
+
+ stage3.2.branches.1.1.bn2 (Bat  (None, 60, 60, 64)  256         ['stage3.2.branches.1.1.conv2[0][
+ chNormalization)                                                0]']
+
+ stage3.2.branches.2.1.bn2 (Bat  (None, 30, 30, 128)  512        ['stage3.2.branches.2.1.conv2[0][
+ chNormalization)                                                0]']
+
+ activation_95 (Activation)     (None, 120, 120, 32  0           ['stage3.2.branches.0.2.bn1[0][0]
+                                )                                ']
+
+ add_49 (Add)                   (None, 60, 60, 64)   0           ['stage3.2.branches.1.1.bn2[0][0]
+                                                                 ',
+                                                                  'activation_100[0][0]']
+
+ add_53 (Add)                   (None, 30, 30, 128)  0           ['stage3.2.branches.2.1.bn2[0][0]
+                                                                 ',
+                                                                  'activation_108[0][0]']
+
+ stage3.2.branches.0.2.conv2 (C  (None, 120, 120, 32  9216       ['activation_95[0][0]']
+ onv2D)                         )
+
+ activation_102 (Activation)    (None, 60, 60, 64)   0           ['add_49[0][0]']
+
+ activation_110 (Activation)    (None, 30, 30, 128)  0           ['add_53[0][0]']
+
+ stage3.2.branches.0.2.bn2 (Bat  (None, 120, 120, 32  128        ['stage3.2.branches.0.2.conv2[0][
+ chNormalization)               )                                0]']
+
+ stage3.2.branches.1.2.conv1 (C  (None, 60, 60, 64)  36864       ['activation_102[0][0]']
+ onv2D)
+
+ stage3.2.branches.2.2.conv1 (C  (None, 30, 30, 128)  147456     ['activation_110[0][0]']
+ onv2D)
+
+ add_46 (Add)                   (None, 120, 120, 32  0           ['stage3.2.branches.0.2.bn2[0][0]
+                                )                                ',
+                                                                  'activation_94[0][0]']
+
+ stage3.2.branches.1.2.bn1 (Bat  (None, 60, 60, 64)  256         ['stage3.2.branches.1.2.conv1[0][
+ chNormalization)                                                0]']
+
+ stage3.2.branches.2.2.bn1 (Bat  (None, 30, 30, 128)  512        ['stage3.2.branches.2.2.conv1[0][
+ chNormalization)                                                0]']
+
+ activation_96 (Activation)     (None, 120, 120, 32  0           ['add_46[0][0]']
+                                )
+
+ activation_103 (Activation)    (None, 60, 60, 64)   0           ['stage3.2.branches.1.2.bn1[0][0]
+                                                                 ']
+
+ activation_111 (Activation)    (None, 30, 30, 128)  0           ['stage3.2.branches.2.2.bn1[0][0]
+                                                                 ']
+
+ stage3.2.branches.0.3.conv1 (C  (None, 120, 120, 32  9216       ['activation_96[0][0]']
+ onv2D)                         )
+
+ stage3.2.branches.1.2.conv2 (C  (None, 60, 60, 64)  36864       ['activation_103[0][0]']
+ onv2D)
+
+ stage3.2.branches.2.2.conv2 (C  (None, 30, 30, 128)  147456     ['activation_111[0][0]']
+ onv2D)
+
+ stage3.2.branches.0.3.bn1 (Bat  (None, 120, 120, 32  128        ['stage3.2.branches.0.3.conv1[0][
+ chNormalization)               )                                0]']
+
+ stage3.2.branches.1.2.bn2 (Bat  (None, 60, 60, 64)  256         ['stage3.2.branches.1.2.conv2[0][
+ chNormalization)                                                0]']
+
+ stage3.2.branches.2.2.bn2 (Bat  (None, 30, 30, 128)  512        ['stage3.2.branches.2.2.conv2[0][
+ chNormalization)                                                0]']
+
+ activation_97 (Activation)     (None, 120, 120, 32  0           ['stage3.2.branches.0.3.bn1[0][0]
+                                )                                ']
+
+ add_50 (Add)                   (None, 60, 60, 64)   0           ['stage3.2.branches.1.2.bn2[0][0]
+                                                                 ',
+                                                                  'activation_102[0][0]']
+
+ add_54 (Add)                   (None, 30, 30, 128)  0           ['stage3.2.branches.2.2.bn2[0][0]
+                                                                 ',
+                                                                  'activation_110[0][0]']
+
+ stage3.2.branches.0.3.conv2 (C  (None, 120, 120, 32  9216       ['activation_97[0][0]']
+ onv2D)                         )
+
+ activation_104 (Activation)    (None, 60, 60, 64)   0           ['add_50[0][0]']
+
+ activation_112 (Activation)    (None, 30, 30, 128)  0           ['add_54[0][0]']
+
+ stage3.2.branches.0.3.bn2 (Bat  (None, 120, 120, 32  128        ['stage3.2.branches.0.3.conv2[0][
+ chNormalization)               )                                0]']
+
+ stage3.2.branches.1.3.conv1 (C  (None, 60, 60, 64)  36864       ['activation_104[0][0]']
+ onv2D)
+
+ stage3.2.branches.2.3.conv1 (C  (None, 30, 30, 128)  147456     ['activation_112[0][0]']
+ onv2D)
+
+ add_47 (Add)                   (None, 120, 120, 32  0           ['stage3.2.branches.0.3.bn2[0][0]
+                                )                                ',
+                                                                  'activation_96[0][0]']
+
+ stage3.2.branches.1.3.bn1 (Bat  (None, 60, 60, 64)  256         ['stage3.2.branches.1.3.conv1[0][
+ chNormalization)                                                0]']
+
+ stage3.2.branches.2.3.bn1 (Bat  (None, 30, 30, 128)  512        ['stage3.2.branches.2.3.conv1[0][
+ chNormalization)                                                0]']
+
+ activation_98 (Activation)     (None, 120, 120, 32  0           ['add_47[0][0]']
+                                )
+
+ activation_105 (Activation)    (None, 60, 60, 64)   0           ['stage3.2.branches.1.3.bn1[0][0]
+                                                                 ']
+
+ activation_113 (Activation)    (None, 30, 30, 128)  0           ['stage3.2.branches.2.3.bn1[0][0]
+                                                                 ']
+
+ stage3.2.branches.1.3.conv2 (C  (None, 60, 60, 64)  36864       ['activation_105[0][0]']
+ onv2D)
+
+ stage3.2.branches.2.3.conv2 (C  (None, 30, 30, 128)  147456     ['activation_113[0][0]']
+ onv2D)
+
+ zero_padding2d_14 (ZeroPadding  (None, 122, 122, 32  0          ['activation_98[0][0]']
+ 2D)                            )
+
+ stage3.2.branches.1.3.bn2 (Bat  (None, 60, 60, 64)  256         ['stage3.2.branches.1.3.conv2[0][
+ chNormalization)                                                0]']
+
+ stage3.2.branches.2.3.bn2 (Bat  (None, 30, 30, 128)  512        ['stage3.2.branches.2.3.conv2[0][
+ chNormalization)                                                0]']
+
+ stage3.2.fuse_layers.2.0.0.0 (  (None, 60, 60, 32)  9216        ['zero_padding2d_14[0][0]']
+ Conv2D)
+
+ add_51 (Add)                   (None, 60, 60, 64)   0           ['stage3.2.branches.1.3.bn2[0][0]
+                                                                 ',
+                                                                  'activation_104[0][0]']
+
+ add_55 (Add)                   (None, 30, 30, 128)  0           ['stage3.2.branches.2.3.bn2[0][0]
+                                                                 ',
+                                                                  'activation_112[0][0]']
+
+ stage3.2.fuse_layers.2.0.0.1 (  (None, 60, 60, 32)  128         ['stage3.2.fuse_layers.2.0.0.0[0]
+ BatchNormalization)                                             [0]']
+
+ activation_106 (Activation)    (None, 60, 60, 64)   0           ['add_51[0][0]']
+
+ activation_114 (Activation)    (None, 30, 30, 128)  0           ['add_55[0][0]']
+
+ activation_117 (Activation)    (None, 60, 60, 32)   0           ['stage3.2.fuse_layers.2.0.0.1[0]
+                                                                 [0]']
+
+ stage3.2.fuse_layers.0.1.0 (Co  (None, 60, 60, 32)  2048        ['activation_106[0][0]']
+ nv2D)
+
+ stage3.2.fuse_layers.0.2.0 (Co  (None, 30, 30, 32)  4096        ['activation_114[0][0]']
+ nv2D)
+
+ zero_padding2d_13 (ZeroPadding  (None, 122, 122, 32  0          ['activation_98[0][0]']
+ 2D)                            )
+
+ stage3.2.fuse_layers.1.2.0 (Co  (None, 30, 30, 64)  8192        ['activation_114[0][0]']
+ nv2D)
+
+ zero_padding2d_15 (ZeroPadding  (None, 62, 62, 32)  0           ['activation_117[0][0]']
+ 2D)
+
+ zero_padding2d_16 (ZeroPadding  (None, 62, 62, 64)  0           ['activation_106[0][0]']
+ 2D)
+
+ stage3.2.fuse_layers.0.1.1 (Ba  (None, 60, 60, 32)  128         ['stage3.2.fuse_layers.0.1.0[0][0
+ tchNormalization)                                               ]']
+
+ stage3.2.fuse_layers.0.2.1 (Ba  (None, 30, 30, 32)  128         ['stage3.2.fuse_layers.0.2.0[0][0
+ tchNormalization)                                               ]']
+
+ stage3.2.fuse_layers.1.0.0.0 (  (None, 60, 60, 64)  18432       ['zero_padding2d_13[0][0]']
+ Conv2D)
+
+ stage3.2.fuse_layers.1.2.1 (Ba  (None, 30, 30, 64)  256         ['stage3.2.fuse_layers.1.2.0[0][0
+ tchNormalization)                                               ]']
+
+ stage3.2.fuse_layers.2.0.1.0 (  (None, 30, 30, 128)  36864      ['zero_padding2d_15[0][0]']
+ Conv2D)
+
+ stage3.2.fuse_layers.2.1.0.0 (  (None, 30, 30, 128)  73728      ['zero_padding2d_16[0][0]']
+ Conv2D)
+
+ Upsample.2.2 (UpsampleLike)    (None, 120, 120, 32  0           ['stage3.2.fuse_layers.0.1.1[0][0
+                                )                                ]',
+                                                                  'activation_98[0][0]']
+
+ Upsample.2.3 (UpsampleLike)    (None, 120, 120, 32  0           ['stage3.2.fuse_layers.0.2.1[0][0
+                                )                                ]',
+                                                                  'activation_98[0][0]']
+
+ stage3.2.fuse_layers.1.0.0.1 (  (None, 60, 60, 64)  256         ['stage3.2.fuse_layers.1.0.0.0[0]
+ BatchNormalization)                                             [0]']
+
+ Upsample.2.4 (UpsampleLike)    (None, 60, 60, 64)   0           ['stage3.2.fuse_layers.1.2.1[0][0
+                                                                 ]',
+                                                                  'activation_106[0][0]']
+
+ stage3.2.fuse_layers.2.0.1.1 (  (None, 30, 30, 128)  512        ['stage3.2.fuse_layers.2.0.1.0[0]
+ BatchNormalization)                                             [0]']
+
+ stage3.2.fuse_layers.2.1.0.1 (  (None, 30, 30, 128)  512        ['stage3.2.fuse_layers.2.1.0.0[0]
+ BatchNormalization)                                             [0]']
+
+ add_56 (Add)                   (None, 120, 120, 32  0           ['activation_98[0][0]',
+                                )                                 'Upsample.2.2[0][0]',
+                                                                  'Upsample.2.3[0][0]']
+
+ add_57 (Add)                   (None, 60, 60, 64)   0           ['stage3.2.fuse_layers.1.0.0.1[0]
+                                                                 [0]',
+                                                                  'activation_106[0][0]',
+                                                                  'Upsample.2.4[0][0]']
+
+ add_58 (Add)                   (None, 30, 30, 128)  0           ['stage3.2.fuse_layers.2.0.1.1[0]
+                                                                 [0]',
+                                                                  'stage3.2.fuse_layers.2.1.0.1[0]
+                                                                 [0]',
+                                                                  'activation_114[0][0]']
+
+ activation_115 (Activation)    (None, 120, 120, 32  0           ['add_56[0][0]']
+                                )
+
+ activation_116 (Activation)    (None, 60, 60, 64)   0           ['add_57[0][0]']
+
+ activation_118 (Activation)    (None, 30, 30, 128)  0           ['add_58[0][0]']
+
+ stage3.3.branches.0.0.conv1 (C  (None, 120, 120, 32  9216       ['activation_115[0][0]']
+ onv2D)                         )
+
+ stage3.3.branches.1.0.conv1 (C  (None, 60, 60, 64)  36864       ['activation_116[0][0]']
+ onv2D)
+
+ stage3.3.branches.2.0.conv1 (C  (None, 30, 30, 128)  147456     ['activation_118[0][0]']
+ onv2D)
+
+ stage3.3.branches.0.0.bn1 (Bat  (None, 120, 120, 32  128        ['stage3.3.branches.0.0.conv1[0][
+ chNormalization)               )                                0]']
+
+ stage3.3.branches.1.0.bn1 (Bat  (None, 60, 60, 64)  256         ['stage3.3.branches.1.0.conv1[0][
+ chNormalization)                                                0]']
+
+ stage3.3.branches.2.0.bn1 (Bat  (None, 30, 30, 128)  512        ['stage3.3.branches.2.0.conv1[0][
+ chNormalization)                                                0]']
+
+ activation_119 (Activation)    (None, 120, 120, 32  0           ['stage3.3.branches.0.0.bn1[0][0]
+                                )                                ']
+
+ activation_127 (Activation)    (None, 60, 60, 64)   0           ['stage3.3.branches.1.0.bn1[0][0]
+                                                                 ']
+
+ activation_135 (Activation)    (None, 30, 30, 128)  0           ['stage3.3.branches.2.0.bn1[0][0]
+                                                                 ']
+
+ stage3.3.branches.0.0.conv2 (C  (None, 120, 120, 32  9216       ['activation_119[0][0]']
+ onv2D)                         )
+
+ stage3.3.branches.1.0.conv2 (C  (None, 60, 60, 64)  36864       ['activation_127[0][0]']
+ onv2D)
+
+ stage3.3.branches.2.0.conv2 (C  (None, 30, 30, 128)  147456     ['activation_135[0][0]']
+ onv2D)
+
+ stage3.3.branches.0.0.bn2 (Bat  (None, 120, 120, 32  128        ['stage3.3.branches.0.0.conv2[0][
+ chNormalization)               )                                0]']
+
+ stage3.3.branches.1.0.bn2 (Bat  (None, 60, 60, 64)  256         ['stage3.3.branches.1.0.conv2[0][
+ chNormalization)                                                0]']
+
+ stage3.3.branches.2.0.bn2 (Bat  (None, 30, 30, 128)  512        ['stage3.3.branches.2.0.conv2[0][
+ chNormalization)                                                0]']
+
+ add_59 (Add)                   (None, 120, 120, 32  0           ['stage3.3.branches.0.0.bn2[0][0]
+                                )                                ',
+                                                                  'activation_115[0][0]']
+
+ add_63 (Add)                   (None, 60, 60, 64)   0           ['stage3.3.branches.1.0.bn2[0][0]
+                                                                 ',
+                                                                  'activation_116[0][0]']
+
+ add_67 (Add)                   (None, 30, 30, 128)  0           ['stage3.3.branches.2.0.bn2[0][0]
+                                                                 ',
+                                                                  'activation_118[0][0]']
+
+ activation_120 (Activation)    (None, 120, 120, 32  0           ['add_59[0][0]']
+                                )
+
+ activation_128 (Activation)    (None, 60, 60, 64)   0           ['add_63[0][0]']
+
+ activation_136 (Activation)    (None, 30, 30, 128)  0           ['add_67[0][0]']
+
+ stage3.3.branches.0.1.conv1 (C  (None, 120, 120, 32  9216       ['activation_120[0][0]']
+ onv2D)                         )
+
+ stage3.3.branches.1.1.conv1 (C  (None, 60, 60, 64)  36864       ['activation_128[0][0]']
+ onv2D)
+
+ stage3.3.branches.2.1.conv1 (C  (None, 30, 30, 128)  147456     ['activation_136[0][0]']
+ onv2D)
+
+ stage3.3.branches.0.1.bn1 (Bat  (None, 120, 120, 32  128        ['stage3.3.branches.0.1.conv1[0][
+ chNormalization)               )                                0]']
+
+ stage3.3.branches.1.1.bn1 (Bat  (None, 60, 60, 64)  256         ['stage3.3.branches.1.1.conv1[0][
+ chNormalization)                                                0]']
+
+ stage3.3.branches.2.1.bn1 (Bat  (None, 30, 30, 128)  512        ['stage3.3.branches.2.1.conv1[0][
+ chNormalization)                                                0]']
+
+ activation_121 (Activation)    (None, 120, 120, 32  0           ['stage3.3.branches.0.1.bn1[0][0]
+                                )                                ']
+
+ activation_129 (Activation)    (None, 60, 60, 64)   0           ['stage3.3.branches.1.1.bn1[0][0]
+                                                                 ']
+
+ activation_137 (Activation)    (None, 30, 30, 128)  0           ['stage3.3.branches.2.1.bn1[0][0]
+                                                                 ']
+
+ stage3.3.branches.0.1.conv2 (C  (None, 120, 120, 32  9216       ['activation_121[0][0]']
+ onv2D)                         )
+
+ stage3.3.branches.1.1.conv2 (C  (None, 60, 60, 64)  36864       ['activation_129[0][0]']
+ onv2D)
+
+ stage3.3.branches.2.1.conv2 (C  (None, 30, 30, 128)  147456     ['activation_137[0][0]']
+ onv2D)
+
+ stage3.3.branches.0.1.bn2 (Bat  (None, 120, 120, 32  128        ['stage3.3.branches.0.1.conv2[0][
+ chNormalization)               )                                0]']
+
+ stage3.3.branches.1.1.bn2 (Bat  (None, 60, 60, 64)  256         ['stage3.3.branches.1.1.conv2[0][
+ chNormalization)                                                0]']
+
+ stage3.3.branches.2.1.bn2 (Bat  (None, 30, 30, 128)  512        ['stage3.3.branches.2.1.conv2[0][
+ chNormalization)                                                0]']
+
+ add_60 (Add)                   (None, 120, 120, 32  0           ['stage3.3.branches.0.1.bn2[0][0]
+                                )                                ',
+                                                                  'activation_120[0][0]']
+
+ add_64 (Add)                   (None, 60, 60, 64)   0           ['stage3.3.branches.1.1.bn2[0][0]
+                                                                 ',
+                                                                  'activation_128[0][0]']
+
+ add_68 (Add)                   (None, 30, 30, 128)  0           ['stage3.3.branches.2.1.bn2[0][0]
+                                                                 ',
+                                                                  'activation_136[0][0]']
+
+ activation_122 (Activation)    (None, 120, 120, 32  0           ['add_60[0][0]']
+                                )
+
+ activation_130 (Activation)    (None, 60, 60, 64)   0           ['add_64[0][0]']
+
+ activation_138 (Activation)    (None, 30, 30, 128)  0           ['add_68[0][0]']
+
+ stage3.3.branches.0.2.conv1 (C  (None, 120, 120, 32  9216       ['activation_122[0][0]']
+ onv2D)                         )
+
+ stage3.3.branches.1.2.conv1 (C  (None, 60, 60, 64)  36864       ['activation_130[0][0]']
+ onv2D)
+
+ stage3.3.branches.2.2.conv1 (C  (None, 30, 30, 128)  147456     ['activation_138[0][0]']
+ onv2D)
+
+ stage3.3.branches.0.2.bn1 (Bat  (None, 120, 120, 32  128        ['stage3.3.branches.0.2.conv1[0][
+ chNormalization)               )                                0]']
+
+ stage3.3.branches.1.2.bn1 (Bat  (None, 60, 60, 64)  256         ['stage3.3.branches.1.2.conv1[0][
+ chNormalization)                                                0]']
+
+ stage3.3.branches.2.2.bn1 (Bat  (None, 30, 30, 128)  512        ['stage3.3.branches.2.2.conv1[0][
+ chNormalization)                                                0]']
+
+ activation_123 (Activation)    (None, 120, 120, 32  0           ['stage3.3.branches.0.2.bn1[0][0]
+                                )                                ']
+
+ activation_131 (Activation)    (None, 60, 60, 64)   0           ['stage3.3.branches.1.2.bn1[0][0]
+                                                                 ']
+
+ activation_139 (Activation)    (None, 30, 30, 128)  0           ['stage3.3.branches.2.2.bn1[0][0]
+                                                                 ']
+
+ stage3.3.branches.0.2.conv2 (C  (None, 120, 120, 32  9216       ['activation_123[0][0]']
+ onv2D)                         )
+
+ stage3.3.branches.1.2.conv2 (C  (None, 60, 60, 64)  36864       ['activation_131[0][0]']
+ onv2D)
+
+ stage3.3.branches.2.2.conv2 (C  (None, 30, 30, 128)  147456     ['activation_139[0][0]']
+ onv2D)
+
+ stage3.3.branches.0.2.bn2 (Bat  (None, 120, 120, 32  128        ['stage3.3.branches.0.2.conv2[0][
+ chNormalization)               )                                0]']
+
+ stage3.3.branches.1.2.bn2 (Bat  (None, 60, 60, 64)  256         ['stage3.3.branches.1.2.conv2[0][
+ chNormalization)                                                0]']
+
+ stage3.3.branches.2.2.bn2 (Bat  (None, 30, 30, 128)  512        ['stage3.3.branches.2.2.conv2[0][
+ chNormalization)                                                0]']
+
+ add_61 (Add)                   (None, 120, 120, 32  0           ['stage3.3.branches.0.2.bn2[0][0]
+                                )                                ',
+                                                                  'activation_122[0][0]']
+
+ add_65 (Add)                   (None, 60, 60, 64)   0           ['stage3.3.branches.1.2.bn2[0][0]
+                                                                 ',
+                                                                  'activation_130[0][0]']
+
+ add_69 (Add)                   (None, 30, 30, 128)  0           ['stage3.3.branches.2.2.bn2[0][0]
+                                                                 ',
+                                                                  'activation_138[0][0]']
+
+ activation_124 (Activation)    (None, 120, 120, 32  0           ['add_61[0][0]']
+                                )
+
+ activation_132 (Activation)    (None, 60, 60, 64)   0           ['add_65[0][0]']
+
+ activation_140 (Activation)    (None, 30, 30, 128)  0           ['add_69[0][0]']
+
+ stage3.3.branches.0.3.conv1 (C  (None, 120, 120, 32  9216       ['activation_124[0][0]']
+ onv2D)                         )
+
+ stage3.3.branches.1.3.conv1 (C  (None, 60, 60, 64)  36864       ['activation_132[0][0]']
+ onv2D)
+
+ stage3.3.branches.2.3.conv1 (C  (None, 30, 30, 128)  147456     ['activation_140[0][0]']
+ onv2D)
+
+ stage3.3.branches.0.3.bn1 (Bat  (None, 120, 120, 32  128        ['stage3.3.branches.0.3.conv1[0][
+ chNormalization)               )                                0]']
+
+ stage3.3.branches.1.3.bn1 (Bat  (None, 60, 60, 64)  256         ['stage3.3.branches.1.3.conv1[0][
+ chNormalization)                                                0]']
+
+ stage3.3.branches.2.3.bn1 (Bat  (None, 30, 30, 128)  512        ['stage3.3.branches.2.3.conv1[0][
+ chNormalization)                                                0]']
+
+ activation_125 (Activation)    (None, 120, 120, 32  0           ['stage3.3.branches.0.3.bn1[0][0]
+                                )                                ']
+
+ activation_133 (Activation)    (None, 60, 60, 64)   0           ['stage3.3.branches.1.3.bn1[0][0]
+                                                                 ']
+
+ activation_141 (Activation)    (None, 30, 30, 128)  0           ['stage3.3.branches.2.3.bn1[0][0]
+                                                                 ']
+
+ stage3.3.branches.0.3.conv2 (C  (None, 120, 120, 32  9216       ['activation_125[0][0]']
+ onv2D)                         )
+
+ stage3.3.branches.1.3.conv2 (C  (None, 60, 60, 64)  36864       ['activation_133[0][0]']
+ onv2D)
+
+ stage3.3.branches.2.3.conv2 (C  (None, 30, 30, 128)  147456     ['activation_141[0][0]']
+ onv2D)
+
+ stage3.3.branches.0.3.bn2 (Bat  (None, 120, 120, 32  128        ['stage3.3.branches.0.3.conv2[0][
+ chNormalization)               )                                0]']
+
+ stage3.3.branches.1.3.bn2 (Bat  (None, 60, 60, 64)  256         ['stage3.3.branches.1.3.conv2[0][
+ chNormalization)                                                0]']
+
+ stage3.3.branches.2.3.bn2 (Bat  (None, 30, 30, 128)  512        ['stage3.3.branches.2.3.conv2[0][
+ chNormalization)                                                0]']
+
+ add_62 (Add)                   (None, 120, 120, 32  0           ['stage3.3.branches.0.3.bn2[0][0]
+                                )                                ',
+                                                                  'activation_124[0][0]']
+
+ add_66 (Add)                   (None, 60, 60, 64)   0           ['stage3.3.branches.1.3.bn2[0][0]
+                                                                 ',
+                                                                  'activation_132[0][0]']
+
+ add_70 (Add)                   (None, 30, 30, 128)  0           ['stage3.3.branches.2.3.bn2[0][0]
+                                                                 ',
+                                                                  'activation_140[0][0]']
+
+ activation_126 (Activation)    (None, 120, 120, 32  0           ['add_62[0][0]']
+                                )
+
+ activation_134 (Activation)    (None, 60, 60, 64)   0           ['add_66[0][0]']
+
+ activation_142 (Activation)    (None, 30, 30, 128)  0           ['add_70[0][0]']
+
+ stage3.3.fuse_layers.0.1.0 (Co  (None, 60, 60, 32)  2048        ['activation_134[0][0]']
+ nv2D)
+
+ stage3.3.fuse_layers.0.2.0 (Co  (None, 30, 30, 32)  4096        ['activation_142[0][0]']
+ nv2D)
+
+ zero_padding2d_18 (ZeroPadding  (None, 122, 122, 32  0          ['activation_126[0][0]']
+ 2D)                            )
+
+ stage3.3.fuse_layers.0.1.1 (Ba  (None, 60, 60, 32)  128         ['stage3.3.fuse_layers.0.1.0[0][0
+ tchNormalization)                                               ]']
+
+ stage3.3.fuse_layers.0.2.1 (Ba  (None, 30, 30, 32)  128         ['stage3.3.fuse_layers.0.2.0[0][0
+ tchNormalization)                                               ]']
+
+ stage3.3.fuse_layers.2.0.0.0 (  (None, 60, 60, 32)  9216        ['zero_padding2d_18[0][0]']
+ Conv2D)
+
+ Upsample.3.2 (UpsampleLike)    (None, 120, 120, 32  0           ['stage3.3.fuse_layers.0.1.1[0][0
+                                )                                ]',
+                                                                  'activation_126[0][0]']
+
+ Upsample.3.3 (UpsampleLike)    (None, 120, 120, 32  0           ['stage3.3.fuse_layers.0.2.1[0][0
+                                )                                ]',
+                                                                  'activation_126[0][0]']
+
+ stage3.3.fuse_layers.2.0.0.1 (  (None, 60, 60, 32)  128         ['stage3.3.fuse_layers.2.0.0.0[0]
+ BatchNormalization)                                             [0]']
+
+ add_71 (Add)                   (None, 120, 120, 32  0           ['activation_126[0][0]',
+                                )                                 'Upsample.3.2[0][0]',
+                                                                  'Upsample.3.3[0][0]']
+
+ activation_145 (Activation)    (None, 60, 60, 32)   0           ['stage3.3.fuse_layers.2.0.0.1[0]
+                                                                 [0]']
+
+ activation_143 (Activation)    (None, 120, 120, 32  0           ['add_71[0][0]']
+                                )
+
+ zero_padding2d_17 (ZeroPadding  (None, 122, 122, 32  0          ['activation_126[0][0]']
+ 2D)                            )
+
+ stage3.3.fuse_layers.1.2.0 (Co  (None, 30, 30, 64)  8192        ['activation_142[0][0]']
+ nv2D)
+
+ zero_padding2d_19 (ZeroPadding  (None, 62, 62, 32)  0           ['activation_145[0][0]']
+ 2D)
+
+ zero_padding2d_20 (ZeroPadding  (None, 62, 62, 64)  0           ['activation_134[0][0]']
+ 2D)
+
+ stage4.0.branches.0.0.conv1 (C  (None, 120, 120, 32  9216       ['activation_143[0][0]']
+ onv2D)                         )
+
+ stage3.3.fuse_layers.1.0.0.0 (  (None, 60, 60, 64)  18432       ['zero_padding2d_17[0][0]']
+ Conv2D)
+
+ stage3.3.fuse_layers.1.2.1 (Ba  (None, 30, 30, 64)  256         ['stage3.3.fuse_layers.1.2.0[0][0
+ tchNormalization)                                               ]']
+
+ stage3.3.fuse_layers.2.0.1.0 (  (None, 30, 30, 128)  36864      ['zero_padding2d_19[0][0]']
+ Conv2D)
+
+ stage3.3.fuse_layers.2.1.0.0 (  (None, 30, 30, 128)  73728      ['zero_padding2d_20[0][0]']
+ Conv2D)
+
+ stage4.0.branches.0.0.bn1 (Bat  (None, 120, 120, 32  128        ['stage4.0.branches.0.0.conv1[0][
+ chNormalization)               )                                0]']
+
+ stage3.3.fuse_layers.1.0.0.1 (  (None, 60, 60, 64)  256         ['stage3.3.fuse_layers.1.0.0.0[0]
+ BatchNormalization)                                             [0]']
+
+ Upsample.3.4 (UpsampleLike)    (None, 60, 60, 64)   0           ['stage3.3.fuse_layers.1.2.1[0][0
+                                                                 ]',
+                                                                  'activation_134[0][0]']
+
+ stage3.3.fuse_layers.2.0.1.1 (  (None, 30, 30, 128)  512        ['stage3.3.fuse_layers.2.0.1.0[0]
+ BatchNormalization)                                             [0]']
+
+ stage3.3.fuse_layers.2.1.0.1 (  (None, 30, 30, 128)  512        ['stage3.3.fuse_layers.2.1.0.0[0]
+ BatchNormalization)                                             [0]']
+
+ activation_148 (Activation)    (None, 120, 120, 32  0           ['stage4.0.branches.0.0.bn1[0][0]
+                                )                                ']
+
+ add_72 (Add)                   (None, 60, 60, 64)   0           ['stage3.3.fuse_layers.1.0.0.1[0]
+                                                                 [0]',
+                                                                  'activation_134[0][0]',
+                                                                  'Upsample.3.4[0][0]']
+
+ add_73 (Add)                   (None, 30, 30, 128)  0           ['stage3.3.fuse_layers.2.0.1.1[0]
+                                                                 [0]',
+                                                                  'stage3.3.fuse_layers.2.1.0.1[0]
+                                                                 [0]',
+                                                                  'activation_142[0][0]']
+
+ stage4.0.branches.0.0.conv2 (C  (None, 120, 120, 32  9216       ['activation_148[0][0]']
+ onv2D)                         )
+
+ activation_144 (Activation)    (None, 60, 60, 64)   0           ['add_72[0][0]']
+
+ activation_146 (Activation)    (None, 30, 30, 128)  0           ['add_73[0][0]']
+
+ stage4.0.branches.0.0.bn2 (Bat  (None, 120, 120, 32  128        ['stage4.0.branches.0.0.conv2[0][
+ chNormalization)               )                                0]']
+
+ stage4.0.branches.1.0.conv1 (C  (None, 60, 60, 64)  36864       ['activation_144[0][0]']
+ onv2D)
+
+ zero_padding2d_21 (ZeroPadding  (None, 32, 32, 128)  0          ['activation_146[0][0]']
+ 2D)
+
+ add_74 (Add)                   (None, 120, 120, 32  0           ['stage4.0.branches.0.0.bn2[0][0]
+                                )                                ',
+                                                                  'activation_143[0][0]']
+
+ stage4.0.branches.1.0.bn1 (Bat  (None, 60, 60, 64)  256         ['stage4.0.branches.1.0.conv1[0][
+ chNormalization)                                                0]']
+
+ transition3.3.0.0 (Conv2D)     (None, 15, 15, 256)  294912      ['zero_padding2d_21[0][0]']
+
+ activation_149 (Activation)    (None, 120, 120, 32  0           ['add_74[0][0]']
+                                )
+
+ activation_156 (Activation)    (None, 60, 60, 64)   0           ['stage4.0.branches.1.0.bn1[0][0]
+                                                                 ']
+
+ transition3.3.0.1 (BatchNormal  (None, 15, 15, 256)  1024       ['transition3.3.0.0[0][0]']
+ ization)
+
+ stage4.0.branches.0.1.conv1 (C  (None, 120, 120, 32  9216       ['activation_149[0][0]']
+ onv2D)                         )
+
+ stage4.0.branches.1.0.conv2 (C  (None, 60, 60, 64)  36864       ['activation_156[0][0]']
+ onv2D)
+
+ activation_147 (Activation)    (None, 15, 15, 256)  0           ['transition3.3.0.1[0][0]']
+
+ stage4.0.branches.0.1.bn1 (Bat  (None, 120, 120, 32  128        ['stage4.0.branches.0.1.conv1[0][
+ chNormalization)               )                                0]']
+
+ stage4.0.branches.1.0.bn2 (Bat  (None, 60, 60, 64)  256         ['stage4.0.branches.1.0.conv2[0][
+ chNormalization)                                                0]']
+
+ stage4.0.branches.2.0.conv1 (C  (None, 30, 30, 128)  147456     ['activation_146[0][0]']
+ onv2D)
+
+ stage4.0.branches.3.0.conv1 (C  (None, 15, 15, 256)  589824     ['activation_147[0][0]']
+ onv2D)
+
+ activation_150 (Activation)    (None, 120, 120, 32  0           ['stage4.0.branches.0.1.bn1[0][0]
+                                )                                ']
+
+ add_78 (Add)                   (None, 60, 60, 64)   0           ['stage4.0.branches.1.0.bn2[0][0]
+                                                                 ',
+                                                                  'activation_144[0][0]']
+
+ stage4.0.branches.2.0.bn1 (Bat  (None, 30, 30, 128)  512        ['stage4.0.branches.2.0.conv1[0][
+ chNormalization)                                                0]']
+
+ stage4.0.branches.3.0.bn1 (Bat  (None, 15, 15, 256)  1024       ['stage4.0.branches.3.0.conv1[0][
+ chNormalization)                                                0]']
+
+ stage4.0.branches.0.1.conv2 (C  (None, 120, 120, 32  9216       ['activation_150[0][0]']
+ onv2D)                         )
+
+ activation_157 (Activation)    (None, 60, 60, 64)   0           ['add_78[0][0]']
+
+ activation_164 (Activation)    (None, 30, 30, 128)  0           ['stage4.0.branches.2.0.bn1[0][0]
+                                                                 ']
+
+ activation_172 (Activation)    (None, 15, 15, 256)  0           ['stage4.0.branches.3.0.bn1[0][0]
+                                                                 ']
+
+ stage4.0.branches.0.1.bn2 (Bat  (None, 120, 120, 32  128        ['stage4.0.branches.0.1.conv2[0][
+ chNormalization)               )                                0]']
+
+ stage4.0.branches.1.1.conv1 (C  (None, 60, 60, 64)  36864       ['activation_157[0][0]']
+ onv2D)
+
+ stage4.0.branches.2.0.conv2 (C  (None, 30, 30, 128)  147456     ['activation_164[0][0]']
+ onv2D)
+
+ stage4.0.branches.3.0.conv2 (C  (None, 15, 15, 256)  589824     ['activation_172[0][0]']
+ onv2D)
+
+ add_75 (Add)                   (None, 120, 120, 32  0           ['stage4.0.branches.0.1.bn2[0][0]
+                                )                                ',
+                                                                  'activation_149[0][0]']
+
+ stage4.0.branches.1.1.bn1 (Bat  (None, 60, 60, 64)  256         ['stage4.0.branches.1.1.conv1[0][
+ chNormalization)                                                0]']
+
+ stage4.0.branches.2.0.bn2 (Bat  (None, 30, 30, 128)  512        ['stage4.0.branches.2.0.conv2[0][
+ chNormalization)                                                0]']
+
+ stage4.0.branches.3.0.bn2 (Bat  (None, 15, 15, 256)  1024       ['stage4.0.branches.3.0.conv2[0][
+ chNormalization)                                                0]']
+
+ activation_151 (Activation)    (None, 120, 120, 32  0           ['add_75[0][0]']
+                                )
+
+ activation_158 (Activation)    (None, 60, 60, 64)   0           ['stage4.0.branches.1.1.bn1[0][0]
+                                                                 ']
+
+ add_82 (Add)                   (None, 30, 30, 128)  0           ['stage4.0.branches.2.0.bn2[0][0]
+                                                                 ',
+                                                                  'activation_146[0][0]']
+
+ add_86 (Add)                   (None, 15, 15, 256)  0           ['stage4.0.branches.3.0.bn2[0][0]
+                                                                 ',
+                                                                  'activation_147[0][0]']
+
+ stage4.0.branches.0.2.conv1 (C  (None, 120, 120, 32  9216       ['activation_151[0][0]']
+ onv2D)                         )
+
+ stage4.0.branches.1.1.conv2 (C  (None, 60, 60, 64)  36864       ['activation_158[0][0]']
+ onv2D)
+
+ activation_165 (Activation)    (None, 30, 30, 128)  0           ['add_82[0][0]']
+
+ activation_173 (Activation)    (None, 15, 15, 256)  0           ['add_86[0][0]']
+
+ stage4.0.branches.0.2.bn1 (Bat  (None, 120, 120, 32  128        ['stage4.0.branches.0.2.conv1[0][
+ chNormalization)               )                                0]']
+
+ stage4.0.branches.1.1.bn2 (Bat  (None, 60, 60, 64)  256         ['stage4.0.branches.1.1.conv2[0][
+ chNormalization)                                                0]']
+
+ stage4.0.branches.2.1.conv1 (C  (None, 30, 30, 128)  147456     ['activation_165[0][0]']
+ onv2D)
+
+ stage4.0.branches.3.1.conv1 (C  (None, 15, 15, 256)  589824     ['activation_173[0][0]']
+ onv2D)
+
+ activation_152 (Activation)    (None, 120, 120, 32  0           ['stage4.0.branches.0.2.bn1[0][0]
+                                )                                ']
+
+ add_79 (Add)                   (None, 60, 60, 64)   0           ['stage4.0.branches.1.1.bn2[0][0]
+                                                                 ',
+                                                                  'activation_157[0][0]']
+
+ stage4.0.branches.2.1.bn1 (Bat  (None, 30, 30, 128)  512        ['stage4.0.branches.2.1.conv1[0][
+ chNormalization)                                                0]']
+
+ stage4.0.branches.3.1.bn1 (Bat  (None, 15, 15, 256)  1024       ['stage4.0.branches.3.1.conv1[0][
+ chNormalization)                                                0]']
+
+ stage4.0.branches.0.2.conv2 (C  (None, 120, 120, 32  9216       ['activation_152[0][0]']
+ onv2D)                         )
+
+ activation_159 (Activation)    (None, 60, 60, 64)   0           ['add_79[0][0]']
+
+ activation_166 (Activation)    (None, 30, 30, 128)  0           ['stage4.0.branches.2.1.bn1[0][0]
+                                                                 ']
+
+ activation_174 (Activation)    (None, 15, 15, 256)  0           ['stage4.0.branches.3.1.bn1[0][0]
+                                                                 ']
+
+ stage4.0.branches.0.2.bn2 (Bat  (None, 120, 120, 32  128        ['stage4.0.branches.0.2.conv2[0][
+ chNormalization)               )                                0]']
+
+ stage4.0.branches.1.2.conv1 (C  (None, 60, 60, 64)  36864       ['activation_159[0][0]']
+ onv2D)
+
+ stage4.0.branches.2.1.conv2 (C  (None, 30, 30, 128)  147456     ['activation_166[0][0]']
+ onv2D)
+
+ stage4.0.branches.3.1.conv2 (C  (None, 15, 15, 256)  589824     ['activation_174[0][0]']
+ onv2D)
+
+ add_76 (Add)                   (None, 120, 120, 32  0           ['stage4.0.branches.0.2.bn2[0][0]
+                                )                                ',
+                                                                  'activation_151[0][0]']
+
+ stage4.0.branches.1.2.bn1 (Bat  (None, 60, 60, 64)  256         ['stage4.0.branches.1.2.conv1[0][
+ chNormalization)                                                0]']
+
+ stage4.0.branches.2.1.bn2 (Bat  (None, 30, 30, 128)  512        ['stage4.0.branches.2.1.conv2[0][
+ chNormalization)                                                0]']
+
+ stage4.0.branches.3.1.bn2 (Bat  (None, 15, 15, 256)  1024       ['stage4.0.branches.3.1.conv2[0][
+ chNormalization)                                                0]']
+
+ activation_153 (Activation)    (None, 120, 120, 32  0           ['add_76[0][0]']
+                                )
+
+ activation_160 (Activation)    (None, 60, 60, 64)   0           ['stage4.0.branches.1.2.bn1[0][0]
+                                                                 ']
+
+ add_83 (Add)                   (None, 30, 30, 128)  0           ['stage4.0.branches.2.1.bn2[0][0]
+                                                                 ',
+                                                                  'activation_165[0][0]']
+
+ add_87 (Add)                   (None, 15, 15, 256)  0           ['stage4.0.branches.3.1.bn2[0][0]
+                                                                 ',
+                                                                  'activation_173[0][0]']
+
+ stage4.0.branches.0.3.conv1 (C  (None, 120, 120, 32  9216       ['activation_153[0][0]']
+ onv2D)                         )
+
+ stage4.0.branches.1.2.conv2 (C  (None, 60, 60, 64)  36864       ['activation_160[0][0]']
+ onv2D)
+
+ activation_167 (Activation)    (None, 30, 30, 128)  0           ['add_83[0][0]']
+
+ activation_175 (Activation)    (None, 15, 15, 256)  0           ['add_87[0][0]']
+
+ stage4.0.branches.0.3.bn1 (Bat  (None, 120, 120, 32  128        ['stage4.0.branches.0.3.conv1[0][
+ chNormalization)               )                                0]']
+
+ stage4.0.branches.1.2.bn2 (Bat  (None, 60, 60, 64)  256         ['stage4.0.branches.1.2.conv2[0][
+ chNormalization)                                                0]']
+
+ stage4.0.branches.2.2.conv1 (C  (None, 30, 30, 128)  147456     ['activation_167[0][0]']
+ onv2D)
+
+ stage4.0.branches.3.2.conv1 (C  (None, 15, 15, 256)  589824     ['activation_175[0][0]']
+ onv2D)
+
+ activation_154 (Activation)    (None, 120, 120, 32  0           ['stage4.0.branches.0.3.bn1[0][0]
+                                )                                ']
+
+ add_80 (Add)                   (None, 60, 60, 64)   0           ['stage4.0.branches.1.2.bn2[0][0]
+                                                                 ',
+                                                                  'activation_159[0][0]']
+
+ stage4.0.branches.2.2.bn1 (Bat  (None, 30, 30, 128)  512        ['stage4.0.branches.2.2.conv1[0][
+ chNormalization)                                                0]']
+
+ stage4.0.branches.3.2.bn1 (Bat  (None, 15, 15, 256)  1024       ['stage4.0.branches.3.2.conv1[0][
+ chNormalization)                                                0]']
+
+ stage4.0.branches.0.3.conv2 (C  (None, 120, 120, 32  9216       ['activation_154[0][0]']
+ onv2D)                         )
+
+ activation_161 (Activation)    (None, 60, 60, 64)   0           ['add_80[0][0]']
+
+ activation_168 (Activation)    (None, 30, 30, 128)  0           ['stage4.0.branches.2.2.bn1[0][0]
+                                                                 ']
+
+ activation_176 (Activation)    (None, 15, 15, 256)  0           ['stage4.0.branches.3.2.bn1[0][0]
+                                                                 ']
+
+ stage4.0.branches.0.3.bn2 (Bat  (None, 120, 120, 32  128        ['stage4.0.branches.0.3.conv2[0][
+ chNormalization)               )                                0]']
+
+ stage4.0.branches.1.3.conv1 (C  (None, 60, 60, 64)  36864       ['activation_161[0][0]']
+ onv2D)
+
+ stage4.0.branches.2.2.conv2 (C  (None, 30, 30, 128)  147456     ['activation_168[0][0]']
+ onv2D)
+
+ stage4.0.branches.3.2.conv2 (C  (None, 15, 15, 256)  589824     ['activation_176[0][0]']
+ onv2D)
+
+ add_77 (Add)                   (None, 120, 120, 32  0           ['stage4.0.branches.0.3.bn2[0][0]
+                                )                                ',
+                                                                  'activation_153[0][0]']
+
+ stage4.0.branches.1.3.bn1 (Bat  (None, 60, 60, 64)  256         ['stage4.0.branches.1.3.conv1[0][
+ chNormalization)                                                0]']
+
+ stage4.0.branches.2.2.bn2 (Bat  (None, 30, 30, 128)  512        ['stage4.0.branches.2.2.conv2[0][
+ chNormalization)                                                0]']
+
+ stage4.0.branches.3.2.bn2 (Bat  (None, 15, 15, 256)  1024       ['stage4.0.branches.3.2.conv2[0][
+ chNormalization)                                                0]']
+
+ activation_155 (Activation)    (None, 120, 120, 32  0           ['add_77[0][0]']
+                                )
+
+ activation_162 (Activation)    (None, 60, 60, 64)   0           ['stage4.0.branches.1.3.bn1[0][0]
+                                                                 ']
+
+ add_84 (Add)                   (None, 30, 30, 128)  0           ['stage4.0.branches.2.2.bn2[0][0]
+                                                                 ',
+                                                                  'activation_167[0][0]']
+
+ add_88 (Add)                   (None, 15, 15, 256)  0           ['stage4.0.branches.3.2.bn2[0][0]
+                                                                 ',
+                                                                  'activation_175[0][0]']
+
+ stage4.0.branches.1.3.conv2 (C  (None, 60, 60, 64)  36864       ['activation_162[0][0]']
+ onv2D)
+
+ activation_169 (Activation)    (None, 30, 30, 128)  0           ['add_84[0][0]']
+
+ activation_177 (Activation)    (None, 15, 15, 256)  0           ['add_88[0][0]']
+
+ zero_padding2d_26 (ZeroPadding  (None, 122, 122, 32  0          ['activation_155[0][0]']
+ 2D)                            )
+
+ stage4.0.branches.1.3.bn2 (Bat  (None, 60, 60, 64)  256         ['stage4.0.branches.1.3.conv2[0][
+ chNormalization)                                                0]']
+
+ stage4.0.branches.2.3.conv1 (C  (None, 30, 30, 128)  147456     ['activation_169[0][0]']
+ onv2D)
+
+ stage4.0.branches.3.3.conv1 (C  (None, 15, 15, 256)  589824     ['activation_177[0][0]']
+ onv2D)
+
+ stage4.0.fuse_layers.3.0.0.0 (  (None, 60, 60, 32)  9216        ['zero_padding2d_26[0][0]']
+ Conv2D)
+
+ add_81 (Add)                   (None, 60, 60, 64)   0           ['stage4.0.branches.1.3.bn2[0][0]
+                                                                 ',
+                                                                  'activation_161[0][0]']
+
+ stage4.0.branches.2.3.bn1 (Bat  (None, 30, 30, 128)  512        ['stage4.0.branches.2.3.conv1[0][
+ chNormalization)                                                0]']
+
+ stage4.0.branches.3.3.bn1 (Bat  (None, 15, 15, 256)  1024       ['stage4.0.branches.3.3.conv1[0][
+ chNormalization)                                                0]']
+
+ stage4.0.fuse_layers.3.0.0.1 (  (None, 60, 60, 32)  128         ['stage4.0.fuse_layers.3.0.0.0[0]
+ BatchNormalization)                                             [0]']
+
+ activation_163 (Activation)    (None, 60, 60, 64)   0           ['add_81[0][0]']
+
+ activation_170 (Activation)    (None, 30, 30, 128)  0           ['stage4.0.branches.2.3.bn1[0][0]
+                                                                 ']
+
+ activation_178 (Activation)    (None, 15, 15, 256)  0           ['stage4.0.branches.3.3.bn1[0][0]
+                                                                 ']
+
+ activation_184 (Activation)    (None, 60, 60, 32)   0           ['stage4.0.fuse_layers.3.0.0.1[0]
+                                                                 [0]']
+
+ stage4.0.branches.2.3.conv2 (C  (None, 30, 30, 128)  147456     ['activation_170[0][0]']
+ onv2D)
+
+ stage4.0.branches.3.3.conv2 (C  (None, 15, 15, 256)  589824     ['activation_178[0][0]']
+ onv2D)
+
+ zero_padding2d_23 (ZeroPadding  (None, 122, 122, 32  0          ['activation_155[0][0]']
+ 2D)                            )
+
+ zero_padding2d_27 (ZeroPadding  (None, 62, 62, 32)  0           ['activation_184[0][0]']
+ 2D)
+
+ zero_padding2d_29 (ZeroPadding  (None, 62, 62, 64)  0           ['activation_163[0][0]']
+ 2D)
+
+ stage4.0.branches.2.3.bn2 (Bat  (None, 30, 30, 128)  512        ['stage4.0.branches.2.3.conv2[0][
+ chNormalization)                                                0]']
+
+ stage4.0.branches.3.3.bn2 (Bat  (None, 15, 15, 256)  1024       ['stage4.0.branches.3.3.conv2[0][
+ chNormalization)                                                0]']
+
+ stage4.0.fuse_layers.2.0.0.0 (  (None, 60, 60, 32)  9216        ['zero_padding2d_23[0][0]']
+ Conv2D)
+
+ stage4.0.fuse_layers.3.0.1.0 (  (None, 30, 30, 32)  9216        ['zero_padding2d_27[0][0]']
+ Conv2D)
+
+ stage4.0.fuse_layers.3.1.0.0 (  (None, 30, 30, 64)  36864       ['zero_padding2d_29[0][0]']
+ Conv2D)
+
+ add_85 (Add)                   (None, 30, 30, 128)  0           ['stage4.0.branches.2.3.bn2[0][0]
+                                                                 ',
+                                                                  'activation_169[0][0]']
+
+ add_89 (Add)                   (None, 15, 15, 256)  0           ['stage4.0.branches.3.3.bn2[0][0]
+                                                                 ',
+                                                                  'activation_177[0][0]']
+
+ stage4.0.fuse_layers.2.0.0.1 (  (None, 60, 60, 32)  128         ['stage4.0.fuse_layers.2.0.0.0[0]
+ BatchNormalization)                                             [0]']
+
+ stage4.0.fuse_layers.3.0.1.1 (  (None, 30, 30, 32)  128         ['stage4.0.fuse_layers.3.0.1.0[0]
+ BatchNormalization)                                             [0]']
+
+ stage4.0.fuse_layers.3.1.0.1 (  (None, 30, 30, 64)  256         ['stage4.0.fuse_layers.3.1.0.0[0]
+ BatchNormalization)                                             [0]']
+
+ activation_171 (Activation)    (None, 30, 30, 128)  0           ['add_85[0][0]']
+
+ activation_179 (Activation)    (None, 15, 15, 256)  0           ['add_89[0][0]']
+
+ activation_182 (Activation)    (None, 60, 60, 32)   0           ['stage4.0.fuse_layers.2.0.0.1[0]
+                                                                 [0]']
+
+ activation_185 (Activation)    (None, 30, 30, 32)   0           ['stage4.0.fuse_layers.3.0.1.1[0]
+                                                                 [0]']
+
+ activation_186 (Activation)    (None, 30, 30, 64)   0           ['stage4.0.fuse_layers.3.1.0.1[0]
+                                                                 [0]']
+
+ stage4.0.fuse_layers.0.1.0 (Co  (None, 60, 60, 32)  2048        ['activation_163[0][0]']
+ nv2D)
+
+ stage4.0.fuse_layers.0.2.0 (Co  (None, 30, 30, 32)  4096        ['activation_171[0][0]']
+ nv2D)
+
+ stage4.0.fuse_layers.0.3.0 (Co  (None, 15, 15, 32)  8192        ['activation_179[0][0]']
+ nv2D)
+
+ zero_padding2d_22 (ZeroPadding  (None, 122, 122, 32  0          ['activation_155[0][0]']
+ 2D)                            )
+
+ stage4.0.fuse_layers.1.2.0 (Co  (None, 30, 30, 64)  8192        ['activation_171[0][0]']
+ nv2D)
+
+ stage4.0.fuse_layers.1.3.0 (Co  (None, 15, 15, 64)  16384       ['activation_179[0][0]']
+ nv2D)
+
+ zero_padding2d_24 (ZeroPadding  (None, 62, 62, 32)  0           ['activation_182[0][0]']
+ 2D)
+
+ zero_padding2d_25 (ZeroPadding  (None, 62, 62, 64)  0           ['activation_163[0][0]']
+ 2D)
+
+ stage4.0.fuse_layers.2.3.0 (Co  (None, 15, 15, 128)  32768      ['activation_179[0][0]']
+ nv2D)
+
+ zero_padding2d_28 (ZeroPadding  (None, 32, 32, 32)  0           ['activation_185[0][0]']
+ 2D)
+
+ zero_padding2d_30 (ZeroPadding  (None, 32, 32, 64)  0           ['activation_186[0][0]']
+ 2D)
+
+ zero_padding2d_31 (ZeroPadding  (None, 32, 32, 128)  0          ['activation_171[0][0]']
+ 2D)
+
+ stage4.0.fuse_layers.0.1.1 (Ba  (None, 60, 60, 32)  128         ['stage4.0.fuse_layers.0.1.0[0][0
+ tchNormalization)                                               ]']
+
+ stage4.0.fuse_layers.0.2.1 (Ba  (None, 30, 30, 32)  128         ['stage4.0.fuse_layers.0.2.0[0][0
+ tchNormalization)                                               ]']
+
+ stage4.0.fuse_layers.0.3.1 (Ba  (None, 15, 15, 32)  128         ['stage4.0.fuse_layers.0.3.0[0][0
+ tchNormalization)                                               ]']
+
+ stage4.0.fuse_layers.1.0.0.0 (  (None, 60, 60, 64)  18432       ['zero_padding2d_22[0][0]']
+ Conv2D)
+
+ stage4.0.fuse_layers.1.2.1 (Ba  (None, 30, 30, 64)  256         ['stage4.0.fuse_layers.1.2.0[0][0
+ tchNormalization)                                               ]']
+
+ stage4.0.fuse_layers.1.3.1 (Ba  (None, 15, 15, 64)  256         ['stage4.0.fuse_layers.1.3.0[0][0
+ tchNormalization)                                               ]']
+
+ stage4.0.fuse_layers.2.0.1.0 (  (None, 30, 30, 128)  36864      ['zero_padding2d_24[0][0]']
+ Conv2D)
+
+ stage4.0.fuse_layers.2.1.0.0 (  (None, 30, 30, 128)  73728      ['zero_padding2d_25[0][0]']
+ Conv2D)
+
+ stage4.0.fuse_layers.2.3.1 (Ba  (None, 15, 15, 128)  512        ['stage4.0.fuse_layers.2.3.0[0][0
+ tchNormalization)                                               ]']
+
+ stage4.0.fuse_layers.3.0.2.0 (  (None, 15, 15, 256)  73728      ['zero_padding2d_28[0][0]']
+ Conv2D)
+
+ stage4.0.fuse_layers.3.1.1.0 (  (None, 15, 15, 256)  147456     ['zero_padding2d_30[0][0]']
+ Conv2D)
+
+ stage4.0.fuse_layers.3.2.0.0 (  (None, 15, 15, 256)  294912     ['zero_padding2d_31[0][0]']
+ Conv2D)
+
+ Upsample.0.5 (UpsampleLike)    (None, 120, 120, 32  0           ['stage4.0.fuse_layers.0.1.1[0][0
+                                )                                ]',
+                                                                  'activation_155[0][0]']
+
+ Upsample.0.6 (UpsampleLike)    (None, 120, 120, 32  0           ['stage4.0.fuse_layers.0.2.1[0][0
+                                )                                ]',
+                                                                  'activation_155[0][0]']
+
+ Upsample.0.7 (UpsampleLike)    (None, 120, 120, 32  0           ['stage4.0.fuse_layers.0.3.1[0][0
+                                )                                ]',
+                                                                  'activation_155[0][0]']
+
+ stage4.0.fuse_layers.1.0.0.1 (  (None, 60, 60, 64)  256         ['stage4.0.fuse_layers.1.0.0.0[0]
+ BatchNormalization)                                             [0]']
+
+ Upsample.0.8 (UpsampleLike)    (None, 60, 60, 64)   0           ['stage4.0.fuse_layers.1.2.1[0][0
+                                                                 ]',
+                                                                  'activation_163[0][0]']
+
+ Upsample.0.9 (UpsampleLike)    (None, 60, 60, 64)   0           ['stage4.0.fuse_layers.1.3.1[0][0
+                                                                 ]',
+                                                                  'activation_163[0][0]']
+
+ stage4.0.fuse_layers.2.0.1.1 (  (None, 30, 30, 128)  512        ['stage4.0.fuse_layers.2.0.1.0[0]
+ BatchNormalization)                                             [0]']
+
+ stage4.0.fuse_layers.2.1.0.1 (  (None, 30, 30, 128)  512        ['stage4.0.fuse_layers.2.1.0.0[0]
+ BatchNormalization)                                             [0]']
+
+ Upsample.0.10 (UpsampleLike)   (None, 30, 30, 128)  0           ['stage4.0.fuse_layers.2.3.1[0][0
+                                                                 ]',
+                                                                  'activation_171[0][0]']
+
+ stage4.0.fuse_layers.3.0.2.1 (  (None, 15, 15, 256)  1024       ['stage4.0.fuse_layers.3.0.2.0[0]
+ BatchNormalization)                                             [0]']
+
+ stage4.0.fuse_layers.3.1.1.1 (  (None, 15, 15, 256)  1024       ['stage4.0.fuse_layers.3.1.1.0[0]
+ BatchNormalization)                                             [0]']
+
+ stage4.0.fuse_layers.3.2.0.1 (  (None, 15, 15, 256)  1024       ['stage4.0.fuse_layers.3.2.0.0[0]
+ BatchNormalization)                                             [0]']
+
+ add_90 (Add)                   (None, 120, 120, 32  0           ['activation_155[0][0]',
+                                )                                 'Upsample.0.5[0][0]',
+                                                                  'Upsample.0.6[0][0]',
+                                                                  'Upsample.0.7[0][0]']
+
+ add_91 (Add)                   (None, 60, 60, 64)   0           ['stage4.0.fuse_layers.1.0.0.1[0]
+                                                                 [0]',
+                                                                  'activation_163[0][0]',
+                                                                  'Upsample.0.8[0][0]',
+                                                                  'Upsample.0.9[0][0]']
+
+ add_92 (Add)                   (None, 30, 30, 128)  0           ['stage4.0.fuse_layers.2.0.1.1[0]
+                                                                 [0]',
+                                                                  'stage4.0.fuse_layers.2.1.0.1[0]
+                                                                 [0]',
+                                                                  'activation_171[0][0]',
+                                                                  'Upsample.0.10[0][0]']
+
+ add_93 (Add)                   (None, 15, 15, 256)  0           ['stage4.0.fuse_layers.3.0.2.1[0]
+                                                                 [0]',
+                                                                  'stage4.0.fuse_layers.3.1.1.1[0]
+                                                                 [0]',
+                                                                  'stage4.0.fuse_layers.3.2.0.1[0]
+                                                                 [0]',
+                                                                  'activation_179[0][0]']
+
+ activation_180 (Activation)    (None, 120, 120, 32  0           ['add_90[0][0]']
+                                )
+
+ activation_181 (Activation)    (None, 60, 60, 64)   0           ['add_91[0][0]']
+
+ activation_183 (Activation)    (None, 30, 30, 128)  0           ['add_92[0][0]']
+
+ activation_187 (Activation)    (None, 15, 15, 256)  0           ['add_93[0][0]']
+
+ stage4.1.branches.0.0.conv1 (C  (None, 120, 120, 32  9216       ['activation_180[0][0]']
+ onv2D)                         )
+
+ stage4.1.branches.1.0.conv1 (C  (None, 60, 60, 64)  36864       ['activation_181[0][0]']
+ onv2D)
+
+ stage4.1.branches.2.0.conv1 (C  (None, 30, 30, 128)  147456     ['activation_183[0][0]']
+ onv2D)
+
+ stage4.1.branches.3.0.conv1 (C  (None, 15, 15, 256)  589824     ['activation_187[0][0]']
+ onv2D)
+
+ stage4.1.branches.0.0.bn1 (Bat  (None, 120, 120, 32  128        ['stage4.1.branches.0.0.conv1[0][
+ chNormalization)               )                                0]']
+
+ stage4.1.branches.1.0.bn1 (Bat  (None, 60, 60, 64)  256         ['stage4.1.branches.1.0.conv1[0][
+ chNormalization)                                                0]']
+
+ stage4.1.branches.2.0.bn1 (Bat  (None, 30, 30, 128)  512        ['stage4.1.branches.2.0.conv1[0][
+ chNormalization)                                                0]']
+
+ stage4.1.branches.3.0.bn1 (Bat  (None, 15, 15, 256)  1024       ['stage4.1.branches.3.0.conv1[0][
+ chNormalization)                                                0]']
+
+ activation_188 (Activation)    (None, 120, 120, 32  0           ['stage4.1.branches.0.0.bn1[0][0]
+                                )                                ']
+
+ activation_196 (Activation)    (None, 60, 60, 64)   0           ['stage4.1.branches.1.0.bn1[0][0]
+                                                                 ']
+
+ activation_204 (Activation)    (None, 30, 30, 128)  0           ['stage4.1.branches.2.0.bn1[0][0]
+                                                                 ']
+
+ activation_212 (Activation)    (None, 15, 15, 256)  0           ['stage4.1.branches.3.0.bn1[0][0]
+                                                                 ']
+
+ stage4.1.branches.0.0.conv2 (C  (None, 120, 120, 32  9216       ['activation_188[0][0]']
+ onv2D)                         )
+
+ stage4.1.branches.1.0.conv2 (C  (None, 60, 60, 64)  36864       ['activation_196[0][0]']
+ onv2D)
+
+ stage4.1.branches.2.0.conv2 (C  (None, 30, 30, 128)  147456     ['activation_204[0][0]']
+ onv2D)
+
+ stage4.1.branches.3.0.conv2 (C  (None, 15, 15, 256)  589824     ['activation_212[0][0]']
+ onv2D)
+
+ stage4.1.branches.0.0.bn2 (Bat  (None, 120, 120, 32  128        ['stage4.1.branches.0.0.conv2[0][
+ chNormalization)               )                                0]']
+
+ stage4.1.branches.1.0.bn2 (Bat  (None, 60, 60, 64)  256         ['stage4.1.branches.1.0.conv2[0][
+ chNormalization)                                                0]']
+
+ stage4.1.branches.2.0.bn2 (Bat  (None, 30, 30, 128)  512        ['stage4.1.branches.2.0.conv2[0][
+ chNormalization)                                                0]']
+
+ stage4.1.branches.3.0.bn2 (Bat  (None, 15, 15, 256)  1024       ['stage4.1.branches.3.0.conv2[0][
+ chNormalization)                                                0]']
+
+ add_94 (Add)                   (None, 120, 120, 32  0           ['stage4.1.branches.0.0.bn2[0][0]
+                                )                                ',
+                                                                  'activation_180[0][0]']
+
+ add_98 (Add)                   (None, 60, 60, 64)   0           ['stage4.1.branches.1.0.bn2[0][0]
+                                                                 ',
+                                                                  'activation_181[0][0]']
+
+ add_102 (Add)                  (None, 30, 30, 128)  0           ['stage4.1.branches.2.0.bn2[0][0]
+                                                                 ',
+                                                                  'activation_183[0][0]']
+
+ add_106 (Add)                  (None, 15, 15, 256)  0           ['stage4.1.branches.3.0.bn2[0][0]
+                                                                 ',
+                                                                  'activation_187[0][0]']
+
+ activation_189 (Activation)    (None, 120, 120, 32  0           ['add_94[0][0]']
+                                )
+
+ activation_197 (Activation)    (None, 60, 60, 64)   0           ['add_98[0][0]']
+
+ activation_205 (Activation)    (None, 30, 30, 128)  0           ['add_102[0][0]']
+
+ activation_213 (Activation)    (None, 15, 15, 256)  0           ['add_106[0][0]']
+
+ stage4.1.branches.0.1.conv1 (C  (None, 120, 120, 32  9216       ['activation_189[0][0]']
+ onv2D)                         )
+
+ stage4.1.branches.1.1.conv1 (C  (None, 60, 60, 64)  36864       ['activation_197[0][0]']
+ onv2D)
+
+ stage4.1.branches.2.1.conv1 (C  (None, 30, 30, 128)  147456     ['activation_205[0][0]']
+ onv2D)
+
+ stage4.1.branches.3.1.conv1 (C  (None, 15, 15, 256)  589824     ['activation_213[0][0]']
+ onv2D)
+
+ stage4.1.branches.0.1.bn1 (Bat  (None, 120, 120, 32  128        ['stage4.1.branches.0.1.conv1[0][
+ chNormalization)               )                                0]']
+
+ stage4.1.branches.1.1.bn1 (Bat  (None, 60, 60, 64)  256         ['stage4.1.branches.1.1.conv1[0][
+ chNormalization)                                                0]']
+
+ stage4.1.branches.2.1.bn1 (Bat  (None, 30, 30, 128)  512        ['stage4.1.branches.2.1.conv1[0][
+ chNormalization)                                                0]']
+
+ stage4.1.branches.3.1.bn1 (Bat  (None, 15, 15, 256)  1024       ['stage4.1.branches.3.1.conv1[0][
+ chNormalization)                                                0]']
+
+ activation_190 (Activation)    (None, 120, 120, 32  0           ['stage4.1.branches.0.1.bn1[0][0]
+                                )                                ']
+
+ activation_198 (Activation)    (None, 60, 60, 64)   0           ['stage4.1.branches.1.1.bn1[0][0]
+                                                                 ']
+
+ activation_206 (Activation)    (None, 30, 30, 128)  0           ['stage4.1.branches.2.1.bn1[0][0]
+                                                                 ']
+
+ activation_214 (Activation)    (None, 15, 15, 256)  0           ['stage4.1.branches.3.1.bn1[0][0]
+                                                                 ']
+
+ stage4.1.branches.0.1.conv2 (C  (None, 120, 120, 32  9216       ['activation_190[0][0]']
+ onv2D)                         )
+
+ stage4.1.branches.1.1.conv2 (C  (None, 60, 60, 64)  36864       ['activation_198[0][0]']
+ onv2D)
+
+ stage4.1.branches.2.1.conv2 (C  (None, 30, 30, 128)  147456     ['activation_206[0][0]']
+ onv2D)
+
+ stage4.1.branches.3.1.conv2 (C  (None, 15, 15, 256)  589824     ['activation_214[0][0]']
+ onv2D)
+
+ stage4.1.branches.0.1.bn2 (Bat  (None, 120, 120, 32  128        ['stage4.1.branches.0.1.conv2[0][
+ chNormalization)               )                                0]']
+
+ stage4.1.branches.1.1.bn2 (Bat  (None, 60, 60, 64)  256         ['stage4.1.branches.1.1.conv2[0][
+ chNormalization)                                                0]']
+
+ stage4.1.branches.2.1.bn2 (Bat  (None, 30, 30, 128)  512        ['stage4.1.branches.2.1.conv2[0][
+ chNormalization)                                                0]']
+
+ stage4.1.branches.3.1.bn2 (Bat  (None, 15, 15, 256)  1024       ['stage4.1.branches.3.1.conv2[0][
+ chNormalization)                                                0]']
+
+ add_95 (Add)                   (None, 120, 120, 32  0           ['stage4.1.branches.0.1.bn2[0][0]
+                                )                                ',
+                                                                  'activation_189[0][0]']
+
+ add_99 (Add)                   (None, 60, 60, 64)   0           ['stage4.1.branches.1.1.bn2[0][0]
+                                                                 ',
+                                                                  'activation_197[0][0]']
+
+ add_103 (Add)                  (None, 30, 30, 128)  0           ['stage4.1.branches.2.1.bn2[0][0]
+                                                                 ',
+                                                                  'activation_205[0][0]']
+
+ add_107 (Add)                  (None, 15, 15, 256)  0           ['stage4.1.branches.3.1.bn2[0][0]
+                                                                 ',
+                                                                  'activation_213[0][0]']
+
+ activation_191 (Activation)    (None, 120, 120, 32  0           ['add_95[0][0]']
+                                )
+
+ activation_199 (Activation)    (None, 60, 60, 64)   0           ['add_99[0][0]']
+
+ activation_207 (Activation)    (None, 30, 30, 128)  0           ['add_103[0][0]']
+
+ activation_215 (Activation)    (None, 15, 15, 256)  0           ['add_107[0][0]']
+
+ stage4.1.branches.0.2.conv1 (C  (None, 120, 120, 32  9216       ['activation_191[0][0]']
+ onv2D)                         )
+
+ stage4.1.branches.1.2.conv1 (C  (None, 60, 60, 64)  36864       ['activation_199[0][0]']
+ onv2D)
+
+ stage4.1.branches.2.2.conv1 (C  (None, 30, 30, 128)  147456     ['activation_207[0][0]']
+ onv2D)
+
+ stage4.1.branches.3.2.conv1 (C  (None, 15, 15, 256)  589824     ['activation_215[0][0]']
+ onv2D)
+
+ stage4.1.branches.0.2.bn1 (Bat  (None, 120, 120, 32  128        ['stage4.1.branches.0.2.conv1[0][
+ chNormalization)               )                                0]']
+
+ stage4.1.branches.1.2.bn1 (Bat  (None, 60, 60, 64)  256         ['stage4.1.branches.1.2.conv1[0][
+ chNormalization)                                                0]']
+
+ stage4.1.branches.2.2.bn1 (Bat  (None, 30, 30, 128)  512        ['stage4.1.branches.2.2.conv1[0][
+ chNormalization)                                                0]']
+
+ stage4.1.branches.3.2.bn1 (Bat  (None, 15, 15, 256)  1024       ['stage4.1.branches.3.2.conv1[0][
+ chNormalization)                                                0]']
+
+ activation_192 (Activation)    (None, 120, 120, 32  0           ['stage4.1.branches.0.2.bn1[0][0]
+                                )                                ']
+
+ activation_200 (Activation)    (None, 60, 60, 64)   0           ['stage4.1.branches.1.2.bn1[0][0]
+                                                                 ']
+
+ activation_208 (Activation)    (None, 30, 30, 128)  0           ['stage4.1.branches.2.2.bn1[0][0]
+                                                                 ']
+
+ activation_216 (Activation)    (None, 15, 15, 256)  0           ['stage4.1.branches.3.2.bn1[0][0]
+                                                                 ']
+
+ stage4.1.branches.0.2.conv2 (C  (None, 120, 120, 32  9216       ['activation_192[0][0]']
+ onv2D)                         )
+
+ stage4.1.branches.1.2.conv2 (C  (None, 60, 60, 64)  36864       ['activation_200[0][0]']
+ onv2D)
+
+ stage4.1.branches.2.2.conv2 (C  (None, 30, 30, 128)  147456     ['activation_208[0][0]']
+ onv2D)
+
+ stage4.1.branches.3.2.conv2 (C  (None, 15, 15, 256)  589824     ['activation_216[0][0]']
+ onv2D)
+
+ stage4.1.branches.0.2.bn2 (Bat  (None, 120, 120, 32  128        ['stage4.1.branches.0.2.conv2[0][
+ chNormalization)               )                                0]']
+
+ stage4.1.branches.1.2.bn2 (Bat  (None, 60, 60, 64)  256         ['stage4.1.branches.1.2.conv2[0][
+ chNormalization)                                                0]']
+
+ stage4.1.branches.2.2.bn2 (Bat  (None, 30, 30, 128)  512        ['stage4.1.branches.2.2.conv2[0][
+ chNormalization)                                                0]']
+
+ stage4.1.branches.3.2.bn2 (Bat  (None, 15, 15, 256)  1024       ['stage4.1.branches.3.2.conv2[0][
+ chNormalization)                                                0]']
+
+ add_96 (Add)                   (None, 120, 120, 32  0           ['stage4.1.branches.0.2.bn2[0][0]
+                                )                                ',
+                                                                  'activation_191[0][0]']
+
+ add_100 (Add)                  (None, 60, 60, 64)   0           ['stage4.1.branches.1.2.bn2[0][0]
+                                                                 ',
+                                                                  'activation_199[0][0]']
+
+ add_104 (Add)                  (None, 30, 30, 128)  0           ['stage4.1.branches.2.2.bn2[0][0]
+                                                                 ',
+                                                                  'activation_207[0][0]']
+
+ add_108 (Add)                  (None, 15, 15, 256)  0           ['stage4.1.branches.3.2.bn2[0][0]
+                                                                 ',
+                                                                  'activation_215[0][0]']
+
+ activation_193 (Activation)    (None, 120, 120, 32  0           ['add_96[0][0]']
+                                )
+
+ activation_201 (Activation)    (None, 60, 60, 64)   0           ['add_100[0][0]']
+
+ activation_209 (Activation)    (None, 30, 30, 128)  0           ['add_104[0][0]']
+
+ activation_217 (Activation)    (None, 15, 15, 256)  0           ['add_108[0][0]']
+
+ stage4.1.branches.0.3.conv1 (C  (None, 120, 120, 32  9216       ['activation_193[0][0]']
+ onv2D)                         )
+
+ stage4.1.branches.1.3.conv1 (C  (None, 60, 60, 64)  36864       ['activation_201[0][0]']
+ onv2D)
+
+ stage4.1.branches.2.3.conv1 (C  (None, 30, 30, 128)  147456     ['activation_209[0][0]']
+ onv2D)
+
+ stage4.1.branches.3.3.conv1 (C  (None, 15, 15, 256)  589824     ['activation_217[0][0]']
+ onv2D)
+
+ stage4.1.branches.0.3.bn1 (Bat  (None, 120, 120, 32  128        ['stage4.1.branches.0.3.conv1[0][
+ chNormalization)               )                                0]']
+
+ stage4.1.branches.1.3.bn1 (Bat  (None, 60, 60, 64)  256         ['stage4.1.branches.1.3.conv1[0][
+ chNormalization)                                                0]']
+
+ stage4.1.branches.2.3.bn1 (Bat  (None, 30, 30, 128)  512        ['stage4.1.branches.2.3.conv1[0][
+ chNormalization)                                                0]']
+
+ stage4.1.branches.3.3.bn1 (Bat  (None, 15, 15, 256)  1024       ['stage4.1.branches.3.3.conv1[0][
+ chNormalization)                                                0]']
+
+ activation_194 (Activation)    (None, 120, 120, 32  0           ['stage4.1.branches.0.3.bn1[0][0]
+                                )                                ']
+
+ activation_202 (Activation)    (None, 60, 60, 64)   0           ['stage4.1.branches.1.3.bn1[0][0]
+                                                                 ']
+
+ activation_210 (Activation)    (None, 30, 30, 128)  0           ['stage4.1.branches.2.3.bn1[0][0]
+                                                                 ']
+
+ activation_218 (Activation)    (None, 15, 15, 256)  0           ['stage4.1.branches.3.3.bn1[0][0]
+                                                                 ']
+
+ stage4.1.branches.0.3.conv2 (C  (None, 120, 120, 32  9216       ['activation_194[0][0]']
+ onv2D)                         )
+
+ stage4.1.branches.1.3.conv2 (C  (None, 60, 60, 64)  36864       ['activation_202[0][0]']
+ onv2D)
+
+ stage4.1.branches.2.3.conv2 (C  (None, 30, 30, 128)  147456     ['activation_210[0][0]']
+ onv2D)
+
+ stage4.1.branches.3.3.conv2 (C  (None, 15, 15, 256)  589824     ['activation_218[0][0]']
+ onv2D)
+
+ stage4.1.branches.0.3.bn2 (Bat  (None, 120, 120, 32  128        ['stage4.1.branches.0.3.conv2[0][
+ chNormalization)               )                                0]']
+
+ stage4.1.branches.1.3.bn2 (Bat  (None, 60, 60, 64)  256         ['stage4.1.branches.1.3.conv2[0][
+ chNormalization)                                                0]']
+
+ stage4.1.branches.2.3.bn2 (Bat  (None, 30, 30, 128)  512        ['stage4.1.branches.2.3.conv2[0][
+ chNormalization)                                                0]']
+
+ stage4.1.branches.3.3.bn2 (Bat  (None, 15, 15, 256)  1024       ['stage4.1.branches.3.3.conv2[0][
+ chNormalization)                                                0]']
+
+ add_97 (Add)                   (None, 120, 120, 32  0           ['stage4.1.branches.0.3.bn2[0][0]
+                                )                                ',
+                                                                  'activation_193[0][0]']
+
+ add_101 (Add)                  (None, 60, 60, 64)   0           ['stage4.1.branches.1.3.bn2[0][0]
+                                                                 ',
+                                                                  'activation_201[0][0]']
+
+ add_105 (Add)                  (None, 30, 30, 128)  0           ['stage4.1.branches.2.3.bn2[0][0]
+                                                                 ',
+                                                                  'activation_209[0][0]']
+
+ add_109 (Add)                  (None, 15, 15, 256)  0           ['stage4.1.branches.3.3.bn2[0][0]
+                                                                 ',
+                                                                  'activation_217[0][0]']
+
+ activation_195 (Activation)    (None, 120, 120, 32  0           ['add_97[0][0]']
+                                )
+
+ activation_203 (Activation)    (None, 60, 60, 64)   0           ['add_101[0][0]']
+
+ activation_211 (Activation)    (None, 30, 30, 128)  0           ['add_105[0][0]']
+
+ activation_219 (Activation)    (None, 15, 15, 256)  0           ['add_109[0][0]']
+
+ stage4.1.fuse_layers.0.1.0 (Co  (None, 60, 60, 32)  2048        ['activation_203[0][0]']
+ nv2D)
+
+ stage4.1.fuse_layers.0.2.0 (Co  (None, 30, 30, 32)  4096        ['activation_211[0][0]']
+ nv2D)
+
+ stage4.1.fuse_layers.0.3.0 (Co  (None, 15, 15, 32)  8192        ['activation_219[0][0]']
+ nv2D)
+
+ zero_padding2d_36 (ZeroPadding  (None, 122, 122, 32  0          ['activation_195[0][0]']
+ 2D)                            )
+
+ stage4.1.fuse_layers.0.1.1 (Ba  (None, 60, 60, 32)  128         ['stage4.1.fuse_layers.0.1.0[0][0
+ tchNormalization)                                               ]']
+
+ stage4.1.fuse_layers.0.2.1 (Ba  (None, 30, 30, 32)  128         ['stage4.1.fuse_layers.0.2.0[0][0
+ tchNormalization)                                               ]']
+
+ stage4.1.fuse_layers.0.3.1 (Ba  (None, 15, 15, 32)  128         ['stage4.1.fuse_layers.0.3.0[0][0
+ tchNormalization)                                               ]']
+
+ stage4.1.fuse_layers.3.0.0.0 (  (None, 60, 60, 32)  9216        ['zero_padding2d_36[0][0]']
+ Conv2D)
+
+ Upsample.1.5 (UpsampleLike)    (None, 120, 120, 32  0           ['stage4.1.fuse_layers.0.1.1[0][0
+                                )                                ]',
+                                                                  'activation_195[0][0]']
+
+ Upsample.1.6 (UpsampleLike)    (None, 120, 120, 32  0           ['stage4.1.fuse_layers.0.2.1[0][0
+                                )                                ]',
+                                                                  'activation_195[0][0]']
+
+ Upsample.1.7 (UpsampleLike)    (None, 120, 120, 32  0           ['stage4.1.fuse_layers.0.3.1[0][0
+                                )                                ]',
+                                                                  'activation_195[0][0]']
+
+ stage4.1.fuse_layers.3.0.0.1 (  (None, 60, 60, 32)  128         ['stage4.1.fuse_layers.3.0.0.0[0]
+ BatchNormalization)                                             [0]']
+
+ add_110 (Add)                  (None, 120, 120, 32  0           ['activation_195[0][0]',
+                                )                                 'Upsample.1.5[0][0]',
+                                                                  'Upsample.1.6[0][0]',
+                                                                  'Upsample.1.7[0][0]']
+
+ activation_224 (Activation)    (None, 60, 60, 32)   0           ['stage4.1.fuse_layers.3.0.0.1[0]
+                                                                 [0]']
+
+ activation_220 (Activation)    (None, 120, 120, 32  0           ['add_110[0][0]']
+                                )
+
+ zero_padding2d_32 (ZeroPadding  (None, 122, 122, 32  0          ['activation_195[0][0]']
+ 2D)                            )
+
+ stage4.1.fuse_layers.1.2.0 (Co  (None, 30, 30, 64)  8192        ['activation_211[0][0]']
+ nv2D)
+
+ stage4.1.fuse_layers.1.3.0 (Co  (None, 15, 15, 64)  16384       ['activation_219[0][0]']
+ nv2D)
+
+ zero_padding2d_33 (ZeroPadding  (None, 122, 122, 32  0          ['activation_195[0][0]']
+ 2D)                            )
+
+ zero_padding2d_37 (ZeroPadding  (None, 62, 62, 32)  0           ['activation_224[0][0]']
+ 2D)
+
+ zero_padding2d_39 (ZeroPadding  (None, 62, 62, 64)  0           ['activation_203[0][0]']
+ 2D)
+
+ stage4.2.branches.0.0.conv1 (C  (None, 120, 120, 32  9216       ['activation_220[0][0]']
+ onv2D)                         )
+
+ stage4.1.fuse_layers.1.0.0.0 (  (None, 60, 60, 64)  18432       ['zero_padding2d_32[0][0]']
+ Conv2D)
+
+ stage4.1.fuse_layers.1.2.1 (Ba  (None, 30, 30, 64)  256         ['stage4.1.fuse_layers.1.2.0[0][0
+ tchNormalization)                                               ]']
+
+ stage4.1.fuse_layers.1.3.1 (Ba  (None, 15, 15, 64)  256         ['stage4.1.fuse_layers.1.3.0[0][0
+ tchNormalization)                                               ]']
+
+ stage4.1.fuse_layers.2.0.0.0 (  (None, 60, 60, 32)  9216        ['zero_padding2d_33[0][0]']
+ Conv2D)
+
+ stage4.1.fuse_layers.3.0.1.0 (  (None, 30, 30, 32)  9216        ['zero_padding2d_37[0][0]']
+ Conv2D)
+
+ stage4.1.fuse_layers.3.1.0.0 (  (None, 30, 30, 64)  36864       ['zero_padding2d_39[0][0]']
+ Conv2D)
+
+ stage4.2.branches.0.0.bn1 (Bat  (None, 120, 120, 32  128        ['stage4.2.branches.0.0.conv1[0][
+ chNormalization)               )                                0]']
+
+ stage4.1.fuse_layers.1.0.0.1 (  (None, 60, 60, 64)  256         ['stage4.1.fuse_layers.1.0.0.0[0]
+ BatchNormalization)                                             [0]']
+
+ Upsample.1.8 (UpsampleLike)    (None, 60, 60, 64)   0           ['stage4.1.fuse_layers.1.2.1[0][0
+                                                                 ]',
+                                                                  'activation_203[0][0]']
+
+ Upsample.1.9 (UpsampleLike)    (None, 60, 60, 64)   0           ['stage4.1.fuse_layers.1.3.1[0][0
+                                                                 ]',
+                                                                  'activation_203[0][0]']
+
+ stage4.1.fuse_layers.2.0.0.1 (  (None, 60, 60, 32)  128         ['stage4.1.fuse_layers.2.0.0.0[0]
+ BatchNormalization)                                             [0]']
+
+ stage4.1.fuse_layers.3.0.1.1 (  (None, 30, 30, 32)  128         ['stage4.1.fuse_layers.3.0.1.0[0]
+ BatchNormalization)                                             [0]']
+
+ stage4.1.fuse_layers.3.1.0.1 (  (None, 30, 30, 64)  256         ['stage4.1.fuse_layers.3.1.0.0[0]
+ BatchNormalization)                                             [0]']
+
+ activation_228 (Activation)    (None, 120, 120, 32  0           ['stage4.2.branches.0.0.bn1[0][0]
+                                )                                ']
+
+ add_111 (Add)                  (None, 60, 60, 64)   0           ['stage4.1.fuse_layers.1.0.0.1[0]
+                                                                 [0]',
+                                                                  'activation_203[0][0]',
+                                                                  'Upsample.1.8[0][0]',
+                                                                  'Upsample.1.9[0][0]']
+
+ activation_222 (Activation)    (None, 60, 60, 32)   0           ['stage4.1.fuse_layers.2.0.0.1[0]
+                                                                 [0]']
+
+ activation_225 (Activation)    (None, 30, 30, 32)   0           ['stage4.1.fuse_layers.3.0.1.1[0]
+                                                                 [0]']
+
+ activation_226 (Activation)    (None, 30, 30, 64)   0           ['stage4.1.fuse_layers.3.1.0.1[0]
+                                                                 [0]']
+
+ stage4.2.branches.0.0.conv2 (C  (None, 120, 120, 32  9216       ['activation_228[0][0]']
+ onv2D)                         )
+
+ activation_221 (Activation)    (None, 60, 60, 64)   0           ['add_111[0][0]']
+
+ zero_padding2d_34 (ZeroPadding  (None, 62, 62, 32)  0           ['activation_222[0][0]']
+ 2D)
+
+ zero_padding2d_35 (ZeroPadding  (None, 62, 62, 64)  0           ['activation_203[0][0]']
+ 2D)
+
+ stage4.1.fuse_layers.2.3.0 (Co  (None, 15, 15, 128)  32768      ['activation_219[0][0]']
+ nv2D)
+
+ zero_padding2d_38 (ZeroPadding  (None, 32, 32, 32)  0           ['activation_225[0][0]']
+ 2D)
+
+ zero_padding2d_40 (ZeroPadding  (None, 32, 32, 64)  0           ['activation_226[0][0]']
+ 2D)
+
+ zero_padding2d_41 (ZeroPadding  (None, 32, 32, 128)  0          ['activation_211[0][0]']
+ 2D)
+
+ stage4.2.branches.0.0.bn2 (Bat  (None, 120, 120, 32  128        ['stage4.2.branches.0.0.conv2[0][
+ chNormalization)               )                                0]']
+
+ stage4.2.branches.1.0.conv1 (C  (None, 60, 60, 64)  36864       ['activation_221[0][0]']
+ onv2D)
+
+ stage4.1.fuse_layers.2.0.1.0 (  (None, 30, 30, 128)  36864      ['zero_padding2d_34[0][0]']
+ Conv2D)
+
+ stage4.1.fuse_layers.2.1.0.0 (  (None, 30, 30, 128)  73728      ['zero_padding2d_35[0][0]']
+ Conv2D)
+
+ stage4.1.fuse_layers.2.3.1 (Ba  (None, 15, 15, 128)  512        ['stage4.1.fuse_layers.2.3.0[0][0
+ tchNormalization)                                               ]']
+
+ stage4.1.fuse_layers.3.0.2.0 (  (None, 15, 15, 256)  73728      ['zero_padding2d_38[0][0]']
+ Conv2D)
+
+ stage4.1.fuse_layers.3.1.1.0 (  (None, 15, 15, 256)  147456     ['zero_padding2d_40[0][0]']
+ Conv2D)
+
+ stage4.1.fuse_layers.3.2.0.0 (  (None, 15, 15, 256)  294912     ['zero_padding2d_41[0][0]']
+ Conv2D)
+
+ add_114 (Add)                  (None, 120, 120, 32  0           ['stage4.2.branches.0.0.bn2[0][0]
+                                )                                ',
+                                                                  'activation_220[0][0]']
+
+ stage4.2.branches.1.0.bn1 (Bat  (None, 60, 60, 64)  256         ['stage4.2.branches.1.0.conv1[0][
+ chNormalization)                                                0]']
+
+ stage4.1.fuse_layers.2.0.1.1 (  (None, 30, 30, 128)  512        ['stage4.1.fuse_layers.2.0.1.0[0]
+ BatchNormalization)                                             [0]']
+
+ stage4.1.fuse_layers.2.1.0.1 (  (None, 30, 30, 128)  512        ['stage4.1.fuse_layers.2.1.0.0[0]
+ BatchNormalization)                                             [0]']
+
+ Upsample.1.10 (UpsampleLike)   (None, 30, 30, 128)  0           ['stage4.1.fuse_layers.2.3.1[0][0
+                                                                 ]',
+                                                                  'activation_211[0][0]']
+
+ stage4.1.fuse_layers.3.0.2.1 (  (None, 15, 15, 256)  1024       ['stage4.1.fuse_layers.3.0.2.0[0]
+ BatchNormalization)                                             [0]']
+
+ stage4.1.fuse_layers.3.1.1.1 (  (None, 15, 15, 256)  1024       ['stage4.1.fuse_layers.3.1.1.0[0]
+ BatchNormalization)                                             [0]']
+
+ stage4.1.fuse_layers.3.2.0.1 (  (None, 15, 15, 256)  1024       ['stage4.1.fuse_layers.3.2.0.0[0]
+ BatchNormalization)                                             [0]']
+
+ activation_229 (Activation)    (None, 120, 120, 32  0           ['add_114[0][0]']
+                                )
+
+ activation_236 (Activation)    (None, 60, 60, 64)   0           ['stage4.2.branches.1.0.bn1[0][0]
+                                                                 ']
+
+ add_112 (Add)                  (None, 30, 30, 128)  0           ['stage4.1.fuse_layers.2.0.1.1[0]
+                                                                 [0]',
+                                                                  'stage4.1.fuse_layers.2.1.0.1[0]
+                                                                 [0]',
+                                                                  'activation_211[0][0]',
+                                                                  'Upsample.1.10[0][0]']
+
+ add_113 (Add)                  (None, 15, 15, 256)  0           ['stage4.1.fuse_layers.3.0.2.1[0]
+                                                                 [0]',
+                                                                  'stage4.1.fuse_layers.3.1.1.1[0]
+                                                                 [0]',
+                                                                  'stage4.1.fuse_layers.3.2.0.1[0]
+                                                                 [0]',
+                                                                  'activation_219[0][0]']
+
+ stage4.2.branches.0.1.conv1 (C  (None, 120, 120, 32  9216       ['activation_229[0][0]']
+ onv2D)                         )
+
+ stage4.2.branches.1.0.conv2 (C  (None, 60, 60, 64)  36864       ['activation_236[0][0]']
+ onv2D)
+
+ activation_223 (Activation)    (None, 30, 30, 128)  0           ['add_112[0][0]']
+
+ activation_227 (Activation)    (None, 15, 15, 256)  0           ['add_113[0][0]']
+
+ stage4.2.branches.0.1.bn1 (Bat  (None, 120, 120, 32  128        ['stage4.2.branches.0.1.conv1[0][
+ chNormalization)               )                                0]']
+
+ stage4.2.branches.1.0.bn2 (Bat  (None, 60, 60, 64)  256         ['stage4.2.branches.1.0.conv2[0][
+ chNormalization)                                                0]']
+
+ stage4.2.branches.2.0.conv1 (C  (None, 30, 30, 128)  147456     ['activation_223[0][0]']
+ onv2D)
+
+ stage4.2.branches.3.0.conv1 (C  (None, 15, 15, 256)  589824     ['activation_227[0][0]']
+ onv2D)
+
+ activation_230 (Activation)    (None, 120, 120, 32  0           ['stage4.2.branches.0.1.bn1[0][0]
+                                )                                ']
+
+ add_118 (Add)                  (None, 60, 60, 64)   0           ['stage4.2.branches.1.0.bn2[0][0]
+                                                                 ',
+                                                                  'activation_221[0][0]']
+
+ stage4.2.branches.2.0.bn1 (Bat  (None, 30, 30, 128)  512        ['stage4.2.branches.2.0.conv1[0][
+ chNormalization)                                                0]']
+
+ stage4.2.branches.3.0.bn1 (Bat  (None, 15, 15, 256)  1024       ['stage4.2.branches.3.0.conv1[0][
+ chNormalization)                                                0]']
+
+ stage4.2.branches.0.1.conv2 (C  (None, 120, 120, 32  9216       ['activation_230[0][0]']
+ onv2D)                         )
+
+ activation_237 (Activation)    (None, 60, 60, 64)   0           ['add_118[0][0]']
+
+ activation_244 (Activation)    (None, 30, 30, 128)  0           ['stage4.2.branches.2.0.bn1[0][0]
+                                                                 ']
+
+ activation_252 (Activation)    (None, 15, 15, 256)  0           ['stage4.2.branches.3.0.bn1[0][0]
+                                                                 ']
+
+ stage4.2.branches.0.1.bn2 (Bat  (None, 120, 120, 32  128        ['stage4.2.branches.0.1.conv2[0][
+ chNormalization)               )                                0]']
+
+ stage4.2.branches.1.1.conv1 (C  (None, 60, 60, 64)  36864       ['activation_237[0][0]']
+ onv2D)
+
+ stage4.2.branches.2.0.conv2 (C  (None, 30, 30, 128)  147456     ['activation_244[0][0]']
+ onv2D)
+
+ stage4.2.branches.3.0.conv2 (C  (None, 15, 15, 256)  589824     ['activation_252[0][0]']
+ onv2D)
+
+ add_115 (Add)                  (None, 120, 120, 32  0           ['stage4.2.branches.0.1.bn2[0][0]
+                                )                                ',
+                                                                  'activation_229[0][0]']
+
+ stage4.2.branches.1.1.bn1 (Bat  (None, 60, 60, 64)  256         ['stage4.2.branches.1.1.conv1[0][
+ chNormalization)                                                0]']
+
+ stage4.2.branches.2.0.bn2 (Bat  (None, 30, 30, 128)  512        ['stage4.2.branches.2.0.conv2[0][
+ chNormalization)                                                0]']
+
+ stage4.2.branches.3.0.bn2 (Bat  (None, 15, 15, 256)  1024       ['stage4.2.branches.3.0.conv2[0][
+ chNormalization)                                                0]']
+
+ activation_231 (Activation)    (None, 120, 120, 32  0           ['add_115[0][0]']
+                                )
+
+ activation_238 (Activation)    (None, 60, 60, 64)   0           ['stage4.2.branches.1.1.bn1[0][0]
+                                                                 ']
+
+ add_122 (Add)                  (None, 30, 30, 128)  0           ['stage4.2.branches.2.0.bn2[0][0]
+                                                                 ',
+                                                                  'activation_223[0][0]']
+
+ add_126 (Add)                  (None, 15, 15, 256)  0           ['stage4.2.branches.3.0.bn2[0][0]
+                                                                 ',
+                                                                  'activation_227[0][0]']
+
+ stage4.2.branches.0.2.conv1 (C  (None, 120, 120, 32  9216       ['activation_231[0][0]']
+ onv2D)                         )
+
+ stage4.2.branches.1.1.conv2 (C  (None, 60, 60, 64)  36864       ['activation_238[0][0]']
+ onv2D)
+
+ activation_245 (Activation)    (None, 30, 30, 128)  0           ['add_122[0][0]']
+
+ activation_253 (Activation)    (None, 15, 15, 256)  0           ['add_126[0][0]']
+
+ stage4.2.branches.0.2.bn1 (Bat  (None, 120, 120, 32  128        ['stage4.2.branches.0.2.conv1[0][
+ chNormalization)               )                                0]']
+
+ stage4.2.branches.1.1.bn2 (Bat  (None, 60, 60, 64)  256         ['stage4.2.branches.1.1.conv2[0][
+ chNormalization)                                                0]']
+
+ stage4.2.branches.2.1.conv1 (C  (None, 30, 30, 128)  147456     ['activation_245[0][0]']
+ onv2D)
+
+ stage4.2.branches.3.1.conv1 (C  (None, 15, 15, 256)  589824     ['activation_253[0][0]']
+ onv2D)
+
+ activation_232 (Activation)    (None, 120, 120, 32  0           ['stage4.2.branches.0.2.bn1[0][0]
+                                )                                ']
+
+ add_119 (Add)                  (None, 60, 60, 64)   0           ['stage4.2.branches.1.1.bn2[0][0]
+                                                                 ',
+                                                                  'activation_237[0][0]']
+
+ stage4.2.branches.2.1.bn1 (Bat  (None, 30, 30, 128)  512        ['stage4.2.branches.2.1.conv1[0][
+ chNormalization)                                                0]']
+
+ stage4.2.branches.3.1.bn1 (Bat  (None, 15, 15, 256)  1024       ['stage4.2.branches.3.1.conv1[0][
+ chNormalization)                                                0]']
+
+ stage4.2.branches.0.2.conv2 (C  (None, 120, 120, 32  9216       ['activation_232[0][0]']
+ onv2D)                         )
+
+ activation_239 (Activation)    (None, 60, 60, 64)   0           ['add_119[0][0]']
+
+ activation_246 (Activation)    (None, 30, 30, 128)  0           ['stage4.2.branches.2.1.bn1[0][0]
+                                                                 ']
+
+ activation_254 (Activation)    (None, 15, 15, 256)  0           ['stage4.2.branches.3.1.bn1[0][0]
+                                                                 ']
+
+ stage4.2.branches.0.2.bn2 (Bat  (None, 120, 120, 32  128        ['stage4.2.branches.0.2.conv2[0][
+ chNormalization)               )                                0]']
+
+ stage4.2.branches.1.2.conv1 (C  (None, 60, 60, 64)  36864       ['activation_239[0][0]']
+ onv2D)
+
+ stage4.2.branches.2.1.conv2 (C  (None, 30, 30, 128)  147456     ['activation_246[0][0]']
+ onv2D)
+
+ stage4.2.branches.3.1.conv2 (C  (None, 15, 15, 256)  589824     ['activation_254[0][0]']
+ onv2D)
+
+ add_116 (Add)                  (None, 120, 120, 32  0           ['stage4.2.branches.0.2.bn2[0][0]
+                                )                                ',
+                                                                  'activation_231[0][0]']
+
+ stage4.2.branches.1.2.bn1 (Bat  (None, 60, 60, 64)  256         ['stage4.2.branches.1.2.conv1[0][
+ chNormalization)                                                0]']
+
+ stage4.2.branches.2.1.bn2 (Bat  (None, 30, 30, 128)  512        ['stage4.2.branches.2.1.conv2[0][
+ chNormalization)                                                0]']
+
+ stage4.2.branches.3.1.bn2 (Bat  (None, 15, 15, 256)  1024       ['stage4.2.branches.3.1.conv2[0][
+ chNormalization)                                                0]']
+
+ activation_233 (Activation)    (None, 120, 120, 32  0           ['add_116[0][0]']
+                                )
+
+ activation_240 (Activation)    (None, 60, 60, 64)   0           ['stage4.2.branches.1.2.bn1[0][0]
+                                                                 ']
+
+ add_123 (Add)                  (None, 30, 30, 128)  0           ['stage4.2.branches.2.1.bn2[0][0]
+                                                                 ',
+                                                                  'activation_245[0][0]']
+
+ add_127 (Add)                  (None, 15, 15, 256)  0           ['stage4.2.branches.3.1.bn2[0][0]
+                                                                 ',
+                                                                  'activation_253[0][0]']
+
+ stage4.2.branches.0.3.conv1 (C  (None, 120, 120, 32  9216       ['activation_233[0][0]']
+ onv2D)                         )
+
+ stage4.2.branches.1.2.conv2 (C  (None, 60, 60, 64)  36864       ['activation_240[0][0]']
+ onv2D)
+
+ activation_247 (Activation)    (None, 30, 30, 128)  0           ['add_123[0][0]']
+
+ activation_255 (Activation)    (None, 15, 15, 256)  0           ['add_127[0][0]']
+
+ stage4.2.branches.0.3.bn1 (Bat  (None, 120, 120, 32  128        ['stage4.2.branches.0.3.conv1[0][
+ chNormalization)               )                                0]']
+
+ stage4.2.branches.1.2.bn2 (Bat  (None, 60, 60, 64)  256         ['stage4.2.branches.1.2.conv2[0][
+ chNormalization)                                                0]']
+
+ stage4.2.branches.2.2.conv1 (C  (None, 30, 30, 128)  147456     ['activation_247[0][0]']
+ onv2D)
+
+ stage4.2.branches.3.2.conv1 (C  (None, 15, 15, 256)  589824     ['activation_255[0][0]']
+ onv2D)
+
+ activation_234 (Activation)    (None, 120, 120, 32  0           ['stage4.2.branches.0.3.bn1[0][0]
+                                )                                ']
+
+ add_120 (Add)                  (None, 60, 60, 64)   0           ['stage4.2.branches.1.2.bn2[0][0]
+                                                                 ',
+                                                                  'activation_239[0][0]']
+
+ stage4.2.branches.2.2.bn1 (Bat  (None, 30, 30, 128)  512        ['stage4.2.branches.2.2.conv1[0][
+ chNormalization)                                                0]']
+
+ stage4.2.branches.3.2.bn1 (Bat  (None, 15, 15, 256)  1024       ['stage4.2.branches.3.2.conv1[0][
+ chNormalization)                                                0]']
+
+ stage4.2.branches.0.3.conv2 (C  (None, 120, 120, 32  9216       ['activation_234[0][0]']
+ onv2D)                         )
+
+ activation_241 (Activation)    (None, 60, 60, 64)   0           ['add_120[0][0]']
+
+ activation_248 (Activation)    (None, 30, 30, 128)  0           ['stage4.2.branches.2.2.bn1[0][0]
+                                                                 ']
+
+ activation_256 (Activation)    (None, 15, 15, 256)  0           ['stage4.2.branches.3.2.bn1[0][0]
+                                                                 ']
+
+ stage4.2.branches.0.3.bn2 (Bat  (None, 120, 120, 32  128        ['stage4.2.branches.0.3.conv2[0][
+ chNormalization)               )                                0]']
+
+ stage4.2.branches.1.3.conv1 (C  (None, 60, 60, 64)  36864       ['activation_241[0][0]']
+ onv2D)
+
+ stage4.2.branches.2.2.conv2 (C  (None, 30, 30, 128)  147456     ['activation_248[0][0]']
+ onv2D)
+
+ stage4.2.branches.3.2.conv2 (C  (None, 15, 15, 256)  589824     ['activation_256[0][0]']
+ onv2D)
+
+ add_117 (Add)                  (None, 120, 120, 32  0           ['stage4.2.branches.0.3.bn2[0][0]
+                                )                                ',
+                                                                  'activation_233[0][0]']
+
+ stage4.2.branches.1.3.bn1 (Bat  (None, 60, 60, 64)  256         ['stage4.2.branches.1.3.conv1[0][
+ chNormalization)                                                0]']
+
+ stage4.2.branches.2.2.bn2 (Bat  (None, 30, 30, 128)  512        ['stage4.2.branches.2.2.conv2[0][
+ chNormalization)                                                0]']
+
+ stage4.2.branches.3.2.bn2 (Bat  (None, 15, 15, 256)  1024       ['stage4.2.branches.3.2.conv2[0][
+ chNormalization)                                                0]']
+
+ activation_235 (Activation)    (None, 120, 120, 32  0           ['add_117[0][0]']
+                                )
+
+ activation_242 (Activation)    (None, 60, 60, 64)   0           ['stage4.2.branches.1.3.bn1[0][0]
+                                                                 ']
+
+ add_124 (Add)                  (None, 30, 30, 128)  0           ['stage4.2.branches.2.2.bn2[0][0]
+                                                                 ',
+                                                                  'activation_247[0][0]']
+
+ add_128 (Add)                  (None, 15, 15, 256)  0           ['stage4.2.branches.3.2.bn2[0][0]
+                                                                 ',
+                                                                  'activation_255[0][0]']
+
+ stage4.2.branches.1.3.conv2 (C  (None, 60, 60, 64)  36864       ['activation_242[0][0]']
+ onv2D)
+
+ activation_249 (Activation)    (None, 30, 30, 128)  0           ['add_124[0][0]']
+
+ activation_257 (Activation)    (None, 15, 15, 256)  0           ['add_128[0][0]']
+
+ zero_padding2d_46 (ZeroPadding  (None, 122, 122, 32  0          ['activation_235[0][0]']
+ 2D)                            )
+
+ stage4.2.branches.1.3.bn2 (Bat  (None, 60, 60, 64)  256         ['stage4.2.branches.1.3.conv2[0][
+ chNormalization)                                                0]']
+
+ stage4.2.branches.2.3.conv1 (C  (None, 30, 30, 128)  147456     ['activation_249[0][0]']
+ onv2D)
+
+ stage4.2.branches.3.3.conv1 (C  (None, 15, 15, 256)  589824     ['activation_257[0][0]']
+ onv2D)
+
+ stage4.2.fuse_layers.3.0.0.0 (  (None, 60, 60, 32)  9216        ['zero_padding2d_46[0][0]']
+ Conv2D)
+
+ add_121 (Add)                  (None, 60, 60, 64)   0           ['stage4.2.branches.1.3.bn2[0][0]
+                                                                 ',
+                                                                  'activation_241[0][0]']
+
+ stage4.2.branches.2.3.bn1 (Bat  (None, 30, 30, 128)  512        ['stage4.2.branches.2.3.conv1[0][
+ chNormalization)                                                0]']
+
+ stage4.2.branches.3.3.bn1 (Bat  (None, 15, 15, 256)  1024       ['stage4.2.branches.3.3.conv1[0][
+ chNormalization)                                                0]']
+
+ stage4.2.fuse_layers.3.0.0.1 (  (None, 60, 60, 32)  128         ['stage4.2.fuse_layers.3.0.0.0[0]
+ BatchNormalization)                                             [0]']
+
+ activation_243 (Activation)    (None, 60, 60, 64)   0           ['add_121[0][0]']
+
+ activation_250 (Activation)    (None, 30, 30, 128)  0           ['stage4.2.branches.2.3.bn1[0][0]
+                                                                 ']
+
+ activation_258 (Activation)    (None, 15, 15, 256)  0           ['stage4.2.branches.3.3.bn1[0][0]
+                                                                 ']
+
+ activation_264 (Activation)    (None, 60, 60, 32)   0           ['stage4.2.fuse_layers.3.0.0.1[0]
+                                                                 [0]']
+
+ stage4.2.branches.2.3.conv2 (C  (None, 30, 30, 128)  147456     ['activation_250[0][0]']
+ onv2D)
+
+ stage4.2.branches.3.3.conv2 (C  (None, 15, 15, 256)  589824     ['activation_258[0][0]']
+ onv2D)
+
+ zero_padding2d_43 (ZeroPadding  (None, 122, 122, 32  0          ['activation_235[0][0]']
+ 2D)                            )
+
+ zero_padding2d_47 (ZeroPadding  (None, 62, 62, 32)  0           ['activation_264[0][0]']
+ 2D)
+
+ zero_padding2d_49 (ZeroPadding  (None, 62, 62, 64)  0           ['activation_243[0][0]']
+ 2D)
+
+ stage4.2.branches.2.3.bn2 (Bat  (None, 30, 30, 128)  512        ['stage4.2.branches.2.3.conv2[0][
+ chNormalization)                                                0]']
+
+ stage4.2.branches.3.3.bn2 (Bat  (None, 15, 15, 256)  1024       ['stage4.2.branches.3.3.conv2[0][
+ chNormalization)                                                0]']
+
+ stage4.2.fuse_layers.2.0.0.0 (  (None, 60, 60, 32)  9216        ['zero_padding2d_43[0][0]']
+ Conv2D)
+
+ stage4.2.fuse_layers.3.0.1.0 (  (None, 30, 30, 32)  9216        ['zero_padding2d_47[0][0]']
+ Conv2D)
+
+ stage4.2.fuse_layers.3.1.0.0 (  (None, 30, 30, 64)  36864       ['zero_padding2d_49[0][0]']
+ Conv2D)
+
+ add_125 (Add)                  (None, 30, 30, 128)  0           ['stage4.2.branches.2.3.bn2[0][0]
+                                                                 ',
+                                                                  'activation_249[0][0]']
+
+ add_129 (Add)                  (None, 15, 15, 256)  0           ['stage4.2.branches.3.3.bn2[0][0]
+                                                                 ',
+                                                                  'activation_257[0][0]']
+
+ stage4.2.fuse_layers.2.0.0.1 (  (None, 60, 60, 32)  128         ['stage4.2.fuse_layers.2.0.0.0[0]
+ BatchNormalization)                                             [0]']
+
+ stage4.2.fuse_layers.3.0.1.1 (  (None, 30, 30, 32)  128         ['stage4.2.fuse_layers.3.0.1.0[0]
+ BatchNormalization)                                             [0]']
+
+ stage4.2.fuse_layers.3.1.0.1 (  (None, 30, 30, 64)  256         ['stage4.2.fuse_layers.3.1.0.0[0]
+ BatchNormalization)                                             [0]']
+
+ activation_251 (Activation)    (None, 30, 30, 128)  0           ['add_125[0][0]']
+
+ activation_259 (Activation)    (None, 15, 15, 256)  0           ['add_129[0][0]']
+
+ activation_262 (Activation)    (None, 60, 60, 32)   0           ['stage4.2.fuse_layers.2.0.0.1[0]
+                                                                 [0]']
+
+ activation_265 (Activation)    (None, 30, 30, 32)   0           ['stage4.2.fuse_layers.3.0.1.1[0]
+                                                                 [0]']
+
+ activation_266 (Activation)    (None, 30, 30, 64)   0           ['stage4.2.fuse_layers.3.1.0.1[0]
+                                                                 [0]']
+
+ stage4.2.fuse_layers.0.1.0 (Co  (None, 60, 60, 32)  2048        ['activation_243[0][0]']
+ nv2D)
+
+ stage4.2.fuse_layers.0.2.0 (Co  (None, 30, 30, 32)  4096        ['activation_251[0][0]']
+ nv2D)
+
+ stage4.2.fuse_layers.0.3.0 (Co  (None, 15, 15, 32)  8192        ['activation_259[0][0]']
+ nv2D)
+
+ zero_padding2d_42 (ZeroPadding  (None, 122, 122, 32  0          ['activation_235[0][0]']
+ 2D)                            )
+
+ stage4.2.fuse_layers.1.2.0 (Co  (None, 30, 30, 64)  8192        ['activation_251[0][0]']
+ nv2D)
+
+ stage4.2.fuse_layers.1.3.0 (Co  (None, 15, 15, 64)  16384       ['activation_259[0][0]']
+ nv2D)
+
+ zero_padding2d_44 (ZeroPadding  (None, 62, 62, 32)  0           ['activation_262[0][0]']
+ 2D)
+
+ zero_padding2d_45 (ZeroPadding  (None, 62, 62, 64)  0           ['activation_243[0][0]']
+ 2D)
+
+ stage4.2.fuse_layers.2.3.0 (Co  (None, 15, 15, 128)  32768      ['activation_259[0][0]']
+ nv2D)
+
+ zero_padding2d_48 (ZeroPadding  (None, 32, 32, 32)  0           ['activation_265[0][0]']
+ 2D)
+
+ zero_padding2d_50 (ZeroPadding  (None, 32, 32, 64)  0           ['activation_266[0][0]']
+ 2D)
+
+ zero_padding2d_51 (ZeroPadding  (None, 32, 32, 128)  0          ['activation_251[0][0]']
+ 2D)
+
+ stage4.2.fuse_layers.0.1.1 (Ba  (None, 60, 60, 32)  128         ['stage4.2.fuse_layers.0.1.0[0][0
+ tchNormalization)                                               ]']
+
+ stage4.2.fuse_layers.0.2.1 (Ba  (None, 30, 30, 32)  128         ['stage4.2.fuse_layers.0.2.0[0][0
+ tchNormalization)                                               ]']
+
+ stage4.2.fuse_layers.0.3.1 (Ba  (None, 15, 15, 32)  128         ['stage4.2.fuse_layers.0.3.0[0][0
+ tchNormalization)                                               ]']
+
+ stage4.2.fuse_layers.1.0.0.0 (  (None, 60, 60, 64)  18432       ['zero_padding2d_42[0][0]']
+ Conv2D)
+
+ stage4.2.fuse_layers.1.2.1 (Ba  (None, 30, 30, 64)  256         ['stage4.2.fuse_layers.1.2.0[0][0
+ tchNormalization)                                               ]']
+
+ stage4.2.fuse_layers.1.3.1 (Ba  (None, 15, 15, 64)  256         ['stage4.2.fuse_layers.1.3.0[0][0
+ tchNormalization)                                               ]']
+
+ stage4.2.fuse_layers.2.0.1.0 (  (None, 30, 30, 128)  36864      ['zero_padding2d_44[0][0]']
+ Conv2D)
+
+ stage4.2.fuse_layers.2.1.0.0 (  (None, 30, 30, 128)  73728      ['zero_padding2d_45[0][0]']
+ Conv2D)
+
+ stage4.2.fuse_layers.2.3.1 (Ba  (None, 15, 15, 128)  512        ['stage4.2.fuse_layers.2.3.0[0][0
+ tchNormalization)                                               ]']
+
+ stage4.2.fuse_layers.3.0.2.0 (  (None, 15, 15, 256)  73728      ['zero_padding2d_48[0][0]']
+ Conv2D)
+
+ stage4.2.fuse_layers.3.1.1.0 (  (None, 15, 15, 256)  147456     ['zero_padding2d_50[0][0]']
+ Conv2D)
+
+ stage4.2.fuse_layers.3.2.0.0 (  (None, 15, 15, 256)  294912     ['zero_padding2d_51[0][0]']
+ Conv2D)
+
+ Upsample.2.5 (UpsampleLike)    (None, 120, 120, 32  0           ['stage4.2.fuse_layers.0.1.1[0][0
+                                )                                ]',
+                                                                  'activation_235[0][0]']
+
+ Upsample.2.6 (UpsampleLike)    (None, 120, 120, 32  0           ['stage4.2.fuse_layers.0.2.1[0][0
+                                )                                ]',
+                                                                  'activation_235[0][0]']
+
+ Upsample.2.7 (UpsampleLike)    (None, 120, 120, 32  0           ['stage4.2.fuse_layers.0.3.1[0][0
+                                )                                ]',
+                                                                  'activation_235[0][0]']
+
+ stage4.2.fuse_layers.1.0.0.1 (  (None, 60, 60, 64)  256         ['stage4.2.fuse_layers.1.0.0.0[0]
+ BatchNormalization)                                             [0]']
+
+ Upsample.2.8 (UpsampleLike)    (None, 60, 60, 64)   0           ['stage4.2.fuse_layers.1.2.1[0][0
+                                                                 ]',
+                                                                  'activation_243[0][0]']
+
+ Upsample.2.9 (UpsampleLike)    (None, 60, 60, 64)   0           ['stage4.2.fuse_layers.1.3.1[0][0
+                                                                 ]',
+                                                                  'activation_243[0][0]']
+
+ stage4.2.fuse_layers.2.0.1.1 (  (None, 30, 30, 128)  512        ['stage4.2.fuse_layers.2.0.1.0[0]
+ BatchNormalization)                                             [0]']
+
+ stage4.2.fuse_layers.2.1.0.1 (  (None, 30, 30, 128)  512        ['stage4.2.fuse_layers.2.1.0.0[0]
+ BatchNormalization)                                             [0]']
+
+ Upsample.2.10 (UpsampleLike)   (None, 30, 30, 128)  0           ['stage4.2.fuse_layers.2.3.1[0][0
+                                                                 ]',
+                                                                  'activation_251[0][0]']
+
+ stage4.2.fuse_layers.3.0.2.1 (  (None, 15, 15, 256)  1024       ['stage4.2.fuse_layers.3.0.2.0[0]
+ BatchNormalization)                                             [0]']
+
+ stage4.2.fuse_layers.3.1.1.1 (  (None, 15, 15, 256)  1024       ['stage4.2.fuse_layers.3.1.1.0[0]
+ BatchNormalization)                                             [0]']
+
+ stage4.2.fuse_layers.3.2.0.1 (  (None, 15, 15, 256)  1024       ['stage4.2.fuse_layers.3.2.0.0[0]
+ BatchNormalization)                                             [0]']
+
+ add_130 (Add)                  (None, 120, 120, 32  0           ['activation_235[0][0]',
+                                )                                 'Upsample.2.5[0][0]',
+                                                                  'Upsample.2.6[0][0]',
+                                                                  'Upsample.2.7[0][0]']
+
+ add_131 (Add)                  (None, 60, 60, 64)   0           ['stage4.2.fuse_layers.1.0.0.1[0]
+                                                                 [0]',
+                                                                  'activation_243[0][0]',
+                                                                  'Upsample.2.8[0][0]',
+                                                                  'Upsample.2.9[0][0]']
+
+ add_132 (Add)                  (None, 30, 30, 128)  0           ['stage4.2.fuse_layers.2.0.1.1[0]
+                                                                 [0]',
+                                                                  'stage4.2.fuse_layers.2.1.0.1[0]
+                                                                 [0]',
+                                                                  'activation_251[0][0]',
+                                                                  'Upsample.2.10[0][0]']
+
+ add_133 (Add)                  (None, 15, 15, 256)  0           ['stage4.2.fuse_layers.3.0.2.1[0]
+                                                                 [0]',
+                                                                  'stage4.2.fuse_layers.3.1.1.1[0]
+                                                                 [0]',
+                                                                  'stage4.2.fuse_layers.3.2.0.1[0]
+                                                                 [0]',
+                                                                  'activation_259[0][0]']
+
+ activation_260 (Activation)    (None, 120, 120, 32  0           ['add_130[0][0]']
+                                )
+
+ activation_261 (Activation)    (None, 60, 60, 64)   0           ['add_131[0][0]']
+
+ activation_263 (Activation)    (None, 30, 30, 128)  0           ['add_132[0][0]']
+
+ activation_267 (Activation)    (None, 15, 15, 256)  0           ['add_133[0][0]']
+
+ upsample_like (UpsampleLike)   (None, 120, 120, 64  0           ['activation_261[0][0]',
+                                )                                 'activation_260[0][0]']
+
+ upsample_like_1 (UpsampleLike)  (None, 120, 120, 12  0          ['activation_263[0][0]',
+                                8)                                'activation_260[0][0]']
+
+ upsample_like_2 (UpsampleLike)  (None, 120, 120, 25  0          ['activation_267[0][0]',
+                                6)                                'activation_260[0][0]']
+
+ concatenate (Concatenate)      (None, 120, 120, 48  0           ['activation_260[0][0]',
+                                0)                                'upsample_like[0][0]',
+                                                                  'upsample_like_1[0][0]',
+                                                                  'upsample_like_2[0][0]']
+
+ conv2d (Conv2D)                (None, 120, 120, 48  230880      ['concatenate[0][0]']
+                                0)
+
+ batch_normalization (BatchNorm  (None, 120, 120, 48  1920       ['conv2d[0][0]']
+ alization)                     0)
+
+ activation_268 (Activation)    (None, 120, 120, 48  0           ['batch_normalization[0][0]']
+                                0)
+
+ conv2d_1 (Conv2D)              (None, 120, 120, 9)  4329        ['activation_268[0][0]']
+
+ lambda (Lambda)                (None, 480, 480, 9)  0           ['conv2d_1[0][0]']
+
+ softmax (Softmax)              (None, 480, 480, 9)  0           ['lambda[0][0]']
+
+==================================================================================================
+Total params: 29,600,009
+Trainable params: 29,541,705
+Non-trainable params: 58,304
+__________________________________________________________________________________________________
+WARNING:tensorflow:Compiled the loaded model, but the compiled metrics have yet to be built. `model.compile_metrics` will be empty until you train or evaluate the model.
+2023-07-12 11:36:07.205194: W tensorflow/python/util/util.cc:368] Sets are not currently considered sequences, but this may change in the future, so consider avoiding using them.
+
+Process finished with exit code 0

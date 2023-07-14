@@ -33,7 +33,7 @@ import logging
 logging.basicConfig(format='%(asctime)s %(message)s', level=logging.DEBUG)
 
 # 计时模块
-import datetime
+import datetime as dt
 
 
 # #########################参数设置区域
@@ -83,7 +83,7 @@ def load_arg():
 
 def gpu_enable(_use_gpu=None):
 
-    current_time = datetime.datetime.now()
+    current_time = dt.datetime.now()
     print("Current time 0:", current_time.strftime("%Y-%m-%d %H:%M:%S"))
 
     if _use_gpu:  # 使用GPU
@@ -91,6 +91,16 @@ def gpu_enable(_use_gpu=None):
         gpus = tf.config.experimental.list_physical_devices(device_type='GPU')
         for gpu in gpus:
             tf.config.experimental.set_memory_growth(gpu, True)
+
+        # 设置可见的GPU设备
+        # physical_devices = tf.config.list_physical_devices('GPU')
+        # tf.config.experimental.set_visible_devices(physical_devices[0], 'GPU')
+        #
+        # # 在必要时分配显存
+        # for device in physical_devices:
+        #     tf.config.experimental.set_memory_growth(device, True)
+
+
     else:  # 使用CPU
         logging.info("use cpu")
         os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
@@ -370,7 +380,7 @@ class HRNetSegmentation(object):
 
 def predict_main(mode=None, name_classes=None, name_classes_gbk=None, timeF=None, filename=None):
 
-    current_time = datetime.datetime.now()
+    current_time = dt.datetime.now()
     print("Current time 1:", current_time.strftime("%Y-%m-%d %H:%M:%S"))
 
     hrnet = HRNetSegmentation()
@@ -458,14 +468,14 @@ def predict_main(mode=None, name_classes=None, name_classes_gbk=None, timeF=None
                 f1 = open(os.path.join(dir_save_path, str(file_rootname) + '_predict_result.txt'), 'w',
                           encoding='gbk')
 
-                current_time = datetime.datetime.now()
+                current_time = dt.datetime.now()
                 print("Current time 3:", current_time.strftime("%Y-%m-%d %H:%M:%S"))
 
                 logging.info("start image predict")
                 hrnet.detect_image_no_access(image=image, name_classes=name_classes, name_classes_gbk=name_classes_gbk,
                                    img_name=img, dir_save_path=dir_save_path)
 
-                current_time = datetime.datetime.now()
+                current_time = dt.datetime.now()
                 print("Current time 4:", current_time.strftime("%Y-%m-%d %H:%M:%S"))
 
                 f1.close()

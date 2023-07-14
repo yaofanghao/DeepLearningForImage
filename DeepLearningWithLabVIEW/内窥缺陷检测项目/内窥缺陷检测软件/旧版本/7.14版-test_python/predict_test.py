@@ -1,10 +1,11 @@
 """
     -*- coding: utf-8 -*-
     @Author: yaofanghao
-    @Date: 2023/4/25 11:07
-    @Filename: predict.py
+    @Date: 2023/7/10 11:27
+    @Filename: predict_test.py
     @Software: PyCharm     
 """
+
 # 用于制作exe的py文件 可供labview调用
 # 具体参数配置在 argparse.txt 中设置
 
@@ -143,7 +144,7 @@ def table_exists(table_name, db_file_path):
 class HRNetSegmentation(object):
 
     def __init__(self, **kwargs):
-        self.model_path = 'logs.h5'
+        self.model_path = 'C:\\Users\\Rainy\\Desktop\\test_python\\logs.h5'
         self.num_classes = 9  # 所需要区分的类的个数+1
         self.backbone = "hrnetv2_w32"  # 主干特征提取网络 hrnetv2_w18 hrnetv2_w32 hrnetv2_w48
         self.input_shape = [480, 480]  # 输入模型的图片尺寸
@@ -310,7 +311,6 @@ class HRNetSegmentation(object):
             result_txt.write("\r")
             image.save(os.path.join(dir_save_path, img_name))
 
-
     def detect_image_no_access(self, image=None, name_classes=None, name_classes_gbk=None,
                      img_name=None, dir_save_path=None):
         image = cvtColor(image)
@@ -472,8 +472,9 @@ def predict_main(mode=None, name_classes=None, name_classes_gbk=None, timeF=None
                 print("Current time 3:", current_time.strftime("%Y-%m-%d %H:%M:%S"))
 
                 logging.info("start image predict")
-                hrnet.detect_image_no_access(image=image, name_classes=name_classes, name_classes_gbk=name_classes_gbk,
-                                   img_name=img, dir_save_path=dir_save_path)
+                hrnet.detect_image(image=image, name_classes=name_classes, name_classes_gbk=name_classes_gbk,
+                                   file_name=img, img_name=img, dir_save_path=dir_save_path,
+                                   result_txt=f1)
 
                 current_time = dt.datetime.now()
                 print("Current time 4:", current_time.strftime("%Y-%m-%d %H:%M:%S"))
@@ -482,8 +483,7 @@ def predict_main(mode=None, name_classes=None, name_classes_gbk=None, timeF=None
                 logging.info("success, predict done!")
 
 
-if __name__ == "__main__":
-    # 输入配置参数
+def func():
     _mode, _use_gpu, _timeF, _filename = load_arg()
 
     # gpu or cpu 方式加载程序
@@ -496,3 +496,113 @@ if __name__ == "__main__":
     # 进入预测 单张图片/视频
     predict_main(mode=int(_mode), name_classes=_name_classes, name_classes_gbk=_name_classes_gbk,
                  timeF=_timeF, filename=_filename)
+
+    return 1
+
+
+def func_test(_mode, _use_gpu, _timeF, _filename):
+
+    # gpu or cpu 方式加载程序
+    gpu_enable(_use_gpu=int(_use_gpu))
+
+    # 读取标签文件
+    _name_classes, _name_classes_gbk = read_txt_lines(_classes_txt=_classes_txt,
+                                                      _classes_gbk_txt=_classes_gbk_txt)
+
+    # 进入预测 单张图片/视频
+    predict_main(mode=int(_mode), name_classes=_name_classes, name_classes_gbk=_name_classes_gbk,
+                 timeF=_timeF, filename=_filename)
+
+    return 1
+
+
+# func_test(2,0,10,"1.jpg")
+
+# # 方法1 2023.7.13-ok 目前在labview中测试，可以调用句柄hrnet_model实现只调用一次模型
+# https://knowledge.ni.com/KnowledgeArticleDetails?id=kA03q000000xCdrCAE&l
+def ObjInitialize(_use_gpu=0):
+    # gpu or cpu 方式加载程序
+    gpu_enable(_use_gpu=int(_use_gpu))
+
+    hrnet = HRNetSegmentation()
+    hrnet.model = HRnet([480, 480, 3], hrnet.num_classes, backbone=hrnet.backbone)
+    hrnet.model.load_weights(hrnet.model_path)
+    return hrnet
+
+def predict(img, hrnet):
+    # 读取标签文件
+    name_classes, name_classes_gbk = read_txt_lines(_classes_txt=_classes_txt,
+                                                      _classes_gbk_txt=_classes_gbk_txt)
+
+    # 进入预测 单张图片/视频
+    while True:
+        # img = input('Input image filename:')
+        if img == "q":
+            sys.exit(1)  # 程序退出
+
+        try:
+            image = Image.open(str(img))
+            print('success read image:{} '.format(str(img)))
+            file_rootname, _ = os.path.splitext(img)
+        except:
+            print('Open Error! Try again!')
+            continue
+        else:
+            dir_save_path = str(file_rootname) + "_img_out/"
+            if not os.path.exists(dir_save_path):
+                os.makedirs(dir_save_path)
+            f1 = open(os.path.join(dir_save_path, str(file_rootname) + '_predict_result.txt'), 'w',
+                      encoding='gbk')
+
+            logging.info("start image predict")
+            # hrnet.detect_image(image=image, name_classes=name_classes, name_classes_gbk=name_classes_gbk,
+            #                 file_name=img, img_name=img, dir_save_path=dir_save_path,
+            #                 result_txt=f1)
+
+            hrnet.detect_image_no_access(image=image, name_classes=name_classes, name_classes_gbk=name_classes_gbk,
+                                         img_name=img, dir_save_path=dir_save_path)
+
+            f1.close()
+            logging.info("success, predict done!")
+        return 1
+
+# hrnet_model = ObjInitialize(0)
+# predict(img="1.jpg", hrnet=hrnet_model)
+# predict(img="2.jpg", hrnet=hrnet_model)
+# predict(img="3.jpg", hrnet=hrnet_model)
+# predict(img="4.jpg", hrnet=hrnet_model)
+
+
+# # 方法2
+# hrnet_model = ObjInitialize(0)
+# while True:
+#     img = input('Input image filename:')
+#     predict(img=img, hrnet=hrnet_model)
+
+
+# 2023.7.12 晚 测试
+# def test(i, model):
+#     if i==0:
+#         hrnet_model = ObjInitialize(0)
+#         model = hrnet_model
+#         return model
+#     if i>=0:
+#         img = input('Input image filename:')
+#         predict(img=img, hrnet=model)
+#         return 1
+#
+# def test_out():
+#     i = 0
+#     model = None
+#     while True:
+#         print("i= ", i)
+#         if i==0:
+#             model = test(i, model=None)
+#             i = i+1
+#         if i>=0:
+#             test(i, model=model)
+
+# global model   # 模型作为全局变量
+# test_out()
+
+
