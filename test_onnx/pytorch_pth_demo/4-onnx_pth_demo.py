@@ -1,10 +1,12 @@
 """
     -*- coding: utf-8 -*-
     @Author: yaofanghao
-    @Date: 2023/7/13 11:04
-    @Filename: 4-使用示例deeplabv3的onnx模型测试.py
+    @Date: 2023/7/12 11:22
+    @Filename: 4-onnx_pth_demo.py
     @Software: PyCharm     
 """
+
+# hrnet.onnx 模型推理，输入图片1x3x480x480，输出480x480x21
 
 import onnx
 import numpy as np
@@ -28,7 +30,7 @@ def onnx_predict_demo(img_name, sess):
 
     logging.info("load image")
 
-    image_size = 448
+    image_size = 480
     # 加载并预处理输入图像
     image = cv2.imread(img_name)
 
@@ -74,11 +76,11 @@ def onnx_predict_demo(img_name, sess):
     cv2.destroyAllWindows()
     return 1
 
-# img_name = "D:\\MyGithub\\DeepLearningForImage\\test_onnx\\deeplab2.jpg"
-# img_name2 = "D:\\MyGithub\\DeepLearningForImage\\test_onnx\\1.jpg"
-# onnx_model_name = "D:\\MyGithub\\DeepLearningForImage\\test_onnx\\deeplabv3_resnet101.onnx"
-#
-# sess = load(onnx_model_name=onnx_model_name)
-# onnx_predict_demo(img_name=img_name, sess=sess)
-# onnx_predict_demo(img_name=img_name2, sess=sess)
+img_name = "deeplab2.jpg"
+img_name2 = "1.jpg"
+onnx_model_name = "hrnet_from_pytorch.onnx"
+
+sess = load(onnx_model_name=onnx_model_name)
+onnx_predict_demo(img_name=img_name, sess=sess)
+onnx_predict_demo(img_name=img_name2, sess=sess)
 

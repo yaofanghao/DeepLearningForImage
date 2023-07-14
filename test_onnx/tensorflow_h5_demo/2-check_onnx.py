@@ -2,7 +2,7 @@
     -*- coding: utf-8 -*-
     @Author: yaofanghao
     @Date: 2023/7/12 11:06
-    @Filename: 2-测试onnx模型有效性.py
+    @Filename: 2-check_onnx.py
     @Software: PyCharm     
 """
 import onnx

@@ -2,7 +2,7 @@
     -*- coding: utf-8 -*-
     @Author: yaofanghao
     @Date: 2023/7/12 11:39
-    @Filename: 3-查看onnx模型结构.py
+    @Filename: 3-onnx_summary.py
     @Software: PyCharm     
 """
 
@@ -17,7 +17,7 @@
 #
 # description converted from ./_hrnet
 #
-# input_1
+# INPUTS
 # name: input_1
 # type: float32[unk__4478,480,480,3]
 #
