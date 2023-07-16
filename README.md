@@ -34,6 +34,16 @@
     * conda install cudatoolkit=11.3 cudnn=8.2.1 
     * pip install --default-time=300 tensorflow-gpu==2.5.0 keras==2.5.0rc0
  
+* RTX3090 / Ubuntu20.04LTS / Python3.8
+  * 依赖包参考 env/3090-pytorch-gpu-env.txt
+  * 大致流程： 
+    * conda create --name pytorch-gpu python==3.8 
+    * pip install torch==1.10.0+cu113 torchvision==0.11.1+cu113 torchaudio==0.10.0 -f https://download.pytorch.org/whl/torch_stable.html
+  * 测试： 
+    * torch.cuda.is_available()  # True 
+    * torch.cuda.device_count()  # 1
+    * torch.cuda.get_device_name(torch.cuda.current_device())  # NVIDIA GeForce RTX 3090'
+
 * RTX3060 / Win11 / Python3.8.0
   * NVIDIA官网下载并配置好系统环境变量
     * CUDA == 11.3.1
