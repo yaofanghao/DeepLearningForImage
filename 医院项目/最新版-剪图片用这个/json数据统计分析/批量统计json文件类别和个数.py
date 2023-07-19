@@ -32,7 +32,7 @@ dir_name = "before/"
 
 
 # 指定类别的文件夹
-save_dir_name = "hanjiequexian/"
+save_dir_name = "xiuban/"
 if not os.path.exists(save_dir_name):
     os.makedirs(save_dir_name)
 
@@ -50,6 +50,15 @@ def copy_image_to_folder(image_path, save_dir_name):
     # 复制图片到指定文件夹
     shutil.copyfile(image_path, destination_path)
     print("图片已复制到目标文件夹：", destination_path)
+
+
+def save_json_to_folder(json_path, save_dir_name):
+    filename = json_path.split("/")[-1]
+    destination_file = save_dir_name + filename
+
+    # 复制文件到目标文件夹
+    shutil.copy(json_path, destination_file)
+    print("JSON文件已复制到目标文件夹：", destination_file)
 
 
 def count_json_label():
@@ -114,14 +123,17 @@ def count_json_label():
                     for _ in label_name:
 
                         # 筛选出锈斑图，并保存到指定文件夹
-                        if _["label"] == class_name[7]:
+                        if _["label"] == class_name[5]:
                             # d = d + 1
                             count_flag = count_flag + 1
                             print("num:{} / image:{} / class:{}".format(count_flag, name, class_name[5]))
 
                             image_path = dir_name + name.replace('.json','.jpg')
+                            json_path = dir_name + name
                             print(image_path)
+                            print(json_path)
                             copy_image_to_folder(image_path, save_dir_name)
+                            save_json_to_folder(json_path, save_dir_name)
 
                         y = y + 1 if _["label"] == class_name[1] else y
                         g = g + 1 if _["label"] == class_name[2] else g

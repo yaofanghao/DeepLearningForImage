@@ -281,6 +281,6 @@ def count_json_label():
 
 
 if __name__ == '__main__':
-    # json_to_dataset()
+    json_to_dataset()
     get_jpg_and_png()  # 生成数据集的jpg和png文件
     count_json_label()  # 批量统计json文件类别和个数
