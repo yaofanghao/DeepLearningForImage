@@ -16,10 +16,10 @@
 # imports ai.onnx v11
 #
 # INPUTS
-# name: input1
+# name: images
 # type: float32[1,3,480,480]
 #
 # OUTPUTS
 # softmax
 # name: softmax
-# type: float32[Resizeoutput_dim_0,Resizeoutput_dim_1,Resizeoutput_dim_2,Resizeoutput_dim_3]
+# type: float32[1,9,480,480]

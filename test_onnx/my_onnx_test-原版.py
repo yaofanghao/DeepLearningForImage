@@ -1,12 +1,10 @@
 """
     -*- coding: utf-8 -*-
     @Author: yaofanghao
-    @Date: 2023/7/12 11:22
-    @Filename: 4-onnx_pth_demo.py
+    @Date: 2023/7/13 11:04
+    @Filename: my_onnx_test.py
     @Software: PyCharm     
 """
-
-# hrnet.onnx 模型推理，输入图片1x3x480x480，输出480x480x9
 
 import onnx
 import numpy as np
@@ -21,7 +19,7 @@ logging.basicConfig(format='%(asctime)s %(message)s', level=logging.DEBUG)
 class OnnxProcess():
     def __init__(self, **kwargs):
         self.onnx_model_name = "hrnet-pytorch.onnx"
-        self.model = onnx.load(onnx_model_name)
+        self.model = onnx.load(self.onnx_model_name)
         self.sess = ort.InferenceSession(self.model.SerializeToString())
 
 def load(onnx_model_name):
@@ -48,8 +46,8 @@ def onnx_predict(img_name, onnx_):
     image = np.transpose(image, (2, 0, 1))
     image = np.expand_dims(image, axis=0)  # 添加批次维度
 
-    logging.info("start predict")
     # 执行推理
+    logging.info("start predict")
     # input_name = sess.get_inputs()[0].name
     # output_name = sess.get_outputs()[0].name
     input_name = 'images'
@@ -60,7 +58,7 @@ def onnx_predict(img_name, onnx_):
     output = np.squeeze(output)  # 去除批次维度
     output = np.argmax(output, axis=0)  # 获取每个像素的类别索引
 
-    # 可选：将输出可视化
+    # 将输出可视化
     class_colors = [(0, 0, 0), (128, 0, 0), (0, 128, 0), (128, 128, 0), (0, 0, 128), (128, 0, 128),
                        (0, 128, 128), (128, 128, 128), (64, 0, 0)] # 类别颜色映射表
     result = np.zeros((image_size, image_size, 3), dtype=np.uint8)
@@ -70,18 +68,25 @@ def onnx_predict(img_name, onnx_):
 
     result = cv2.resize(result, (orininal_w, orininal_h), interpolation=cv2.INTER_LINEAR)
 
+    # 使用addWeighted函数进行图像叠加
+    # 设置叠加的权重
+    alpha = 0.3  # 第一张图像的权重
+    beta = 0.8  # 第二张图像的权重
+    image1 = cv2.imread(img_name)
+    mix = cv2.addWeighted(image1, alpha, result, beta, 0)
+
     logging.info("success!")
+    cv2.imshow('Mix Result', mix)
     cv2.imshow('Segmentation Result', result)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
     return 1
 
-img_name = "5.jpg"
-img_name2 = "2304270006.jpg"
-img_name3 = "2305190004.jpg"
+
+img_name = "1.jpg"
+img_name2 = "2.jpg"
 onnx_model_name = "hrnet-pytorch.onnx"
 
 onnx_ = load(onnx_model_name=onnx_model_name)
 onnx_predict(img_name=img_name, onnx_=onnx_)
 onnx_predict(img_name=img_name2, onnx_=onnx_)
-onnx_predict(img_name=img_name3, onnx_=onnx_)
