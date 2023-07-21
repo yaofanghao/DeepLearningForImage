@@ -31,7 +31,7 @@ db_file_path = os.path.join(current_dir, 'predict_result.mdb')  # 构造数据�
 
 image_size = 480  # 图像尺寸
 num_classes = 9  # 分类类别 八类+背景一类
-area_threshold = 200  # 面积阈值
+area_threshold = 0  # 最小面积阈值
 
 def load_arg():
     # 方法二 以读取配置文件argparse.txt的方式载入参数
@@ -270,7 +270,7 @@ def onnx_predict_camera(image=None, onnx_=None,
                  flag=None, conn=None):
     logging.info("load image")
 
-    img_name_single = flag + ".jpg"
+    img_name_single = str(flag) + ".jpg"
     table_name = "camera"
 
     # 加载并预处理输入图像
@@ -515,21 +515,22 @@ def predict_main(onnx_=None, mode=None,
             os.makedirs(dir_save_path)
         f1 = open(os.path.join(dir_save_path, 'camera_predict_result.txt'), 'w', encoding='gbk')
 
-        conn_str = r'Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=' + str(db_file_path)
-        logging.info("成功创建并打开数据库，路径为{}".format(db_file_path))
-        conn = pyodbc.connect(conn_str)
-
         flag = 0
         cap = cv2.VideoCapture(0)
         while True:
             ret, frame = cap.read()
-            logging.info("start image predict")
+            if not ret:
+                break
 
-            # 检测的主程序
-            onnx_predict_camera(image=frame, onnx_=onnx_,
-                         name_classes=name_classes, name_classes_gbk=name_classes_gbk,
-                         dir_save_path=dir_save_path, result_txt=f1,
-                         flag=flag, conn=conn)
+            # 每隔timeF检测一次
+            if flag % int(timeF) == 0:
+                logging.info("start image predict, flag={}".format(flag))
+
+                # 检测的主程序
+                onnx_predict_camera(image=frame, onnx_=onnx_,
+                             name_classes=name_classes, name_classes_gbk=name_classes_gbk,
+                             dir_save_path=dir_save_path, result_txt=f1,
+                             flag=flag, conn=conn)
             flag = flag+1
 
             cv2.imshow('detection result', frame)
