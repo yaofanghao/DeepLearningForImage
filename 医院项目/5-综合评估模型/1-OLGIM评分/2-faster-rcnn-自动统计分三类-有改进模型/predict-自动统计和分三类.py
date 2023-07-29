@@ -4,7 +4,7 @@ import os
 from frcnn import FRCNN
 
 ########### 设置区域 ###########
-dir_origin_path = "3/"  # 输入图片文件夹路径
+dir_origin_path = "img/"  # 输入图片文件夹路径
 
 if __name__ == "__main__":
 
