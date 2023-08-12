@@ -6,78 +6,29 @@
     @Software: PyCharm     
 """
 
-import onnx
-import onnxruntime as ort
-import colorsys
-import cv2
 import numpy as np
-from PIL import ImageDraw, ImageFont, Image
-
-from utils.utils import (cvtColor, get_anchors, get_classes, preprocess_input,
-                         resize_image, show_config)
-from utils.utils_bbox import DecodeBox, DecodeBoxNP
-
-from PIL import Image
+import cv2
+import colorsys
+from PIL import Image, ImageFont, ImageDraw
+from utils.utils import (cvtColor, preprocess_input)
+from utils.utils_bbox import DecodeBoxNP
+import onnxruntime
 
 import logging
 logging.basicConfig(format='%(asctime)s %(message)s', level=logging.DEBUG)
 
-model_name = "yolov5_x.onnx"
 
 class YOLO_ONNX(object):
-    _defaults = {
-        # --------------------------------------------------------------------------#
-        #   使用自己训练好的模型进行预测一定要修改onnx_path和classes_path！
-        #   onnx_path指向logs文件夹下的权值文件，classes_path指向model_data下的txt
-        #
-        #   训练好后logs文件夹下存在多个权值文件，选择验证集损失较低的即可。
-        #   验证集损失较低不代表mAP较高，仅代表该权值在验证集上泛化性能较好。
-        #   如果出现shape不匹配，同时要注意训练时的onnx_path和classes_path参数的修改
-        # --------------------------------------------------------------------------#
-        "onnx_path": model_name,
-        "classes_path": 'class_name.txt',
-        # ---------------------------------------------------------------------#
-        #   anchors_path代表先验框对应的txt文件，一般不修改。
-        #   anchors_mask用于帮助代码找到对应的先验框，一般不修改。
-        # ---------------------------------------------------------------------#
-        "anchors_path": 'yolo_anchors.txt',
-        "anchors_mask": [[6, 7, 8], [3, 4, 5], [0, 1, 2]],
-        # ---------------------------------------------------------------------#
-        #   输入图片的大小，必须为32的倍数。
-        # ---------------------------------------------------------------------#
-        "input_shape": [640, 640],
-        # ---------------------------------------------------------------------#
-        #   只有得分大于置信度的预测框会被保留下来
-        # ---------------------------------------------------------------------#
-        "confidence": 0.5,
-        # ---------------------------------------------------------------------#
-        #   非极大抑制所用到的nms_iou大小
-        # ---------------------------------------------------------------------#
-        "nms_iou": 0.3,
-        # ---------------------------------------------------------------------#
-        #   该变量用于控制是否使用letterbox_image对输入图像进行不失真的resize，
-        #   在多次测试后，发现关闭letterbox_image直接resize的效果更好
-        # ---------------------------------------------------------------------#
-        "letterbox_image": True
-    }
+    def __init__(self, model_name):
+        self.onnx_path = model_name
+        self.classes_path = "class_name.txt"
+        self.anchors_path = "yolo_anchors.txt"
+        self.anchors_mask = [[6, 7, 8], [3, 4, 5], [0, 1, 2]]
+        self.input_shape = [640, 640]
+        self.confidence = 0.5
+        self.nms_iou = 0.3
+        self.letterbox_image = True
 
-    @classmethod
-    def get_defaults(cls, n):
-        if n in cls._defaults:
-            return cls._defaults[n]
-        else:
-            return "Unrecognized attribute name '" + n + "'"
-
-    # ---------------------------------------------------#
-    #   初始化YOLO
-    # ---------------------------------------------------#
-    def __init__(self, **kwargs):
-        self.__dict__.update(self._defaults)
-        for name, value in kwargs.items():
-            setattr(self, name, value)
-            self._defaults[name] = value
-
-        import onnxruntime
         self.onnx_session = onnxruntime.InferenceSession(self.onnx_path)
         # 获得所有的输入node
         self.input_name = self.get_input_name()
@@ -99,8 +50,6 @@ class YOLO_ONNX(object):
         self.colors = list(map(lambda x: colorsys.hsv_to_rgb(*x), hsv_tuples))
         self.colors = list(map(lambda x: (int(x[0] * 255), int(x[1] * 255), int(x[2] * 255)), self.colors))
 
-        show_config(**self._defaults)
-
     def get_classes(self, classes_path):
         with open(classes_path, encoding='utf-8') as f:
             class_names = f.readlines()
@@ -108,7 +57,6 @@ class YOLO_ONNX(object):
         return class_names, len(class_names)
 
     def get_anchors(self, anchors_path):
-        '''loads the anchors from a file'''
         with open(anchors_path, encoding='utf-8') as f:
             anchors = f.readline()
         anchors = [float(x) for x in anchors.split(',')]
@@ -139,51 +87,46 @@ class YOLO_ONNX(object):
     # ---------------------------------------------------#
     #   对输入图像进行resize
     # ---------------------------------------------------#
-    def resize_image(self, image, size, letterbox_image, mode='PIL'):
+    def resize_image(self, image, size, mode='PIL'):
         if mode == 'PIL':
             iw, ih = image.size
             w, h = size
 
-            if letterbox_image:
-                scale = min(w / iw, h / ih)
-                nw = int(iw * scale)
-                nh = int(ih * scale)
+            scale = min(w / iw, h / ih)
+            nw = int(iw * scale)
+            nh = int(ih * scale)
 
-                image = image.resize((nw, nh), Image.BICUBIC)
-                new_image = Image.new('RGB', size, (128, 128, 128))
-                new_image.paste(image, ((w - nw) // 2, (h - nh) // 2))
-            else:
-                new_image = image.resize((w, h), Image.BICUBIC)
+            image = image.resize((nw, nh), Image.BICUBIC)
+            new_image = Image.new('RGB', size, (128, 128, 128))
+            new_image.paste(image, ((w - nw) // 2, (h - nh) // 2))
+
         else:
             image = np.array(image)
-            if letterbox_image:
-                # 获得现在的shape
-                shape = np.shape(image)[:2]
-                # 获得输出的shape
-                if isinstance(size, int):
-                    size = (size, size)
+            # 获得现在的shape
+            shape = np.shape(image)[:2]
+            # 获得输出的shape
+            if isinstance(size, int):
+                size = (size, size)
 
-                # 计算缩放的比例
-                r = min(size[0] / shape[0], size[1] / shape[1])
+            # 计算缩放的比例
+            r = min(size[0] / shape[0], size[1] / shape[1])
 
-                # 计算缩放后图片的高宽
-                new_unpad = int(round(shape[1] * r)), int(round(shape[0] * r))
-                dw, dh = size[1] - new_unpad[0], size[0] - new_unpad[1]
+            # 计算缩放后图片的高宽
+            new_unpad = int(round(shape[1] * r)), int(round(shape[0] * r))
+            dw, dh = size[1] - new_unpad[0], size[0] - new_unpad[1]
 
-                # 除以2以padding到两边
-                dw /= 2
-                dh /= 2
+            # 除以2以padding到两边
+            dw /= 2
+            dh /= 2
 
-                # 对图像进行resize
-                if shape[::-1] != new_unpad:  # resize
-                    image = cv2.resize(image, new_unpad, interpolation=cv2.INTER_LINEAR)
-                top, bottom = int(round(dh - 0.1)), int(round(dh + 0.1))
-                left, right = int(round(dw - 0.1)), int(round(dw + 0.1))
+            # 对图像进行resize
+            if shape[::-1] != new_unpad:  # resize
+                image = cv2.resize(image, new_unpad, interpolation=cv2.INTER_LINEAR)
+            top, bottom = int(round(dh - 0.1)), int(round(dh + 0.1))
+            left, right = int(round(dw - 0.1)), int(round(dw + 0.1))
 
-                new_image = cv2.copyMakeBorder(image, top, bottom, left, right, cv2.BORDER_CONSTANT,
-                                               value=(128, 128, 128))  # add border
-            else:
-                new_image = cv2.resize(image, (w, h))
+            new_image = cv2.copyMakeBorder(image, top, bottom, left, right, cv2.BORDER_CONSTANT,
+                                           value=(128, 128, 128))  # add border
 
         return new_image
 
@@ -210,8 +153,9 @@ class YOLO_ONNX(object):
         feature_map_shape = [[int(j / (2 ** (i + 3))) for j in self.input_shape] for i in
                              range(len(self.anchors_mask))][::-1]
         for i in range(len(self.anchors_mask)):
-            outputs[i] = np.reshape(outputs[i], (
-            1, len(self.anchors_mask[i]) * (5 + self.num_classes), feature_map_shape[i][0], feature_map_shape[i][1]))
+            outputs[i] = np.reshape(outputs[i],
+                                    (1, len(self.anchors_mask[i]) * (5 + self.num_classes),
+                                     feature_map_shape[i][0], feature_map_shape[i][1]))
 
         outputs = self.bbox_util.decode_box(outputs)
         # ---------------------------------------------------------#
@@ -221,8 +165,9 @@ class YOLO_ONNX(object):
                                                      image_shape, self.letterbox_image, conf_thres=self.confidence,
                                                      nms_thres=self.nms_iou)
 
+        # 2023.8.12 没有预测结果时，修改返回值为空的数组out_scores和out_classes，防止程序报错
         if results[0] is None:
-            return image
+            return image, np.array([]), np.array([])
 
         top_label = np.array(results[0][:, 6], dtype='int32')
         top_conf = results[0][:, 4] * results[0][:, 5]
@@ -232,7 +177,7 @@ class YOLO_ONNX(object):
         #   设置字体与边框厚度
         # ---------------------------------------------------------#
         font = ImageFont.truetype(font='model_data/simhei.ttf',
-                                  size=np.floor(3e-2 * image.size[1] + 0.5).astype('int32'))
+                                  size=np.floor(3e-2 * image.size[1] + 8).astype('int32'))
         thickness = int(max((image.size[0] + image.size[1]) // np.mean(self.input_shape), 1))
 
         # ---------------------------------------------------------#
@@ -267,20 +212,18 @@ class YOLO_ONNX(object):
             draw.text(text_origin, str(label, 'UTF-8'), fill=(0, 0, 0), font=font)
             del draw
 
-        return image
+        return image, top_conf, top_label
 
 if __name__ == "__main__":
-
-
-    yolo = YOLO_ONNX()
-
+    model_name = "yolov5_x.onnx"
     img_name = "5.jpg"
 
-    logging.info("load image")
+    yolo = YOLO_ONNX(model_name=model_name)
 
+    logging.info("load image")
     image = Image.open(img_name)
-    r_image = yolo.detect_image(image)
+
+    r_image, _, _ = yolo.detect_image(image)
     logging.info("success")
 
     r_image.show()
-

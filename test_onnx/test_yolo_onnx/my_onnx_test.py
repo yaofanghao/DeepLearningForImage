@@ -18,9 +18,9 @@ import colorsys
 from PIL import Image, ImageFont, ImageDraw
 import pyodbc
 from datetime import datetime
-
-from utils.utils import (cvtColor, preprocess_input, show_config)
+from utils.utils import (cvtColor, preprocess_input)
 from utils.utils_bbox import DecodeBoxNP
+import onnxruntime
 
 import logging
 logging.basicConfig(format='%(asctime)s %(message)s', level=logging.DEBUG)
@@ -34,7 +34,6 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 db_file_path = os.path.join(current_dir, 'predict_result.mdb')  # 构造数据库文件，并连接到Access数据库，DBQ需要是绝对路径
 
 model_name = "yolov5_x.onnx"
-num_classes = 9  # 分类类别 八类+背景一类
 
 
 def load_arg():
@@ -93,59 +92,16 @@ def table_exists(table_name, db_file_path):
 
 
 class YOLO_ONNX(object):
-    _defaults = {
-        # --------------------------------------------------------------------------#
-        #   使用自己训练好的模型进行预测一定要修改onnx_path和classes_path！
-        #   onnx_path指向logs文件夹下的权值文件，classes_path指向model_data下的txt
-        #
-        #   训练好后logs文件夹下存在多个权值文件，选择验证集损失较低的即可。
-        #   验证集损失较低不代表mAP较高，仅代表该权值在验证集上泛化性能较好。
-        #   如果出现shape不匹配，同时要注意训练时的onnx_path和classes_path参数的修改
-        # --------------------------------------------------------------------------#
-        "onnx_path": model_name,
-        "classes_path": 'class_name.txt',
-        # ---------------------------------------------------------------------#
-        #   anchors_path代表先验框对应的txt文件，一般不修改。
-        #   anchors_mask用于帮助代码找到对应的先验框，一般不修改。
-        # ---------------------------------------------------------------------#
-        "anchors_path": 'yolo_anchors.txt',
-        "anchors_mask": [[6, 7, 8], [3, 4, 5], [0, 1, 2]],
-        # ---------------------------------------------------------------------#
-        #   输入图片的大小，必须为32的倍数。
-        # ---------------------------------------------------------------------#
-        "input_shape": [640, 640],
-        # ---------------------------------------------------------------------#
-        #   只有得分大于置信度的预测框会被保留下来
-        # ---------------------------------------------------------------------#
-        "confidence": 0.5,
-        # ---------------------------------------------------------------------#
-        #   非极大抑制所用到的nms_iou大小
-        # ---------------------------------------------------------------------#
-        "nms_iou": 0.3,
-        # ---------------------------------------------------------------------#
-        #   该变量用于控制是否使用letterbox_image对输入图像进行不失真的resize，
-        #   在多次测试后，发现关闭letterbox_image直接resize的效果更好
-        # ---------------------------------------------------------------------#
-        "letterbox_image": True
-    }
+    def __init__(self, model_name):
+        self.onnx_path = model_name
+        self.classes_path = "class_name.txt"
+        self.anchors_path = "yolo_anchors.txt"
+        self.anchors_mask = [[6, 7, 8], [3, 4, 5], [0, 1, 2]]
+        self.input_shape = [640, 640]
+        self.confidence = 0.5
+        self.nms_iou = 0.3
+        self.letterbox_image = True
 
-    @classmethod
-    def get_defaults(cls, n):
-        if n in cls._defaults:
-            return cls._defaults[n]
-        else:
-            return "Unrecognized attribute name '" + n + "'"
-
-    # ---------------------------------------------------#
-    #   初始化YOLO
-    # ---------------------------------------------------#
-    def __init__(self, **kwargs):
-        self.__dict__.update(self._defaults)
-        for name, value in kwargs.items():
-            setattr(self, name, value)
-            self._defaults[name] = value
-
-        import onnxruntime
         self.onnx_session = onnxruntime.InferenceSession(self.onnx_path)
         # 获得所有的输入node
         self.input_name = self.get_input_name()
@@ -167,8 +123,6 @@ class YOLO_ONNX(object):
         self.colors = list(map(lambda x: colorsys.hsv_to_rgb(*x), hsv_tuples))
         self.colors = list(map(lambda x: (int(x[0] * 255), int(x[1] * 255), int(x[2] * 255)), self.colors))
 
-        show_config(**self._defaults)
-
     def get_classes(self, classes_path):
         with open(classes_path, encoding='utf-8') as f:
             class_names = f.readlines()
@@ -176,7 +130,6 @@ class YOLO_ONNX(object):
         return class_names, len(class_names)
 
     def get_anchors(self, anchors_path):
-        '''loads the anchors from a file'''
         with open(anchors_path, encoding='utf-8') as f:
             anchors = f.readline()
         anchors = [float(x) for x in anchors.split(',')]
@@ -271,8 +224,9 @@ class YOLO_ONNX(object):
         feature_map_shape = [[int(j / (2 ** (i + 3))) for j in self.input_shape] for i in
                              range(len(self.anchors_mask))][::-1]
         for i in range(len(self.anchors_mask)):
-            outputs[i] = np.reshape(outputs[i], (
-            1, len(self.anchors_mask[i]) * (5 + self.num_classes), feature_map_shape[i][0], feature_map_shape[i][1]))
+            outputs[i] = np.reshape(outputs[i],
+                                    (1, len(self.anchors_mask[i]) * (5 + self.num_classes),
+                                     feature_map_shape[i][0], feature_map_shape[i][1]))
 
         outputs = self.bbox_util.decode_box(outputs)
         # ---------------------------------------------------------#
@@ -282,6 +236,7 @@ class YOLO_ONNX(object):
                                                      image_shape, self.letterbox_image, conf_thres=self.confidence,
                                                      nms_thres=self.nms_iou)
 
+        # 2023.8.12 没有预测结果时，修改返回值为空的数组out_scores和out_classes，防止程序报错
         if results[0] is None:
             return image, np.array([]), np.array([])
 
@@ -293,7 +248,7 @@ class YOLO_ONNX(object):
         #   设置字体与边框厚度
         # ---------------------------------------------------------#
         font = ImageFont.truetype(font='model_data/simhei.ttf',
-                                  size=np.floor(3e-2 * image.size[1] + 0.5).astype('int32'))
+                                  size=np.floor(3e-2 * image.size[1] + 8).astype('int32'))
         thickness = int(max((image.size[0] + image.size[1]) // np.mean(self.input_shape), 1))
 
         # ---------------------------------------------------------#
@@ -340,7 +295,7 @@ def onnx_predict(onnx=None, img_name=None,
     image_full_path = os.path.join(current_dir, str(img_name))
     image = Image.open(image_full_path)
     img_name_single = img_name.rsplit("/", 1)[-1]
-    
+
     # 2023.8.11 修改返回值，包括图片、分数、类别
     r_image, out_scores, out_classes = onnx.detect_image(image)
 
@@ -381,14 +336,13 @@ def onnx_predict(onnx=None, img_name=None,
             logging.info("已有表！")
 
         for i in range(out_classes.shape[0]):
-            if (out_classes[i] > 0) :
+            if out_classes[i] > 0:
                 temp = out_classes[i]
                 logging.info("识别出：{}--{}".format(temp, name_classes_gbk[temp]))
                 result_txt.write("  " + str(name_classes_gbk[temp]) + "   \t")
                 result_txt.write("  " + str(np.round(out_scores[i], 4)) + "   \t")
                 result_txt.write("\r")
-                insert_detect_result = insert_detect_result + " " + \
-                                       str(name_classes_gbk[temp])
+                insert_detect_result = insert_detect_result + " " + str(name_classes_gbk[temp])
 
         # 2023.6.29 【新要求】插入数据到数据库表中
         # 格式示例： 时间 图片名 检测结果
@@ -414,7 +368,7 @@ def onnx_predict(onnx=None, img_name=None,
 
 
 def predict_main(onnx=None, mode=None,
-                 name_classes=None, name_classes_gbk=None,
+                 name_classes_gbk=None,
                  location=None, people=None, pipe_number=None, comment=None,
                  timeF=None, filename=None):
 
@@ -507,11 +461,10 @@ if __name__ == "__main__":
     _name_classes, _name_classes_gbk = read_txt_lines(_classes_txt=_classes_txt,
                                                       _classes_gbk_txt=_classes_gbk_txt)
 
-    yolo = YOLO_ONNX()
+    yolo = YOLO_ONNX(model_name=model_name)
 
     # 进入预测 单张图片/视频
     predict_main(onnx=yolo, mode=int(_mode),
-                 name_classes=_name_classes,
                  name_classes_gbk=_name_classes_gbk,
                  location=_location, people=_people, pipe_number=_pipe_number, comment=_comment,
                  timeF=_timeF, filename=_filename)
