@@ -251,9 +251,6 @@ class YOLO_ONNX(object):
         return new_image
 
     def detect_image(self, image):
-
-        print("success")
-
         image_shape = np.array(np.shape(image)[0:2])
         # ---------------------------------------------------------#
         #   在这里将图像转换成RGB图像，防止灰度图在预测时报错。
@@ -286,7 +283,7 @@ class YOLO_ONNX(object):
                                                      nms_thres=self.nms_iou)
 
         if results[0] is None:
-            return image
+            return image, np.array([]), np.array([])
 
         top_label = np.array(results[0][:, 6], dtype='int32')
         top_conf = results[0][:, 4] * results[0][:, 5]
@@ -334,19 +331,20 @@ class YOLO_ONNX(object):
         return image, top_conf, top_label
 
 
-def onnx_predict(img_name=None,
-                 name_classes=None, name_classes_gbk=None,
+def onnx_predict(onnx=None, img_name=None,
+                 name_classes_gbk=None,
                  file_name=None, location=None, people=None, pipe_number=None, comment=None,
                  dir_save_path=None, result_txt=None, conn=None):
     logging.info("load image")
 
     image_full_path = os.path.join(current_dir, str(img_name))
-
     image = Image.open(image_full_path)
     img_name_single = img_name.rsplit("/", 1)[-1]
-
+    
     # 2023.8.11 修改返回值，包括图片、分数、类别
-    r_image, out_scores, out_classes = yolo.detect_image(image)
+    r_image, out_scores, out_classes = onnx.detect_image(image)
+
+    logging.info("predict done")
 
     #  这张图要有检测结果才进入该循环
     if out_scores.size != 0:
@@ -415,7 +413,7 @@ def onnx_predict(img_name=None,
     return 1
 
 
-def predict_main(onnx_=None, mode=None,
+def predict_main(onnx=None, mode=None,
                  name_classes=None, name_classes_gbk=None,
                  location=None, people=None, pipe_number=None, comment=None,
                  timeF=None, filename=None):
@@ -440,8 +438,8 @@ def predict_main(onnx_=None, mode=None,
         logging.info("start image predict")
 
         # 检测的主程序
-        onnx_predict(img_name=filename,
-                     name_classes=name_classes, name_classes_gbk=name_classes_gbk,
+        onnx_predict(onnx=onnx, img_name=filename,
+                     name_classes_gbk=name_classes_gbk,
                      location=location, people=people, pipe_number=pipe_number, comment=comment,
                      file_name=filename, dir_save_path=dir_save_path, result_txt=f1,
                      conn=conn)
@@ -490,8 +488,8 @@ def predict_main(onnx_=None, mode=None,
 
             img_name_path = os.path.join(output_dir, img_name)
             # 检测的主程序
-            onnx_predict(img_name=img_name_path,
-                         name_classes=name_classes, name_classes_gbk=name_classes_gbk,
+            onnx_predict(onnx=onnx, img_name=img_name_path,
+                         name_classes_gbk=name_classes_gbk,
                          location=location, people=people, pipe_number=pipe_number, comment=comment,
                          file_name=filename, dir_save_path=dir_save_path, result_txt=f1,
                          conn=conn)
@@ -512,7 +510,7 @@ if __name__ == "__main__":
     yolo = YOLO_ONNX()
 
     # 进入预测 单张图片/视频
-    predict_main(onnx_=yolo, mode=int(_mode),
+    predict_main(onnx=yolo, mode=int(_mode),
                  name_classes=_name_classes,
                  name_classes_gbk=_name_classes_gbk,
                  location=_location, people=_people, pipe_number=_pipe_number, comment=_comment,

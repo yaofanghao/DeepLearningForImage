@@ -205,6 +205,8 @@ class YOLO_ONNX(object):
         input_feed = self.get_input_feed(image_data)
         outputs = self.onnx_session.run(output_names=self.output_name, input_feed=input_feed)
 
+        logging.info("predict done")
+
         feature_map_shape = [[int(j / (2 ** (i + 3))) for j in self.input_shape] for i in
                              range(len(self.anchors_mask))][::-1]
         for i in range(len(self.anchors_mask)):
@@ -269,11 +271,16 @@ class YOLO_ONNX(object):
 
 if __name__ == "__main__":
 
+
     yolo = YOLO_ONNX()
 
     img_name = "5.jpg"
 
+    logging.info("load image")
+
     image = Image.open(img_name)
     r_image = yolo.detect_image(image)
+    logging.info("success")
+
     r_image.show()
 
