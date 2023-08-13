@@ -94,7 +94,10 @@ def table_exists(table_name, db_file_path):
 class YOLO_ONNX(object):
     def __init__(self, model_name):
         self.onnx_path = model_name
-        self.classes_path = "class_name.txt"
+        
+        # 2023.8.13 classes_path 如果改成中文的标签，画框显示时类别就是中文的
+        self.classes_path = "class_name_gbk.txt"
+
         self.anchors_path = "yolo_anchors.txt"
         self.anchors_mask = [[6, 7, 8], [3, 4, 5], [0, 1, 2]]
         self.input_shape = [640, 640]

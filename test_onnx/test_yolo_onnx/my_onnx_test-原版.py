@@ -21,7 +21,10 @@ logging.basicConfig(format='%(asctime)s %(message)s', level=logging.DEBUG)
 class YOLO_ONNX(object):
     def __init__(self, model_name):
         self.onnx_path = model_name
-        self.classes_path = "class_name.txt"
+
+        # 2023.8.13 classes_path 如果改成中文的标签，画框显示时类别就是中文的
+        self.classes_path = "class_name_gbk.txt"
+
         self.anchors_path = "yolo_anchors.txt"
         self.anchors_mask = [[6, 7, 8], [3, 4, 5], [0, 1, 2]]
         self.input_shape = [640, 640]
@@ -185,6 +188,7 @@ class YOLO_ONNX(object):
         # ---------------------------------------------------------#
         for i, c in list(enumerate(top_label)):
             predicted_class = self.class_names[int(c)]
+
             box = top_boxes[i]
             score = top_conf[i]
 
@@ -216,7 +220,7 @@ class YOLO_ONNX(object):
 
 if __name__ == "__main__":
     model_name = "yolov5_x.onnx"
-    img_name = "5.jpg"
+    img_name = "xiu1.jpg"
 
     yolo = YOLO_ONNX(model_name=model_name)
 
@@ -227,3 +231,4 @@ if __name__ == "__main__":
     logging.info("success")
 
     r_image.show()
+
