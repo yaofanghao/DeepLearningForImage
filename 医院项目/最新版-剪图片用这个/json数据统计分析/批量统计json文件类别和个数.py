@@ -204,7 +204,7 @@ def replace_label_name():
     json_files = os.listdir(json_dir)
 
     # 写自己的旧标签名和新标签名
-    old_name = "baiban"
+    old_name = "duoyvwu"
     new_name = "duoyuwu"
 
     for json_file in json_files:
