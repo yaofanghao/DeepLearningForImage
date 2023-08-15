@@ -6,15 +6,47 @@
     @Software: PyCharm     
 """
 
+# 2023.8.11-更改为 yolo-onnx模型推理
+# 2023.8.15-增加预测结果存储到txt和数据库mdb中的功能
+
+import os
 import numpy as np
 import cv2
 import colorsys
 from PIL import Image, ImageFont, ImageDraw
 from utils.utils import (cvtColor, preprocess_input)
 from utils.utils_bbox import DecodeBoxNP
+import pyodbc
+from datetime import datetime
+from tqdm import tqdm
 import onnxruntime
 import logging
 logging.basicConfig(format='%(asctime)s %(message)s', level=logging.DEBUG)
+
+
+# #########################参数设置区域
+current_dir = os.path.dirname(os.path.abspath(__file__))
+db_file_path = os.path.join(current_dir, 'predict_result.mdb')  # 构造数据库文件，并连接到Access数据库，DBQ需要是绝对路径
+
+
+def table_exists(table_name, db_file_path):
+    conn_str = r'Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=' + db_file_path
+    conn = pyodbc.connect(conn_str)
+    cursor = conn.cursor()
+
+    # 获取数据库中的所有表
+    tables = cursor.tables(tableType='TABLE')
+
+    # 遍历表列表，判断特定表是否存在
+    for table in tables:
+        if table.table_name == table_name:
+            cursor.close()
+            conn.close()
+            return True
+
+    cursor.close()
+    conn.close()
+    return False
 
 
 class YoloOnnx(object):
@@ -82,8 +114,8 @@ class YoloOnnx(object):
     #   对输入图像进行resize
     def resize_image(self, image, size):
         image = np.array(image)
-        shape = np.shape(image)[:2]        # 获得现在的shape
-        if isinstance(size, int):        # 获得输出的shape
+        shape = np.shape(image)[:2]  # 获得现在的shape
+        if isinstance(size, int):  # 获得输出的shape
             size = (size, size)
 
         # 计算缩放的比例
@@ -183,16 +215,120 @@ class YoloOnnx(object):
         return image, top_conf, top_label
 
 
-if __name__ == "__main__":
-    model_name = "yolov5_x.onnx"
-    img_name = "1.jpg"
+def load(onnx_model_name):
+    yolo = YoloOnnx(model_name=onnx_model_name)
+    return yolo
 
-    yolo = YoloOnnx(model_name=model_name)
 
-    logging.info("load image")
-    image = Image.open(img_name)
+def onnx_predict(img_name, onnx_,
+                 output_path):
 
-    r_image, _, _ = yolo.detect_image(image)
+    image_full_path = os.path.join(current_dir, str(img_name))
+    image = Image.open(image_full_path)
+    img_name_single = img_name.rsplit("\\", 1)[-1]
+    file_name = 'camera'
+    _name_classes_gbk = ['背景', '多余物','氧化物',
+                         '鼓波', '划伤', '起皮',
+                         '锈斑', '凹坑', '焊接缺陷']
+
+    result_txt = open(str(output_path + 'camera_predict_result.txt'), 'a', encoding='gbk')
+
+    # 连接数据库
+    conn_str = r'Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=' + str(db_file_path)
+    logging.info("成功创建并打开数据库，路径为{}".format(db_file_path))
+    conn = pyodbc.connect(conn_str)
+
+    #   2023.8.11
+    #   修改返回值，包括图片、分数、类别
+    r_image, out_scores, out_classes = onnx_.detect_image(image)
+
+    #  这张图要有检测结果才进入该循环，进行数据库存储、预测图片保存等操作
+    if out_scores.size != 0:
+
+        #   2023.3.3
+        #   只保存有预测结果的图片（只有background不算作有预测结果）
+        result_txt.write(img_name_single)
+        result_txt.write("\r")
+        result_txt.write("  识别出的种类有： ")
+        result_txt.write("\r")
+
+        #   2023.6.29 【新要求】补充 ----------数据库读写模块
+        #   插入数据库中检测结果的字符串
+        insert_detect_result = ""
+        cursor = conn.cursor()
+
+        #   如果不存在名为file_name的表，则创建新表
+        #   因为数据库表名通常不支持点号，所以将.替换为_
+        if not table_exists(table_name=file_name.replace(".", "_"), db_file_path=db_file_path):
+            create_table_sql = '''
+                CREATE TABLE {} (
+                    时间 DATETIME,
+                    地点 VARCHAR(50),
+                    检测人 VARCHAR(50),
+                    软管序号 VARCHAR(50),
+                    图片名 VARCHAR(50),
+                    检测结果 VARCHAR(50),
+                    备注 VARCHAR(50)
+                )
+            '''.format(file_name.replace(".", "_"))
+            cursor.execute(create_table_sql)
+            logging.info("创建完成！")
+        if table_exists(table_name=file_name.replace(".", "_"), db_file_path=db_file_path):
+            logging.info("已有表！")
+
+        for i in range(out_classes.shape[0]):
+            if out_classes[i] > 0:
+                temp = out_classes[i]
+                logging.info("识别出：{}--{}".format(temp, _name_classes_gbk[temp]))
+                result_txt.write("  " + str(_name_classes_gbk[temp]) + "   \t")
+                result_txt.write("  " + str(np.round(out_scores[i], 4)) + "   \t")
+                result_txt.write("\r")
+                insert_detect_result = insert_detect_result + " " + str(_name_classes_gbk[temp])
+
+        #   2023.6.29 【新要求】插入数据到数据库表中
+        #   格式示例： 时间 图片名 检测结果
+        insert_data_sql = '''
+            INSERT INTO {} VALUES (?, ?, ?, ?, ?, ?, ?)
+        '''.format(file_name.replace(".", "_"))
+        values = (datetime.now(), " ", " ",
+                  " ", img_name_single, insert_detect_result,
+                  " ")
+        cursor.execute(insert_data_sql, values)
+
+        conn.commit()
+
+        #   关闭数据库连接
+        cursor.close()
+        logging.info("成功写入数据 [名称:{}] [检测结果:{}] 到数据库的表 [{}] 中！"
+                     .format(img_name, insert_detect_result, file_name.replace(".", "_")))
+
+        #   保存预测图片，写入预测结果到txt中
+        r_image.save(str(os.path.join(output_path, img_name_single)),
+                     quality=95, subsampling=0)
+        result_txt.write("\r")
+
     logging.info("success")
+    # r_image.show()
+    result_txt.close()
+    conn.close()
+    return 1
 
-    r_image.show()
+
+# if __name__ == "__main__":
+#
+#     base_dir = "C:\\Users\\Rainy\\Desktop\\project-2022-64bit-yolov5\\"
+#     model_name = base_dir + "yolov5_x.onnx"
+#     img_name = base_dir + "1.jpg"
+#     output_path = base_dir + "img_out\\"
+#     if not os.path.exists(output_path):
+#         os.makedirs(output_path)
+#
+#     logging.info("load image")
+#
+#     # 只在labview初始化时候，调用一次load函数
+#     onnx_ = load(onnx_model_name=model_name)
+#
+#     # 在labview的while循环中处理detect_image函数
+#     onnx_predict(img_name=img_name, onnx_=onnx_,
+#                  output_path=output_path)
+
