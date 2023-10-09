@@ -11,8 +11,8 @@ import matplotlib.pyplot as plt
 
 
 ################ 修改内容区域
-DATADIR = "xiuban"  # 原图片路径
-save_dir = "xiuban-aug\\"  # 处理后图片路径
+DATADIR = "img"  # 原图片路径
+save_dir = "img-aug\\"  # 处理后图片路径
 #######################
 
 if not os.path.exists(save_dir):
