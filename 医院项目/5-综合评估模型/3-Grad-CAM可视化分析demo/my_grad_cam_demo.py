@@ -66,7 +66,7 @@ def make_gradcam_heatmap(img_array, model, last_conv_layer_name, pred_index=None
     return heatmap.numpy()
 
 # 保存和显示
-def save_and_display_gradcam(img_path, heatmap, cam_path="cam.jpg", alpha=0.4):
+def save_and_display_gradcam(img_path, heatmap, cam_path="cam.jpg", alpha=None):
     # Load the original image
     img = keras.preprocessing.image.load_img(img_path)
     img = keras.preprocessing.image.img_to_array(img)
@@ -87,7 +87,8 @@ def save_and_display_gradcam(img_path, heatmap, cam_path="cam.jpg", alpha=0.4):
     jet_heatmap = keras.preprocessing.image.img_to_array(jet_heatmap)
 
     # Superimpose the heatmap on original image
-    superimposed_img = jet_heatmap * alpha + img
+    # superimposed_img = jet_heatmap * alpha + img
+    superimposed_img = jet_heatmap
     superimposed_img = keras.preprocessing.image.array_to_img(superimposed_img)
 
     # Save the superimposed image
@@ -120,7 +121,7 @@ if __name__ == "__main__":
         last_conv_layer_name="conv5_block3_out"
         flag = "resnet50"
 
-    dir_save_path = "img_out_" + flag + "/" 
+    dir_save_path = "img_out_" + flag + "/"
     if not os.path.exists(dir_save_path):
         os.makedirs(dir_save_path)
 
@@ -151,4 +152,4 @@ if __name__ == "__main__":
         # plt.show()
 
         cam_path = dir_save_path + img_name
-        save_and_display_gradcam(img_path, heatmap, cam_path=cam_path, alpha=0.4)
+        save_and_display_gradcam(img_path, heatmap, cam_path=cam_path, alpha=1)
