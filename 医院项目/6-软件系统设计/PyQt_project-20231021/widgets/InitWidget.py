@@ -84,4 +84,5 @@ class Ui_widget(object):
         self.label2.setText(_translate("widget", "OLGIM综合评估"))
         self.pushButton2.setText(_translate("widget", "确定"))
         self.pushButton3.setText(_translate("widget", "退出"))
-import apprcc_rc
+
+import widgets.apprcc_rc

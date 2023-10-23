@@ -19,7 +19,7 @@ from utils.utils_bbox import BBoxUtility
 #   一定要注意训练时的NUM_CLASSES、
 #   model_path和classes_path参数的修改
 #--------------------------------------------#
-class FRCNN(object):
+class FRCNN_OLGIM(object):
     _defaults = {
         #--------------------------------------------------------------------------#
         #   使用自己训练好的模型进行预测一定要修改model_path和classes_path！
@@ -29,8 +29,8 @@ class FRCNN(object):
         #   验证集损失较低不代表mAP较高，仅代表该权值在验证集上泛化性能较好。
         #   如果出现shape不匹配，同时要注意训练时的model_path和classes_path参数的修改
         #--------------------------------------------------------------------------#
-        "model_path"    : 'logs/logs_OLGIM.h5',
-        "classes_path"  : 'model_data/voc_classes.txt',
+        "model_path"    : 'nets/logs_OLGIM.h5',
+        "classes_path"  : 'nets/voc_classes_OLGIM.txt',
         #---------------------------------------------------------------------#
         #   网络的主干特征提取网络，resnet50或者vgg
         #---------------------------------------------------------------------#
@@ -156,7 +156,7 @@ class FRCNN(object):
         #---------------------------------------------------------#
         #   设置字体与边框厚度
         #---------------------------------------------------------#
-        font = ImageFont.truetype(font='model_data/simhei.ttf',size=np.floor(3e-2 * np.shape(image)[1] + 25).astype('int32'))
+        font = ImageFont.truetype(font='simhei.ttf',size=np.floor(3e-2 * np.shape(image)[1] + 25).astype('int32'))
         thickness = max((np.shape(image)[0] + np.shape(image)[1]) // input_shape[0], 1)
         #---------------------------------------------------------#
         #   计数
