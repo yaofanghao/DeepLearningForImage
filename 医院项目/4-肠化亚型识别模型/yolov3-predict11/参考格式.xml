@@ -1,0 +1,26 @@
+<annotation>
+    <folder>肿瘤性2</folder>
+	<filename>丁美华1.jpg</filename>
+	<path>C:\Users\liuleheng\Desktop\改回人名\内部测试集\肿瘤性2\丁美华1.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>621</width>
+		<height>540</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>NEO</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>93</xmin>
+			<ymin>290</ymin>
+			<xmax>247</xmax>
+			<ymax>407</ymax>
+		</bndbox>
+	</object>
+</annotation>
