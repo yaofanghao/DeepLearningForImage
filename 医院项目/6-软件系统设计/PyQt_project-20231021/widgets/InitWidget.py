@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_widget(object):
     def setupUi(self, widget):
         widget.setObjectName("widget")
-        widget.resize(1000, 700)
+        widget.resize(972, 647)
         widget.setFocusPolicy(QtCore.Qt.ClickFocus)
         widget.setStyleSheet("")
         self.pushButton1 = QtWidgets.QPushButton(widget)
@@ -28,8 +28,10 @@ class Ui_widget(object):
         self.label1 = QtWidgets.QLabel(widget)
         self.label1.setGeometry(QtCore.QRect(570, 270, 191, 22))
         font = QtGui.QFont()
-        font.setFamily("楷体")
+        font.setFamily("等线")
         font.setPointSize(16)
+        font.setBold(True)
+        font.setWeight(75)
         self.label1.setFont(font)
         self.label1.setStyleSheet("color: rgb(170, 0, 127);\n"
 "background-color: rgb(255, 253, 190);")
@@ -37,8 +39,10 @@ class Ui_widget(object):
         self.label2 = QtWidgets.QLabel(widget)
         self.label2.setGeometry(QtCore.QRect(570, 370, 164, 22))
         font = QtGui.QFont()
-        font.setFamily("楷体")
+        font.setFamily("等线")
         font.setPointSize(16)
+        font.setBold(True)
+        font.setWeight(75)
         self.label2.setFont(font)
         self.label2.setStyleSheet("color: rgb(170, 0, 127);\n"
 "background-color: rgb(255, 253, 190);")
@@ -60,11 +64,12 @@ class Ui_widget(object):
         self.pushButton3.setStyleSheet("background-color: rgb(255, 170, 0);\n"
 "color: rgb(0, 0, 255);")
         self.pushButton3.setObjectName("pushButton3")
-        self.listView = QtWidgets.QListView(widget)
-        self.listView.setGeometry(QtCore.QRect(0, 0, 1000, 700))
-        self.listView.setStyleSheet("background-image: url(:/images/background.png);")
-        self.listView.setObjectName("listView")
-        self.listView.raise_()
+        self.label = QtWidgets.QLabel(widget)
+        self.label.setGeometry(QtCore.QRect(0, -70, 1001, 781))
+        self.label.setText("")
+        self.label.setPixmap(QtGui.QPixmap(":/pic/background.png"))
+        self.label.setObjectName("label")
+        self.label.raise_()
         self.pushButton3.raise_()
         self.label1.raise_()
         self.label2.raise_()
@@ -84,5 +89,4 @@ class Ui_widget(object):
         self.label2.setText(_translate("widget", "OLGIM综合评估"))
         self.pushButton2.setText(_translate("widget", "确定"))
         self.pushButton3.setText(_translate("widget", "退出"))
-
-import widgets.apprcc_rc
+import apprcc_rc

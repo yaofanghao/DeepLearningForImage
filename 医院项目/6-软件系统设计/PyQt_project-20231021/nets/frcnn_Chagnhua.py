@@ -31,13 +31,14 @@ class FRCNN_Changhua(object):
         #--------------------------------------------------------------------------#
         "model_path"    : 'nets/logs_Changhua.h5',
         "classes_path"  : 'nets/voc_classes_Changhua.txt',
+        # "model_path": 'logs/best_epoch_weights.h5',
+        # "classes_path": 'logs/voc_classes.txt',
         #---------------------------------------------------------------------#
         #   网络的主干特征提取网络，resnet50或者vgg
         #---------------------------------------------------------------------#
         "backbone"      : "resnet50",
         #---------------------------------------------------------------------#
         #   只有得分大于置信度的预测框会被保留下来
-        #---------------------------------------------------------------------#
         #---------------------------------------------------------------------#
         "confidence"    : 0.5,
         #---------------------------------------------------------------------#
@@ -202,9 +203,6 @@ class FRCNN_Changhua(object):
             left    = max(0, np.floor(left).astype('int32'))
             bottom  = min(image.size[1], np.floor(bottom).astype('int32'))
             right   = min(image.size[0], np.floor(right).astype('int32'))
-
-            if score<0.9:
-                score = score + 0.1
 
             label = '{} {:.6f}'.format(predicted_class, score)
             draw = ImageDraw.Draw(image)

@@ -92,22 +92,7 @@ class BBoxUtility(object):
             #   进行iou的非极大抑制
             #--------------------------------#
             idx = tf.image.non_max_suppression(boxes_to_process, confs_to_process, self._min_k, iou_threshold = self.rpn_nms).numpy()
-
-            ############ 10.25 修改 ##################
-            # idx = tf.image.combined_non_max_suppression(boxes_to_process, confs_to_process,
-            #                                             self._min_k, iou_threshold = self.rpn_nms)
-
-            # 参数设置：
-            # def combined_non_max_suppression(boxes,
-            #                                  scores,
-            #                                  max_output_size_per_class,
-            #                                  max_total_size,
-            #                                  iou_threshold=0.5,
-            #                                  score_threshold=float('-inf'),
-            #                                  pad_per_class=False,
-            #                                  clip_boxes=True,
-            #                                  name=None):
-
+            
             #--------------------------------#
             #   取出在非极大抑制中效果较好的内容
             #--------------------------------#
@@ -195,6 +180,25 @@ class BBoxUtility(object):
                         #   进行iou的非极大抑制
                         #-----------------------------------------#
                         idx = tf.image.non_max_suppression(boxes_to_process, confs_to_process, self._min_k, iou_threshold = self.nms_iou).numpy()
+                        # idx = tf.image.combined_non_max_suppression(boxes_to_process, confs_to_process, self._min_k,
+                        #                                    iou_threshold=self.nms_iou).numpy()
+
+                        # def combined_non_max_suppression(boxes,
+                        #                                  scores,
+                        #                                  max_output_size_per_class,
+                        #                                  max_total_size,
+                        #                                  iou_threshold=0.5,
+                        #                                  score_threshold=float('-inf'),
+                        #                                  pad_per_class=False,
+                        #                                  clip_boxes=True,
+                        #                                  name=None):
+                        # def non_max_suppression(boxes,
+                        #                         scores,
+                        #                         max_output_size,
+                        #                         iou_threshold=0.5,
+                        #                         score_threshold=float('-inf'),
+                        #                         name=None):
+
                         #-----------------------------------------#
                         #   取出在非极大抑制中效果较好的内容
                         #-----------------------------------------#

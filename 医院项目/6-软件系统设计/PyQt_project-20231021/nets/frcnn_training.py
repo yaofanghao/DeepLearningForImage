@@ -1,6 +1,5 @@
 import math
 from functools import partial
-import re
 
 import numpy as np
 import tensorflow as tf
@@ -85,50 +84,6 @@ def rpn_smooth_l1(sigma = 1.0):
         regression_loss = keras.backend.sum(regression_loss) / normalizer
         return regression_loss 
     return _rpn_smooth_l1
-
-# 2023.3.6 改进的损失函数 smoothl1-plus
-def rpn_smooth_l1_plus(sigma = 1.0):
-    sigma_squared = sigma ** 2
-    def _rpn_smooth_l1_plus(y_true, y_pred):
-        #---------------------------------------------------#
-        #   y_true [batch_size, num_anchor, 4 + 1]
-        #   y_pred [batch_size, num_anchor, 4]
-        #---------------------------------------------------#
-        regression        = y_pred
-        regression_target = y_true[:, :, :-1]
-        #---------------------------------------------------#
-        #   -1 是需要忽略的, 0 是背景, 1 是存在目标
-        #---------------------------------------------------#
-        anchor_state      = y_true[:, :, -1]
-
-        #---------------------------------------------------#
-        #   找到正样本
-        #---------------------------------------------------#
-        indices           = tf.where(keras.backend.equal(anchor_state, 1))
-        regression        = tf.gather_nd(regression, indices)
-        regression_target = tf.gather_nd(regression_target, indices)
-
-        regression_diff = regression - regression_target
-        regression_diff = keras.backend.abs(regression_diff)
-
-        # 分段计算改进的的损失函数
-        # 1/ln2 近似为1.4427 
-        # ln2 近似为0.69315
-        # 3-1/ln2 近似为 1.5573 
-        regression_loss = tf.where(
-            keras.backend.less(regression_diff, 1.0 / sigma_squared),
-            sigma_squared * 1.4427 * ((regression_diff+1) * keras.backend.log(regression_diff+1)+0.69315-regression_diff),
-            regression_diff - 1.5573 / sigma_squared 
-        )   
-        #---------------------------------------------------#
-        #   将所获得的loss除上正样本的数量
-        #---------------------------------------------------#
-        normalizer = keras.backend.maximum(1, keras.backend.shape(indices)[0])
-        normalizer = keras.backend.cast(normalizer, dtype=keras.backend.floatx())
-        regression_loss = keras.backend.sum(regression_loss) / normalizer
-        return regression_loss 
-    return _rpn_smooth_l1_plus
-
 
 def classifier_cls_loss():
     def _classifier_cls_loss(y_true, y_pred):

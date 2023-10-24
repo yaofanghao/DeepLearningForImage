@@ -6,7 +6,7 @@ from tensorflow.keras.layers import Conv2D, Reshape
 #   创建建议框网络
 #   该网络结果会对先验框进行调整获得建议框
 #----------------------------------------------------#
-def get_rpn(base_layers, num_anchors):  # num_anchors =  9
+def get_rpn(base_layers, num_anchors):
     #----------------------------------------------------#
     #   利用一个512通道的3x3卷积进行特征整合
     #----------------------------------------------------#

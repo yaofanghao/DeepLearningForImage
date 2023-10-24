@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1000</width>
-    <height>700</height>
+    <height>750</height>
    </rect>
   </property>
   <property name="palette">
@@ -110,16 +110,18 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>390</x>
-     <y>40</y>
+     <x>760</x>
+     <y>20</y>
      <width>201</width>
      <height>50</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <family>楷体</family>
+     <family>等线</family>
      <pointsize>24</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
     </font>
    </property>
    <property name="text">
@@ -133,7 +135,7 @@
    <property name="geometry">
     <rect>
      <x>140</x>
-     <y>100</y>
+     <y>120</y>
      <width>701</width>
      <height>71</height>
     </rect>
@@ -249,7 +251,7 @@
    <property name="geometry">
     <rect>
      <x>140</x>
-     <y>190</y>
+     <y>230</y>
      <width>701</width>
      <height>171</height>
     </rect>
@@ -437,7 +439,7 @@
    <property name="geometry">
     <rect>
      <x>140</x>
-     <y>390</y>
+     <y>430</y>
      <width>171</width>
      <height>20</height>
     </rect>
@@ -459,7 +461,7 @@
    <property name="geometry">
     <rect>
      <x>140</x>
-     <y>430</y>
+     <y>470</y>
      <width>711</width>
      <height>161</height>
     </rect>
@@ -482,7 +484,7 @@ p, li { white-space: pre-wrap; }
    <property name="geometry">
     <rect>
      <x>300</x>
-     <y>610</y>
+     <y>660</y>
      <width>141</width>
      <height>51</height>
     </rect>
@@ -504,7 +506,7 @@ p, li { white-space: pre-wrap; }
    <property name="geometry">
     <rect>
      <x>520</x>
-     <y>610</y>
+     <y>660</y>
      <width>141</width>
      <height>51</height>
     </rect>
@@ -526,9 +528,9 @@ p, li { white-space: pre-wrap; }
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>0</y>
+     <y>79</y>
      <width>1000</width>
-     <height>700</height>
+     <height>671</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -539,7 +541,7 @@ p, li { white-space: pre-wrap; }
    <property name="geometry">
     <rect>
      <x>730</x>
-     <y>390</y>
+     <y>430</y>
      <width>121</width>
      <height>20</height>
     </rect>
@@ -552,7 +554,7 @@ p, li { white-space: pre-wrap; }
    <property name="geometry">
     <rect>
      <x>650</x>
-     <y>390</y>
+     <y>430</y>
      <width>71</width>
      <height>20</height>
     </rect>
@@ -574,7 +576,7 @@ p, li { white-space: pre-wrap; }
    <property name="geometry">
     <rect>
      <x>830</x>
-     <y>640</y>
+     <y>690</y>
      <width>141</width>
      <height>41</height>
     </rect>
@@ -593,6 +595,23 @@ color: rgb(0, 0, 255);</string>
     <string>退出检测</string>
    </property>
   </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>-10</y>
+     <width>1091</width>
+     <height>101</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="apprcc.qrc">:/pic/tittle.png</pixmap>
+   </property>
+  </widget>
+  <zorder>label_2</zorder>
   <zorder>listView</zorder>
   <zorder>label</zorder>
   <zorder>horizontalLayoutWidget</zorder>
@@ -605,6 +624,8 @@ color: rgb(0, 0, 255);</string>
   <zorder>label2_2</zorder>
   <zorder>pushButton3</zorder>
  </widget>
- <resources/>
+ <resources>
+  <include location="apprcc.qrc"/>
+ </resources>
  <connections/>
 </ui>
