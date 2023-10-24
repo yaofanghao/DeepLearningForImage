@@ -310,4 +310,4 @@ class Ui_Form(object):
         self.pushButton2.setText(_translate("Form", "生成诊断报告"))
         self.label2_2.setText(_translate("Form", "日期"))
         self.pushButton3.setText(_translate("Form", "退出检测"))
-import apprcc_rc
+import widgets.apprcc

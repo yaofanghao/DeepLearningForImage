@@ -235,4 +235,5 @@ class Ui_Form(object):
         self.pushButton3.setText(_translate("Form", "上一个"))
         self.label1.setText(_translate("Form", "预测置信度"))
         self.label7.setText(_translate("Form", "图片名称"))
-import apprcc_rc
+
+import widgets.apprcc
