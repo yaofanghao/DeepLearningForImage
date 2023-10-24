@@ -118,7 +118,7 @@ class BBoxUtility(object):
         return boxes
 
     def detection_out_classifier(self, predictions, rpn_results, image_shape, input_shape, confidence=0.5,
-                                 variances=None):
+                                 variances=[0.125, 0.125, 0.25, 0.25]):
         # ---------------------------------------------------#
         #   proposal_conf是种类的置信度
         # ---------------------------------------------------#

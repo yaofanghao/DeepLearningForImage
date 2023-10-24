@@ -17,11 +17,17 @@ from PyQt5.QtGui import QPixmap
 from widgets.ChanghuaWidget import Ui_Form as ChanghuaUiForm
 from widgets.OLGIMWidget import Ui_Form as OlgimUiForm
 
-# 导入faster-RCNN模型类
-from nets.frcnn_Chagnhua import FRCNNChanghua
-from nets.frcnn_OLGIM import FRCNNOLGIM
-frcnn_changhua = FRCNNChanghua()
-frcnn_olgim = FRCNNOLGIM()
+# 导入faster-RCNN模型类、权重、标签文件
+from nets.frcnn_class import FRCNN
+
+model_path_changhua = 'nets/logs_Changhua.h5'
+classes_path_changhua = 'nets/voc_classes_Changhua.txt'
+frcnn_changhua = FRCNN(model_path=model_path_changhua, classes_path=classes_path_changhua)
+
+model_path_olgim = 'nets/logs_OLGIM.h5'
+classes_path_olgim = 'nets/voc_classes_OLGIM.txt'
+frcnn_olgim = FRCNN(model_path=model_path_olgim, classes_path=classes_path_olgim)
+
 gpus = tf.config.experimental.list_physical_devices(device_type='GPU')
 # for gpu in gpus:
 #     tf.config.experimental.set_memory_growth(gpu, True)
@@ -121,10 +127,11 @@ class ChanghuaUi(QtWidgets.QMainWindow, ChanghuaUiForm):
         self.label6.setPixmap(img_out)  # 显示预测图片到界面上
 
     def predict_jpg(self):
+        self.scores = [0 for _ in range(len(self.file_paths))]
         # 进度条
         elapsed_time = len(self.file_paths)  # 进度条按比例划分为图片个数
         self.pbar = QProgressDialog("诊断中", "取消", 0, elapsed_time, self)
-        self.pbar.setWindowTitle("进度提示")
+        self.pbar.setWindowTitle("模型启动中")
         self.pbar.show()
         self.pbar.setValue(1)
 
@@ -135,13 +142,13 @@ class ChanghuaUi(QtWidgets.QMainWindow, ChanghuaUiForm):
 
             # 如果img_out文件夹中已经存在预测图片，跳过以下步骤
             _, img_name = os.path.split(image_num)
-            if not os.path.exists(os.path.join('./img_out_Changhua/', img_name)):
+            if not os.path.exists(os.path.join('img_out_OLGIM/', img_name.replace(".jpg", ".png"))):
                 # 关键部分！返回新的画框图和新置信度，并实现了分类至CIM\IIM等：
                 r_image, out_scores, out_classes, top, right, left, bottom = frcnn_changhua.detect_image(image)
                 print("success predict!")
 
-                if out_scores[0] == 0:  # 2023.3.2 解决了部分图片non-iterale的错误问题
-                    self.scores[flag] = 0
+                # if out_scores[0] == 0:  # 2023.3.2 解决了部分图片non-iterale的错误问题
+                #     self.scores[flag] = 0
 
                 if out_scores.size != 0:
                     # 找到置信度最大的类别的算法
@@ -170,6 +177,7 @@ class ChanghuaUi(QtWidgets.QMainWindow, ChanghuaUiForm):
                 print('success save!')
 
             flag += 1
+            self.pbar.setWindowTitle("检测进度")
             self.pbar.setValue(flag)  # 进度条每处理完一张图片加一份
             QtCore.QCoreApplication.processEvents()
             if self.pbar.wasCanceled():
@@ -288,10 +296,11 @@ class OLGIMUi(QtWidgets.QMainWindow, OlgimUiForm):
         self.label6.setPixmap(img_out)  # 显示预测图片到界面上
 
     def predict_jpg(self):
+        self.scores = [0 for _ in range(len(self.file_paths))]
         # 进度条
         elapsed_time = len(self.file_paths)  # 进度条按比例划分为图片个数
         self.pbar = QProgressDialog("诊断中", "取消", 0, elapsed_time, self)
-        self.pbar.setWindowTitle("进度提示")
+        self.pbar.setWindowTitle("模型启动中")
         self.pbar.show()
         self.pbar.setValue(1)
 
@@ -301,13 +310,14 @@ class OLGIMUi(QtWidgets.QMainWindow, OlgimUiForm):
             print(image_num)
             # 如果img_out文件夹中已经存在预测图片，跳过以下步骤
             _, img_name = os.path.split(image_num)
-            if not os.path.exists(os.path.join('./img_out_OLGIM/', img_name)):
+            if not os.path.exists(os.path.join('img_out_OLGIM/', img_name.replace(".jpg", ".png"))):
                 # 关键部分！返回新的画框图和新置信度，并实现了分类至0-1分\2分\3分等：
                 r_image, out_scores, out_classes, top, right, left, bottom = frcnn_olgim.detect_image(image)
+                print(out_scores, out_classes, top, right, left, bottom)
                 print("success predict!")
 
-                if out_scores[0] == 0:  # 2023.3.2 解决了部分图片non-iterale的错误问题
-                    self.scores[flag] = 0
+                # if out_scores[0] == 0:  # 2023.3.2 解决了部分图片non-iterale的错误问题
+                #     self.scores[flag] = 0
 
                 if (out_scores.size != 0) & (out_scores[0] > 0):
                     # 找到置信度最大的类别的算法
@@ -342,6 +352,7 @@ class OLGIMUi(QtWidgets.QMainWindow, OlgimUiForm):
                 print('success save!')
 
             flag += 1
+            self.pbar.setWindowTitle("检测进度")
             self.pbar.setValue(flag)  # 进度条每处理完一张图片加一份
             QtCore.QCoreApplication.processEvents()
             if self.pbar.wasCanceled():

@@ -16,11 +16,11 @@ from utils.utils_bbox import BBoxUtility
 #   如果出现shape不匹配
 #   一定要注意训练时的num_classes、model_path和classes_path参数的修改
 # --------------------------------------------#
-class FRCNNChanghua(object):
+class FRCNN(object):
     #   初始化Faster-RCNN模型
-    def __init__(self):
-        self.model_path = 'nets/logs_Changhua.h5'
-        self.classes_path = 'nets/voc_classes_Changhua.txt'
+    def __init__(self, model_path, classes_path):
+        self.model_path = model_path
+        self.classes_path = classes_path
         self.backbone = "resnet50"
         self.confidence = 0.5
         self.nms_iou = 0.1
@@ -98,10 +98,6 @@ class FRCNNChanghua(object):
         font = ImageFont.truetype(font='simhei.ttf', size=np.floor(3e-2 * np.shape(image)[1] + 25).astype('int32'))
         thickness = max((np.shape(image)[0] + np.shape(image)[1]) // input_shape[0], 1)
 
-        top = 0
-        right = 0
-        left = 0
-        bottom = 0
         #   图像绘制
         for i, c in list(enumerate(top_label)):
             predicted_class = self.class_names[int(c)]
