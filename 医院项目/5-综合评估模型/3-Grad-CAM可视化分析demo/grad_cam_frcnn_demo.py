@@ -87,8 +87,8 @@ def save_and_display_gradcam(img_path, heatmap, cam_path="cam.jpg", alpha=None):
     jet_heatmap = keras.preprocessing.image.img_to_array(jet_heatmap)
 
     # Superimpose the heatmap on original image
-    # superimposed_img = jet_heatmap * alpha + img
-    superimposed_img = jet_heatmap
+    superimposed_img = jet_heatmap * alpha + img
+    # superimposed_img = jet_heatmap
     superimposed_img = keras.preprocessing.image.array_to_img(superimposed_img)
 
     # Save the superimposed image
@@ -102,31 +102,46 @@ if __name__ == "__main__":
     ####### 网络选择
     mode = "xception"
     # mode = "resnet50"
+    # mode = "frcnn"
 
     ###### 图片文件夹所在路径选择
     dir_origin_path = 'img/'
     ######################################
     img_names = os.listdir(dir_origin_path)
 
-    img_size = (299, 299)
+
     if mode=="xception":
+        img_size = (299, 299)
         model_builder = keras.applications.xception.Xception
         preprocess_input = keras.applications.xception.preprocess_input
         decode_predictions = keras.applications.xception.decode_predictions
         last_conv_layer_name = "block14_sepconv2_act"
         flag = "xception"
-    else:
+        model = model_builder(weights="imagenet")
+
+    if mode=="resnet50":
+        img_size = (224,224)
         model_builder = keras.applications.resnet50.ResNet50
         preprocess_input = keras.applications.resnet50.preprocess_input
-        last_conv_layer_name="conv5_block3_out"
+        last_conv_layer_name="conv5_block2_out"
         flag = "resnet50"
+        model = model_builder(weights="imagenet")
 
-    dir_save_path = "img_out_" + flag + "/"
+    if mode=="frcnn":
+        from nets.frcnn import get_model
+        img_size = (600, 600)
+        num_classes = 3        
+        model_builder = keras.applications.resnet50.ResNet50
+        preprocess_input = keras.applications.resnet50.preprocess_input
+        last_conv_layer_name="bn4f_branch2c"
+        flag = "frcnn"
+        _, model = get_model(num_classes, 'resnet', input_shape=[img_size[0], img_size[1], 3])
+
+    dir_save_path = "img_out_" + flag + "_" + last_conv_layer_name + "/"
     if not os.path.exists(dir_save_path):
         os.makedirs(dir_save_path)
 
     # 导入模型
-    model = model_builder(weights="imagenet")
     model.summary()
 
     for img_name in img_names:
@@ -152,4 +167,4 @@ if __name__ == "__main__":
         # plt.show()
 
         cam_path = dir_save_path + img_name
-        save_and_display_gradcam(img_path, heatmap, cam_path=cam_path, alpha=1)
+        save_and_display_gradcam(img_path, heatmap, cam_path=cam_path, alpha=0.8)

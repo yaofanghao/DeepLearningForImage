@@ -17,21 +17,27 @@ from PyQt5.QtGui import QPixmap
 from widgets.ChanghuaWidget import Ui_Form as ChanghuaUiForm
 from widgets.OLGIMWidget import Ui_Form as OlgimUiForm
 
+# ------------------参数设置区域------------------------#
 # 导入faster-RCNN模型类、权重、标签文件
 from nets.frcnn_class import FRCNN
 
 model_path_changhua = 'nets/logs_Changhua.h5'
 classes_path_changhua = 'nets/voc_classes_Changhua.txt'
+output_dir_changhua = './img_out_Changhua/'
 frcnn_changhua = FRCNN(model_path=model_path_changhua, classes_path=classes_path_changhua)
 
 model_path_olgim = 'nets/logs_OLGIM.h5'
 classes_path_olgim = 'nets/voc_classes_OLGIM.txt'
+output_dir_olgim = './img_out_OLGIM/'
 frcnn_olgim = FRCNN(model_path=model_path_olgim, classes_path=classes_path_olgim)
 
 gpus = tf.config.experimental.list_physical_devices(device_type='GPU')
 # for gpu in gpus:
 #     tf.config.experimental.set_memory_growth(gpu, True)
+# --------------------------------------------------#
 
+import logging
+logging.basicConfig(format='%(asctime)s %(message)s', level=logging.DEBUG)
 
 # ChanghuaUi 辅助诊断肠化亚型模块
 class ChanghuaUi(QtWidgets.QMainWindow, ChanghuaUiForm):
@@ -45,9 +51,9 @@ class ChanghuaUi(QtWidgets.QMainWindow, ChanghuaUiForm):
         self.file_paths = []  # 文件列表
         self.file_index = 0	  # 文件索引
         self.scores = [0 for _ in range(len(self.file_paths))]  # 创建置信度分数列表，暂时全为0
-        self.output_dir = './img_out_Changhua/'
-        if not os.path.exists(self.output_dir):
-            os.makedirs(self.output_dir)
+        self.output_dir_changhua = output_dir_changhua
+        if not os.path.exists(self.output_dir_changhua):
+            os.makedirs(self.output_dir_changhua)
         self.now = QtCore.QDate.currentDate()  # 获取当前日期
         self.lineEdit2.setText(self.now.toString('yyyy-MM-dd'))  # 显示时间到界面
         self.pushButton1.clicked.connect(self.import_folder)  # 导入文件夹
@@ -104,7 +110,7 @@ class ChanghuaUi(QtWidgets.QMainWindow, ChanghuaUiForm):
         self.lineEdit5.setText(filename)
         self.scores = [0 for _ in range(len(self.file_paths))]
         self.lineEdit3.setText(str(self.scores[self.file_index]))  # 显示置信度分数到界面上
-        img_out = QPixmap(os.path.join(self.output_dir, filename.replace(".jpg", ".png"))).scaled(self.label6.width(),
+        img_out = QPixmap(os.path.join(self.output_dir_changhua, filename.replace(".jpg", ".png"))).scaled(self.label6.width(),
                                                                                                   self.label6.height())
         self.label6.setPixmap(img_out)  # 显示预测图片到界面上
 
@@ -122,7 +128,7 @@ class ChanghuaUi(QtWidgets.QMainWindow, ChanghuaUiForm):
         self.lineEdit5.setText(filename)
         self.scores = [0 for _ in range(len(self.file_paths))]
         self.lineEdit3.setText(str(self.scores[self.file_index]))  # 显示置信度分数到界面上
-        img_out = QPixmap(os.path.join(self.output_dir, filename.replace(".jpg", ".png"))).scaled(self.label6.width(),
+        img_out = QPixmap(os.path.join(self.output_dir_changhua, filename.replace(".jpg", ".png"))).scaled(self.label6.width(),
                                                                                                   self.label6.height())
         self.label6.setPixmap(img_out)  # 显示预测图片到界面上
 
@@ -142,10 +148,11 @@ class ChanghuaUi(QtWidgets.QMainWindow, ChanghuaUiForm):
 
             # 如果img_out文件夹中已经存在预测图片，跳过以下步骤
             _, img_name = os.path.split(image_num)
-            if not os.path.exists(os.path.join('img_out_OLGIM/', img_name.replace(".jpg", ".png"))):
+            if not os.path.exists(os.path.join(output_dir_changhua, img_name.replace(".jpg", ".png"))):
                 # 关键部分！返回新的画框图和新置信度，并实现了分类至CIM\IIM等：
+                logging.info("start predict!")
                 r_image, out_scores, out_classes, top, right, left, bottom = frcnn_changhua.detect_image(image)
-                print("success predict!")
+                logging.info("success predict!")
 
                 # if out_scores[0] == 0:  # 2023.3.2 解决了部分图片non-iterale的错误问题
                 #     self.scores[flag] = 0
@@ -172,7 +179,7 @@ class ChanghuaUi(QtWidgets.QMainWindow, ChanghuaUiForm):
                 # 目前实现的办法：先保存再读取
                 # cur_path = self.file_paths[self.file_index]
                 filepath, filename = os.path.split(image_num)  # 分离文件路径和名称
-                dst = os.path.join(self.output_dir, filename.replace(".jpg", ".png"))
+                dst = os.path.join(self.output_dir_changhua, filename.replace(".jpg", ".png"))
                 r_image.save(dst)  # 保存预测图片至img_out
                 print('success save!')
 
@@ -190,7 +197,7 @@ class ChanghuaUi(QtWidgets.QMainWindow, ChanghuaUiForm):
     def save_jpg(self):  # 显示图片
         cur_path = self.file_paths[self.file_index]
         filepath, filename = os.path.split(cur_path)  # 分离文件路径和名称
-        img_out = QPixmap(os.path.join(self.output_dir, filename.replace(".jpg", ".png"))).scaled(self.label6.width(),
+        img_out = QPixmap(os.path.join(self.output_dir_changhua, filename.replace(".jpg", ".png"))).scaled(self.label6.width(),
                                                                                                   self.label6.height())
         self.label6.setPixmap(img_out)  # 显示预测图片到界面上
         print(self.file_index)
@@ -214,9 +221,9 @@ class OLGIMUi(QtWidgets.QMainWindow, OlgimUiForm):
         self.file_paths = []  # 文件列表
         self.file_index = 0	  # 文件索引
         self.scores = [0 for _ in range(len(self.file_paths))]  # 创建置信度分数列表，暂时全为0
-        self.output_dir = './img_out_OLGIM/'
-        if not os.path.exists(self.output_dir):
-            os.makedirs(self.output_dir)
+        self.output_dir_olgim = output_dir_olgim
+        if not os.path.exists(self.output_dir_olgim):
+            os.makedirs(self.output_dir_olgim)
         self.now = QtCore.QDate.currentDate()  # 获取当前日期
         self.lineEdit2.setText(self.now.toString('yyyy-MM-dd'))  # 显示时间到界面
         self.pushButton1.clicked.connect(self.import_folder)  # 导入文件夹
@@ -273,7 +280,7 @@ class OLGIMUi(QtWidgets.QMainWindow, OlgimUiForm):
         self.lineEdit5.setText(filename)
         self.scores = [0 for _ in range(len(self.file_paths))]
         self.lineEdit3.setText(str(self.scores[self.file_index]))  # 显示置信度分数到界面上
-        img_out = QPixmap(os.path.join(self.output_dir, filename.replace(".jpg", ".png"))).scaled(self.label6.width(),
+        img_out = QPixmap(os.path.join(self.output_dir_olgim, filename.replace(".jpg", ".png"))).scaled(self.label6.width(),
                                                                                                   self.label6.height())
         self.label6.setPixmap(img_out)  # 显示预测图片到界面上
 
@@ -291,7 +298,7 @@ class OLGIMUi(QtWidgets.QMainWindow, OlgimUiForm):
         self.lineEdit5.setText(filename)
         self.scores = [0 for _ in range(len(self.file_paths))]
         self.lineEdit3.setText(str(self.scores[self.file_index]))  # 显示置信度分数到界面上
-        img_out = QPixmap(os.path.join(self.output_dir, filename.replace(".jpg", ".png"))).scaled(self.label6.width(),
+        img_out = QPixmap(os.path.join(self.output_dir_olgim, filename.replace(".jpg", ".png"))).scaled(self.label6.width(),
                                                                                                   self.label6.height())
         self.label6.setPixmap(img_out)  # 显示预测图片到界面上
 
@@ -310,7 +317,7 @@ class OLGIMUi(QtWidgets.QMainWindow, OlgimUiForm):
             print(image_num)
             # 如果img_out文件夹中已经存在预测图片，跳过以下步骤
             _, img_name = os.path.split(image_num)
-            if not os.path.exists(os.path.join('img_out_OLGIM/', img_name.replace(".jpg", ".png"))):
+            if not os.path.exists(os.path.join(output_dir_olgim, img_name.replace(".jpg", ".png"))):
                 # 关键部分！返回新的画框图和新置信度，并实现了分类至0-1分\2分\3分等：
                 r_image, out_scores, out_classes, top, right, left, bottom = frcnn_olgim.detect_image(image)
                 print(out_scores, out_classes, top, right, left, bottom)
@@ -347,7 +354,7 @@ class OLGIMUi(QtWidgets.QMainWindow, OlgimUiForm):
                 # 目前实现的办法：先保存再读取
                 # cur_path = self.file_paths[self.file_index]
                 filepath, filename = os.path.split(image_num)  # 分离文件路径和名称
-                dst = os.path.join(self.output_dir, filename.replace(".jpg", ".png"))
+                dst = os.path.join(self.output_dir_olgim, filename.replace(".jpg", ".png"))
                 r_image.save(dst)  # 保存预测图片至img_out
                 print('success save!')
 
@@ -365,7 +372,7 @@ class OLGIMUi(QtWidgets.QMainWindow, OlgimUiForm):
     def save_jpg(self):  # 显示图片
         cur_path = self.file_paths[self.file_index]
         filepath, filename = os.path.split(cur_path)  # 分离文件路径和名称
-        img_out = QPixmap(os.path.join(self.output_dir, filename.replace(".jpg", ".png"))).scaled(self.label6.width(),
+        img_out = QPixmap(os.path.join(self.output_dir_olgim, filename.replace(".jpg", ".png"))).scaled(self.label6.width(),
                                                                                                   self.label6.height())
         self.label6.setPixmap(img_out)  # 显示预测图片到界面上
         print(self.file_index)

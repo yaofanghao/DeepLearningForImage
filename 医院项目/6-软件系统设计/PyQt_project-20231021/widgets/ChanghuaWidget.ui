@@ -102,7 +102,7 @@
    </palette>
   </property>
   <property name="windowTitle">
-   <string>OLGIM综合评估模型界面</string>
+   <string>辅助诊断肠化亚型界面</string>
   </property>
   <property name="autoFillBackground">
    <bool>false</bool>
@@ -123,6 +123,9 @@
      <weight>75</weight>
      <bold>true</bold>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color rgb(0, 0, 0)</string>
    </property>
    <property name="text">
     <string>辅助诊断肠化亚型</string>
@@ -145,7 +148,7 @@
    </property>
    <property name="font">
     <font>
-     <family>楷体</family>
+     <family>等线</family>
      <pointsize>12</pointsize>
     </font>
    </property>
@@ -168,7 +171,7 @@
    </property>
    <property name="font">
     <font>
-     <family>楷体</family>
+     <family>等线</family>
      <pointsize>12</pointsize>
     </font>
    </property>
@@ -190,16 +193,16 @@
    </property>
    <property name="font">
     <font>
-     <family>楷体</family>
+     <family>等线</family>
      <pointsize>12</pointsize>
     </font>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color: rgb(255, 170, 0);
-color: rgb(0, 0, 255);</string>
+color: rgb(0, 0, 0);</string>
    </property>
    <property name="text">
-    <string>退出检测</string>
+    <string>退出</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="lineEdit2">
@@ -207,11 +210,14 @@ color: rgb(0, 0, 255);</string>
     <rect>
      <x>130</x>
      <y>650</y>
-     <width>101</width>
+     <width>111</width>
      <height>20</height>
     </rect>
    </property>
    <property name="text">
+    <string/>
+   </property>
+   <property name="placeholderText">
     <string/>
    </property>
   </widget>
@@ -226,9 +232,12 @@ color: rgb(0, 0, 255);</string>
    </property>
    <property name="font">
     <font>
-     <family>楷体</family>
+     <family>等线 Light</family>
      <pointsize>14</pointsize>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color rgb(0, 0, 127)</string>
    </property>
    <property name="text">
     <string>日期</string>
@@ -248,9 +257,14 @@ color: rgb(0, 0, 255);</string>
    </property>
    <property name="font">
     <font>
-     <family>楷体</family>
-     <pointsize>12</pointsize>
+     <family>等线</family>
+     <pointsize>16</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color rgb(0, 0, 127)</string>
    </property>
    <property name="text">
     <string>图片显示</string>
@@ -267,9 +281,14 @@ color: rgb(0, 0, 255);</string>
    </property>
    <property name="font">
     <font>
-     <family>楷体</family>
-     <pointsize>12</pointsize>
+     <family>等线</family>
+     <pointsize>16</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color rgb(0, 0, 127)</string>
    </property>
    <property name="text">
     <string>预测结果</string>
@@ -286,7 +305,7 @@ color: rgb(0, 0, 255);</string>
    </property>
    <property name="font">
     <font>
-     <family>楷体</family>
+     <family>等线</family>
      <pointsize>12</pointsize>
     </font>
    </property>
@@ -308,7 +327,7 @@ color: rgb(0, 0, 255);</string>
    </property>
    <property name="font">
     <font>
-     <family>楷体</family>
+     <family>等线</family>
      <pointsize>12</pointsize>
     </font>
    </property>
@@ -329,7 +348,7 @@ color: rgb(0, 0, 255);</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: qlineargradient(spread:pad, x1:0.483, y1:0, x2:0.511727, y2:1, stop:0.5625 rgba(255, 229, 152, 255), stop:1 rgba(255, 255, 255, 255));</string>
+    <string notr="true">background-color: qlineargradient(spread:pad, x1:0.483, y1:0, x2:0.511727, y2:1, stop:0.5625 rgba(243, 222, 180, 255), stop:1 rgba(255, 255, 255, 255));</string>
    </property>
   </widget>
   <widget class="QLabel" name="label5">
@@ -356,7 +375,7 @@ color: rgb(0, 0, 255);</string>
     <rect>
      <x>400</x>
      <y>650</y>
-     <width>121</width>
+     <width>131</width>
      <height>20</height>
     </rect>
    </property>
@@ -394,7 +413,7 @@ color: rgb(0, 0, 255);</string>
    </property>
    <property name="font">
     <font>
-     <family>楷体</family>
+     <family>等线</family>
      <pointsize>12</pointsize>
     </font>
    </property>
@@ -416,7 +435,7 @@ color: rgb(0, 0, 255);</string>
    </property>
    <property name="font">
     <font>
-     <family>楷体</family>
+     <family>等线</family>
      <pointsize>12</pointsize>
     </font>
    </property>
@@ -438,7 +457,7 @@ color: rgb(0, 0, 255);</string>
    </property>
    <property name="font">
     <font>
-     <family>楷体</family>
+     <family>等线</family>
      <pointsize>12</pointsize>
     </font>
    </property>
@@ -460,9 +479,12 @@ color: rgb(0, 0, 255);</string>
    </property>
    <property name="font">
     <font>
-     <family>楷体</family>
+     <family>等线 Light</family>
      <pointsize>14</pointsize>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color rgb(0, 0, 127)</string>
    </property>
    <property name="text">
     <string>预测置信度</string>
@@ -476,7 +498,7 @@ color: rgb(0, 0, 255);</string>
     <rect>
      <x>700</x>
      <y>650</y>
-     <width>71</width>
+     <width>91</width>
      <height>20</height>
     </rect>
    </property>
@@ -495,9 +517,12 @@ color: rgb(0, 0, 255);</string>
    </property>
    <property name="font">
     <font>
-     <family>楷体</family>
+     <family>等线 Light</family>
      <pointsize>14</pointsize>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color rgb(0, 0, 127)</string>
    </property>
    <property name="text">
     <string>图片名称</string>
@@ -511,7 +536,7 @@ color: rgb(0, 0, 255);</string>
     <rect>
      <x>0</x>
      <y>-10</y>
-     <width>1091</width>
+     <width>1000</width>
      <height>101</height>
     </rect>
    </property>

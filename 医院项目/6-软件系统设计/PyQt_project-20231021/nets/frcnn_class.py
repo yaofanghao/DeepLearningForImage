@@ -96,7 +96,7 @@ class FRCNN(object):
 
         #   设置字体与边框厚度
         font = ImageFont.truetype(font='simhei.ttf', size=np.floor(3e-2 * np.shape(image)[1] + 25).astype('int32'))
-        thickness = max((np.shape(image)[0] + np.shape(image)[1]) // input_shape[0], 1)
+        thickness = max((np.shape(image)[0] + np.shape(image)[1]) // input_shape[0], 5)
 
         #   图像绘制
         for i, c in list(enumerate(top_label)):
