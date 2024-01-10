@@ -137,7 +137,7 @@ if __name__ == "__main__":
         flag = "frcnn"
         _, model = get_model(num_classes, 'resnet', input_shape=[img_size[0], img_size[1], 3])
 
-    dir_save_path = "img_out_" + flag + "_" + last_conv_layer_name + "/"
+    dir_save_path = "img_out_" + flag + "_" + last_conv_layer_name + "11/"
     if not os.path.exists(dir_save_path):
         os.makedirs(dir_save_path)
 
@@ -167,4 +167,4 @@ if __name__ == "__main__":
         # plt.show()
 
         cam_path = dir_save_path + img_name
-        save_and_display_gradcam(img_path, heatmap, cam_path=cam_path, alpha=0.8)
+        save_and_display_gradcam(img_path, heatmap, cam_path=cam_path, alpha=1)
