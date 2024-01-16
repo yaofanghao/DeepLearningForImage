@@ -1,0 +1,90 @@
+C:\Users\Rainy\.conda\envs\tf2-gpu\python.exe D:\MyGithub\DeepLearningForImage\医院项目\4-肠化亚型识别模型\目前最佳-10.25复现-faster-rcnn-6364-epoch100\summary.py
+2024-01-15 14:50:46.707423: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX AVX2
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-01-15 14:50:47.339608: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1525] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 3477 MB memory:  -> device: 0, name: NVIDIA GeForce RTX 3060 Laptop GPU, pci bus id: 0000:01:00.0, compute capability: 8.6
+Model: "model_1"
+__________________________________________________________________________________________________
+ Layer (type)                   Output Shape         Param #     Connected to
+==================================================================================================
+ input_1 (InputLayer)           [(None, 600, 600, 3  0           []
+                                )]
+
+ block1_conv1 (Conv2D)          (None, 600, 600, 64  1792        ['input_1[0][0]']
+                                )
+
+ block1_conv2 (Conv2D)          (None, 600, 600, 64  36928       ['block1_conv1[0][0]']
+                                )
+
+ block1_pool (MaxPooling2D)     (None, 300, 300, 64  0           ['block1_conv2[0][0]']
+                                )
+
+ block2_conv1 (Conv2D)          (None, 300, 300, 12  73856       ['block1_pool[0][0]']
+                                8)
+
+ block2_conv2 (Conv2D)          (None, 300, 300, 12  147584      ['block2_conv1[0][0]']
+                                8)
+
+ block2_pool (MaxPooling2D)     (None, 150, 150, 12  0           ['block2_conv2[0][0]']
+                                8)
+
+ block3_conv1 (Conv2D)          (None, 150, 150, 25  295168      ['block2_pool[0][0]']
+                                6)
+
+ block3_conv2 (Conv2D)          (None, 150, 150, 25  590080      ['block3_conv1[0][0]']
+                                6)
+
+ block3_conv3 (Conv2D)          (None, 150, 150, 25  590080      ['block3_conv2[0][0]']
+                                6)
+
+ block3_pool (MaxPooling2D)     (None, 75, 75, 256)  0           ['block3_conv3[0][0]']
+
+ block4_conv1 (Conv2D)          (None, 75, 75, 512)  1180160     ['block3_pool[0][0]']
+
+ block4_conv2 (Conv2D)          (None, 75, 75, 512)  2359808     ['block4_conv1[0][0]']
+
+ block4_conv3 (Conv2D)          (None, 75, 75, 512)  2359808     ['block4_conv2[0][0]']
+
+ block4_pool (MaxPooling2D)     (None, 37, 37, 512)  0           ['block4_conv3[0][0]']
+
+ block5_conv1 (Conv2D)          (None, 37, 37, 512)  2359808     ['block4_pool[0][0]']
+
+ block5_conv2 (Conv2D)          (None, 37, 37, 512)  2359808     ['block5_conv1[0][0]']
+
+ block5_conv3 (Conv2D)          (None, 37, 37, 512)  2359808     ['block5_conv2[0][0]']
+
+ input_2 (InputLayer)           [(None, None, 4)]    0           []
+
+ roi_pooling_conv (RoiPoolingCo  (None, None, 7, 7,   0          ['block5_conv3[0][0]',
+ nv)                            512)                              'input_2[0][0]']
+
+ time_distributed (TimeDistribu  (None, None, 25088)  0          ['roi_pooling_conv[0][0]']
+ ted)
+
+ rpn_conv1 (Conv2D)             (None, 37, 37, 512)  2359808     ['block5_conv3[0][0]']
+
+ fc1 (TimeDistributed)          (None, None, 4096)   102764544   ['time_distributed[0][0]']
+
+ rpn_out_class (Conv2D)         (None, 37, 37, 9)    4617        ['rpn_conv1[0][0]']
+
+ rpn_out_regress (Conv2D)       (None, 37, 37, 36)   18468       ['rpn_conv1[0][0]']
+
+ fc2 (TimeDistributed)          (None, None, 4096)   16781312    ['fc1[0][0]']
+
+ classification (Reshape)       (None, 12321, 1)     0           ['rpn_out_class[0][0]']
+
+ regression (Reshape)           (None, 12321, 4)     0           ['rpn_out_regress[0][0]']
+
+ dense_class_21 (TimeDistribute  (None, None, 21)    86037       ['fc2[0][0]']
+ d)
+
+ dense_regress_21 (TimeDistribu  (None, None, 80)    327760      ['fc2[0][0]']
+ ted)
+
+==================================================================================================
+Total params: 137,057,234
+Trainable params: 137,057,234
+Non-trainable params: 0
+__________________________________________________________________________________________________
+Total GFLOPs: 226.408G
+
+Process finished with exit code 0

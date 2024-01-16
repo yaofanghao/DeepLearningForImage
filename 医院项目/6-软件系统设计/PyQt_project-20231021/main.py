@@ -7,7 +7,6 @@ from PyQt5 import QtWidgets
 from InitUi_InfoUi import InitUi, InfoUi
 from ChanghuaUi_OLGIMUi import ChanghuaUi, OLGIMUi
 
-
 # 控制器，实现各界面之间的跳转功能
 class Controller:
     def __init__(self):
