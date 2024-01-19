@@ -5,7 +5,7 @@ from PyQt5 import QtWidgets
 
 # 调用各界面的类信息
 from InitUi_InfoUi import InitUi, InfoUi
-from ChanghuaUi_OLGIMUi import ChanghuaUi, OLGIMUi
+from ChanghuaUi_OLGIMUi import ChanghuaUi, OLGIMUi, GradCAMppUi
 
 # 控制器，实现各界面之间的跳转功能
 class Controller:
@@ -15,6 +15,7 @@ class Controller:
         self.changhua = ChanghuaUi()
         self.olgim = OLGIMUi()
         self.info = InfoUi()
+        self.gradcam = GradCAMppUi()
 
     def show_init(self):
         self.initUi.switch_changhua.connect(self.show_changhua)
@@ -22,12 +23,14 @@ class Controller:
         self.info.close()
         self.changhua.close()
         self.olgim.close()
+        self.gradcam.close()
         self.initUi.show()
 
     def show_info(self):
         self.initUi.close()
         # self.changhua.close()
         # self.olgim.close()
+        # self.gradcam.close()
         self.info.show()
 
     def show_changhua(self):
@@ -35,14 +38,23 @@ class Controller:
         self.olgim.switch_info.connect(self.show_info)
         self.initUi.close()
         self.info.close()
+        self.gradcam.close()
         self.changhua.show()
 
     def show_olgim(self):
         self.olgim.switch_init.connect(self.show_init)
         self.olgim.switch_info.connect(self.show_info)
+        self.olgim.switch_gradcam.connect(self.show_gradcam)
         self.initUi.close()
         self.info.close()
+        self.gradcam.close()
         self.olgim.show()
+
+    def show_gradcam(self):
+        self.initUi.close()
+        # self.changhua.close()
+        # self.olgim.close()
+        self.gradcam.show()
 
 
 if __name__ == '__main__':

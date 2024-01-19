@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1058</width>
-    <height>808</height>
+    <width>999</width>
+    <height>746</height>
    </rect>
   </property>
   <property name="palette">
@@ -107,7 +107,10 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>OLGIM综合评估模型界面</string>
+   <string>热力图可视化界面</string>
+  </property>
+  <property name="layoutDirection">
+   <enum>Qt::LeftToRight</enum>
   </property>
   <property name="autoFillBackground">
    <bool>false</bool>
@@ -133,7 +136,7 @@
     <string notr="true">color rgb(0, 0, 0)</string>
    </property>
    <property name="text">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;综合评估风险等级&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;热力图可视化&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="textFormat">
     <enum>Qt::AutoText</enum>
@@ -160,28 +163,6 @@
    <property name="text">
     <string>返回诊断系统
 选择页面</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pushButton7">
-   <property name="geometry">
-    <rect>
-     <x>440</x>
-     <y>690</y>
-     <width>141</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>等线</family>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgb(80, 170, 53);</string>
-   </property>
-   <property name="text">
-    <string>填写报告</string>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton8">
@@ -274,10 +255,10 @@ color: rgb(0, 0, 0);</string>
   <widget class="QLabel" name="label3">
    <property name="geometry">
     <rect>
-     <x>470</x>
-     <y>119</y>
-     <width>101</width>
-     <height>20</height>
+     <x>460</x>
+     <y>100</y>
+     <width>281</width>
+     <height>61</height>
     </rect>
    </property>
    <property name="font">
@@ -292,51 +273,7 @@ color: rgb(0, 0, 0);</string>
     <string notr="true">color rgb(0, 0, 127)</string>
    </property>
    <property name="text">
-    <string>预测结果</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pushButton1">
-   <property name="geometry">
-    <rect>
-     <x>50</x>
-     <y>580</y>
-     <width>141</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>等线</family>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color:rgb(85, 170, 255)</string>
-   </property>
-   <property name="text">
-    <string>导入文件夹</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pushButton5">
-   <property name="geometry">
-    <rect>
-     <x>770</x>
-     <y>580</y>
-     <width>141</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>等线</family>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgb(80, 170, 53);</string>
-   </property>
-   <property name="text">
-    <string>显示诊断结果</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grad-CAM++热力图&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
   <widget class="QListView" name="listView">
@@ -403,32 +340,10 @@ color: rgb(0, 0, 0);</string>
     <cstring>lineEdit5</cstring>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton4">
-   <property name="geometry">
-    <rect>
-     <x>590</x>
-     <y>580</y>
-     <width>141</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>等线</family>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgb(80, 170, 53);</string>
-   </property>
-   <property name="text">
-    <string>开始检测</string>
-   </property>
-  </widget>
   <widget class="QPushButton" name="pushButton2">
    <property name="geometry">
     <rect>
-     <x>230</x>
+     <x>50</x>
      <y>580</y>
      <width>141</width>
      <height>41</height>
@@ -450,7 +365,7 @@ color: rgb(0, 0, 0);</string>
   <widget class="QPushButton" name="pushButton3">
    <property name="geometry">
     <rect>
-     <x>410</x>
+     <x>230</x>
      <y>580</y>
      <width>141</width>
      <height>41</height>
@@ -467,44 +382,6 @@ color: rgb(0, 0, 0);</string>
    </property>
    <property name="text">
     <string>上一个</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label1">
-   <property name="geometry">
-    <rect>
-     <x>590</x>
-     <y>650</y>
-     <width>101</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>等线 Light</family>
-     <pointsize>14</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color rgb(0, 0, 127)</string>
-   </property>
-   <property name="text">
-    <string>预测置信度</string>
-   </property>
-   <property name="buddy">
-    <cstring>lineEdit2</cstring>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="lineEdit3">
-   <property name="geometry">
-    <rect>
-     <x>700</x>
-     <y>650</y>
-     <width>81</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
    </property>
   </widget>
   <widget class="QLabel" name="label7">
@@ -548,50 +425,21 @@ color: rgb(0, 0, 0);</string>
     <pixmap resource="apprcc.qrc">:/pic/tittle.png</pixmap>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton5_2">
-   <property name="geometry">
-    <rect>
-     <x>250</x>
-     <y>690</y>
-     <width>141</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>等线</family>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgb(80, 170, 53);</string>
-   </property>
-   <property name="text">
-    <string>热力图可视化</string>
-   </property>
-  </widget>
   <zorder>label_2</zorder>
   <zorder>listView</zorder>
   <zorder>label</zorder>
   <zorder>pushButton6</zorder>
-  <zorder>pushButton7</zorder>
   <zorder>pushButton8</zorder>
   <zorder>lineEdit2</zorder>
   <zorder>label2</zorder>
   <zorder>label4</zorder>
   <zorder>label3</zorder>
-  <zorder>pushButton1</zorder>
-  <zorder>pushButton5</zorder>
   <zorder>label5</zorder>
   <zorder>lineEdit5</zorder>
   <zorder>label6</zorder>
-  <zorder>pushButton4</zorder>
   <zorder>pushButton2</zorder>
   <zorder>pushButton3</zorder>
-  <zorder>label1</zorder>
-  <zorder>lineEdit3</zorder>
   <zorder>label7</zorder>
-  <zorder>pushButton5_2</zorder>
  </widget>
  <resources>
   <include location="apprcc.qrc"/>

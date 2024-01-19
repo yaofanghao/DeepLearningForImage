@@ -16,6 +16,7 @@ from PyQt5.QtGui import QPixmap
 # 导入需要的ui界面
 from widgets.ChanghuaWidget import Ui_Form as ChanghuaUiForm
 from widgets.OLGIMWidget import Ui_Form as OlgimUiForm
+from widgets.GradCAMppWidget import Ui_Form as GradCAMppUiForm
 
 # ------------------参数设置区域------------------------#
 # 导入faster-RCNN模型类、权重、标签文件
@@ -31,6 +32,8 @@ classes_path_olgim = 'nets/voc_classes_OLGIM.txt'
 output_dir_olgim = './img_out_OLGIM/'
 frcnn_olgim = FRCNN(model_path=model_path_olgim, classes_path=classes_path_olgim)
 
+output_dir_gradcam = './img_out_gradcam/'
+
 gpus = tf.config.experimental.list_physical_devices(device_type='GPU')
 # for gpu in gpus:
 #     tf.config.experimental.set_memory_growth(gpu, True)
@@ -38,6 +41,7 @@ gpus = tf.config.experimental.list_physical_devices(device_type='GPU')
 
 import logging
 logging.basicConfig(format='%(asctime)s %(message)s', level=logging.DEBUG)
+
 
 # ChanghuaUi 辅助诊断肠化亚型模块
 class ChanghuaUi(QtWidgets.QMainWindow, ChanghuaUiForm):
@@ -213,6 +217,7 @@ class ChanghuaUi(QtWidgets.QMainWindow, ChanghuaUiForm):
 class OLGIMUi(QtWidgets.QMainWindow, OlgimUiForm):
     switch_init = QtCore.pyqtSignal()
     switch_info = QtCore.pyqtSignal()
+    switch_gradcam = QtCore.pyqtSignal()
 
     def __init__(self):
         super(OLGIMUi, self).__init__()
@@ -234,6 +239,7 @@ class OLGIMUi(QtWidgets.QMainWindow, OlgimUiForm):
         self.pushButton6.clicked.connect(self.go_init)  # 去初始界面
         self.pushButton7.clicked.connect(self.write_report)  # 去填写报告界面
         self.pushButton8.clicked.connect(self.close_dialog)  # 关闭对话框
+        self.pushButton9.clicked.connect(self.go_gradcam)  # 去热力图可视化界面
 
     def go_init(self):
         self.switch_init.emit()
@@ -278,7 +284,7 @@ class OLGIMUi(QtWidgets.QMainWindow, OlgimUiForm):
         img = QPixmap(cur_path).scaled(self.label5.width(), self.label5.height())
         self.label5.setPixmap(img)  # 显示读取图片到界面上
         self.lineEdit5.setText(filename)
-        self.scores = [0 for _ in range(len(self.file_paths))]
+        self.scores = [1 for _ in range(len(self.file_paths))]
         self.lineEdit3.setText(str(self.scores[self.file_index]))  # 显示置信度分数到界面上
         img_out = QPixmap(os.path.join(self.output_dir_olgim, filename.replace(".jpg", ".png"))).scaled(self.label6.width(),
                                                                                                   self.label6.height())
@@ -382,3 +388,87 @@ class OLGIMUi(QtWidgets.QMainWindow, OlgimUiForm):
 
     def write_report(self):
         self.switch_info.emit()  # 进入报告填写界面InfoWidget
+
+    def go_gradcam(self):
+        self.switch_gradcam.emit()
+
+
+# GradCAMppUi 辅助诊断肠化亚型模块
+class GradCAMppUi(QtWidgets.QMainWindow, ChanghuaUiForm):
+    switch_init = QtCore.pyqtSignal()
+    switch_info = QtCore.pyqtSignal()
+
+    def __init__(self):
+        super(GradCAMppUi, self).__init__()
+        self.pbar = None
+        self.setupUi(self)
+        self.file_paths = []  # 文件列表
+        self.file_index = 0	  # 文件索引
+        self.scores = [0 for _ in range(len(self.file_paths))]  # 创建置信度分数列表，暂时全为0
+        self.output_dir_gradcam = output_dir_gradcam
+        if not os.path.exists(self.output_dir_gradcam):
+            os.makedirs(self.output_dir_gradcam)
+        self.now = QtCore.QDate.currentDate()  # 获取当前日期
+        self.lineEdit2.setText(self.now.toString('yyyy-MM-dd'))  # 显示时间到界面
+        self.pushButton2.clicked.connect(self.folder_next)  # 下一个
+        self.pushButton3.clicked.connect(self.folder_previous)  # 上一个
+        self.pushButton6.clicked.connect(self.go_init)  # 去初始界面
+        self.pushButton8.clicked.connect(self.close_dialog)  # 关闭对话框
+
+    def go_init(self):
+        self.switch_init.emit()
+
+    def close_dialog(self):
+        reply = QMessageBox.warning(self, "提示", "是否确定退出",
+                                    QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        if reply == QMessageBox.Yes:
+            print('exit')
+            app_local = QtWidgets.QApplication.instance()
+            app_local.quit()
+        else:
+            print('keep')
+
+    def folder_next(self):  # 下一个文件
+        self.file_index += 1  # 文件索引累加 1
+        if self.file_index >= len(self.file_paths):
+            QMessageBox.warning(self, "提示", self.tr("已经是最后一个！"))
+            self.file_index = len(self.file_paths) - 1
+        if len(self.file_paths) <= 0 or self.file_index >= len(self.file_paths):
+            return
+        cur_path = self.file_paths[self.file_index]
+        filepath, filename = os.path.split(cur_path)  # 分离文件路径和名称
+        img = QPixmap(cur_path).scaled(self.label5.width(), self.label5.height())
+        self.label5.setPixmap(img)  # 显示读取图片到界面上
+        self.lineEdit5.setText(filename)
+        self.scores = [0 for _ in range(len(self.file_paths))]
+        self.lineEdit3.setText(str(self.scores[self.file_index]))  # 显示置信度分数到界面上
+        img_out = QPixmap(os.path.join(self.output_dir_olgim, filename.replace(".jpg", ".png"))).scaled(self.label6.width(),
+                                                                                                  self.label6.height())
+        self.label6.setPixmap(img_out)  # 显示预测图片到界面上
+
+    def folder_previous(self):  # 下一个文件
+        self.file_index -= 1  # 文件索引减 1
+        if self.file_index < 0:
+            QMessageBox.warning(self, "提示", self.tr("已经是第一个！"))
+            self.file_index = 0
+        if len(self.file_paths) <= 0 or self.file_index >= len(self.file_paths):
+            return
+        cur_path = self.file_paths[self.file_index]
+        filepath, filename = os.path.split(cur_path)  # 分离文件路径和名称
+        img = QPixmap(cur_path).scaled(self.label5.width(), self.label5.height())
+        self.label5.setPixmap(img)  # 显示读取图片到界面上
+        self.lineEdit5.setText(filename)
+        self.scores = [0 for _ in range(len(self.file_paths))]
+        self.lineEdit3.setText(str(self.scores[self.file_index]))  # 显示置信度分数到界面上
+        img_out = QPixmap(os.path.join(self.output_dir_olgim, filename.replace(".jpg", ".png"))).scaled(self.label6.width(),
+                                                                                                  self.label6.height())
+        self.label6.setPixmap(img_out)  # 显示预测图片到界面上
+
+    def show_jpg(self):  # 显示图片
+        cur_path = self.file_paths[self.file_index]
+        filepath, filename = os.path.split(cur_path)  # 分离文件路径和名称
+        img_out = QPixmap(os.path.join(self.output_dir_olgim, filename.replace(".jpg", ".png"))).scaled(self.label6.width(),
+                                                                                                  self.label6.height())
+        self.label6.setPixmap(img_out)
+
+        QMessageBox.about(self, "提示", self.tr("图片已保存，分类至指定文件夹！"))

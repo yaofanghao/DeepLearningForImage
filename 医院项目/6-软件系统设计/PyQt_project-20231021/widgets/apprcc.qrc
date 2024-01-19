@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="pic">
+    <file>马家礼(6).jpg</file>
+    <file>马家礼(6)_gradcam.jpg</file>
     <file>tittle.png</file>
     <file>background.png</file>
   </qresource>
