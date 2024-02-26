@@ -22,6 +22,8 @@ from widgets.GradCAMppWidget import Ui_Form as GradCAMppUiForm
 # 导入faster-RCNN模型类、权重、标签文件
 from nets.frcnn_class import FRCNN
 
+import time
+
 model_path_changhua = 'nets/logs_Changhua.h5'
 classes_path_changhua = 'nets/voc_classes_Changhua.txt'
 output_dir_changhua = './img_out_Changhua/'
@@ -154,9 +156,14 @@ class ChanghuaUi(QtWidgets.QMainWindow, ChanghuaUiForm):
             _, img_name = os.path.split(image_num)
             if not os.path.exists(os.path.join(output_dir_changhua, img_name.replace(".jpg", ".png"))):
                 # 关键部分！返回新的画框图和新置信度，并实现了分类至CIM\IIM等：
-                logging.info("start predict!")
+                start = time.time()
+
+                # logging.info("start predict!")
                 r_image, out_scores, out_classes, top, right, left, bottom = frcnn_changhua.detect_image(image)
-                logging.info("success predict!")
+                # logging.info("success predict!")
+                end = time.time()
+                print(end-start)
+
 
                 # if out_scores[0] == 0:  # 2023.3.2 解决了部分图片non-iterale的错误问题
                 #     self.scores[flag] = 0
