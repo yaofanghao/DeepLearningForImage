@@ -53,7 +53,7 @@ if __name__ == "__main__":
             img = input('Input image filename:')
             try:
                 image = Image.open(img)
-            except:
+            except Exception:
                 print('Open Error! Try again!')
                 continue
             else:

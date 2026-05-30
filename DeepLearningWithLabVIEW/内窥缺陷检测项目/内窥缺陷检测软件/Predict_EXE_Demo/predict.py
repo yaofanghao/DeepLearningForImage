@@ -72,8 +72,8 @@ def load_arg():
     # 第三项为视频帧计数间隔频率 影响视频检测速率，可任意设置，建议值10-30之间
     # 第四项为待检测图片\视频的相对路径
 
-    f_arg = open(argparse_txt, "r", encoding='gbk')
-    lines_arg = f_arg.read().splitlines()
+    with open(argparse_txt, "r", encoding='gbk') as f_arg:
+        lines_arg = f_arg.read().splitlines()
     logging.info("success load arg from: {}".format(argparse_txt))
     logging.info("setting mode: {} \t use_gpu:{} \t timeF:{} "
                  .format(lines_arg[0], lines_arg[1], lines_arg[2]))

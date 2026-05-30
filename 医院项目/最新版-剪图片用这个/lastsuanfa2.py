@@ -1,179 +1,118 @@
 # coding:utf-8
-import sys
+"""
+图像自动裁剪工具
+通过 Sobel 边缘检测 + 形态学梯度 + 轮廓提取 找到图像主体区域并裁剪。
+支持批量处理文件夹下所有图片。
+
+使用方法：修改本文件末尾的 DATADIR 和 save_dir 路径后运行。
+"""
+import os
 import cv2
 import numpy as np
-import os
+
+# ==================== 可调参数 ====================
+SOBEL_KERNEL_SIZE = 5
+GAUSSIAN_BLUR_SIZE = (3, 3)
+CANNY_THRESHOLD_LOW = 50
+CANNY_THRESHOLD_HIGH = 150
+BINARY_THRESHOLD = 210
+MORPH_KERNEL_SIZE = (5, 5)
+ADAPTIVE_BLOCK_SIZE = 3
+ADAPTIVE_C = 10
+# ==================================================
+
+
+def _save_intermediate(prefix, filename, image):
+    """调试时保存中间结果图（取消注释即可启用）"""
+    # cv2.imwrite(f"{prefix}_{filename}", image)
+    pass
+
+
+def find_crop_bounds(image_path):
+    """对单张图片进行边缘检测，返回裁剪边界 (Ymin, Ymax, Xmin, Xmax)。"""
+    img = cv2.imread(image_path, cv2.IMREAD_COLOR)
+    if img is None:
+        raise FileNotFoundError(f"无法读取图片: {image_path}")
+    h, w = img.shape[:2]
+
+    # ---------- 1. Sobel 水平边缘检测 ----------
+    sobel_horizontal = cv2.Sobel(img, cv2.CV_64F, 1, 0, ksize=SOBEL_KERNEL_SIZE)
+    sobel_img = cv2.convertScaleAbs(sobel_horizontal)
+    _save_intermediate("debug", "sobel.jpg", sobel_img)
+
+    # ---------- 2. Canny 边缘检测 ----------
+    blurred = cv2.GaussianBlur(sobel_img, GAUSSIAN_BLUR_SIZE, 0)
+    canny = cv2.Canny(blurred, CANNY_THRESHOLD_LOW, CANNY_THRESHOLD_HIGH)
+    _save_intermediate("debug", "canny.jpg", canny)
+
+    # ---------- 3. 形态学梯度 ----------
+    _, thr_img = cv2.threshold(sobel_img, BINARY_THRESHOLD, 255, cv2.THRESH_BINARY)
+    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, MORPH_KERNEL_SIZE)
+    gradient = cv2.morphologyEx(thr_img, cv2.MORPH_GRADIENT, kernel)
+    _save_intermediate("debug", "gradient.jpg", gradient)
+
+    # ---------- 4. 自适应阈值 + 轮廓提取 ----------
+    gray = cv2.cvtColor(gradient, cv2.COLOR_BGR2GRAY) if gradient.ndim == 3 else gradient
+    dst = cv2.adaptiveThreshold(
+        gray, 210, cv2.BORDER_REPLICATE,
+        cv2.THRESH_BINARY_INV, ADAPTIVE_BLOCK_SIZE, ADAPTIVE_C,
+    )
+    contours, _ = cv2.findContours(dst, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    if not contours:
+        return 0, h, 0, w
+
+    # ---------- 5. 计算最大外接矩形 ----------
+    max_area = -1
+    best_box = (0, 0, 0, 0)
+    for c in contours:
+        x, y, bw, bh = cv2.boundingRect(c)
+        area = bw * bh
+        if area > max_area:
+            max_area = area
+            best_box = (y, y + bh, x, x + bw)
+
+    return best_box
+
+
+def batch_crop_images(input_dir, output_dir, log_file="crop_log.txt"):
+    """批量裁剪 input_dir 下的所有图片，结果保存到 output_dir。"""
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
+    image_names = [f for f in os.listdir(input_dir)
+                   if f.lower().endswith(('.jpg', '.jpeg', '.png', '.bmp'))]
+    image_names.sort()  # 按文件名自然排序
+
+    results = []
+    for idx, fname in enumerate(image_names):
+        src_path = os.path.join(input_dir, fname)
+        print(f"[{idx+1}/{len(image_names)}] 处理: {fname}")
+
+        try:
+            ymin, ymax, xmin, xmax = find_crop_bounds(src_path)
+            img = cv2.imread(src_path)
+            cropped = img[ymin:ymax, xmin:xmax]
+
+            out_name = f"{idx}.jpg"
+            out_path = os.path.join(output_dir, out_name)
+            cv2.imwrite(out_path, cropped)
+
+            results.append((fname, ymin, ymax, xmin, xmax))
+        except Exception as e:
+            print(f"  [!] 跳过 {fname}: {e}")
+
+    # 将裁剪坐标写入日志文件
+    with open(log_file, 'w', encoding='utf-8') as f:
+        for fname, ymin, ymax, xmin, xmax in results:
+            f.write(f"{fname} {ymin} {ymax} {xmin} {xmax}\n")
+
+    print(f"完成！共处理 {len(results)} 张图片，日志已保存至 {log_file}")
+
 
 if __name__ == '__main__':
-    #######################
-    # 修改内容区域：
-    DATADIR = "C:\\Users\\admin\\Desktop\\dataset\\jpg1" # 原图片路径
-    save_dir = "C:\\Users\\admin\\Desktop\\dataset\\jpg2\\" # 剪完图片路径
-    #######################       
-    
-    if not os.path.exists(DATADIR):
-        os.makedirs(DATADIR)
-    if not os.path.exists(save_dir):
-        os.makedirs(save_dir)
-    path = os.path.join(DATADIR)
-    img_list = os.listdir(path)
-
-    # 按顺序读取图片
-    img_list.sort(key=lambda x:int(x[:-4]))
-
-    ind = 0
-    for i in img_list:
-        pathjpg = os.path.join(path, i)
-        print(i)
-        filename, extension = os.path.splitext(i)
-        #print(extension)
-        #print("需要分离的完整文件名：" + path)
-        #print("文件名称：" + filename + "\t\t\t\t后缀：" + extension)
-
-        # opencv读取灰度图像
-        img = cv2.imread(pathjpg, cv2.IMREAD_GRAYSCALE)
-
-        # opencv读取彩色图像
-        img = cv2.imread(pathjpg, cv2.IMREAD_COLOR)
-
-        # 灰度图像是二维的，彩色图像是三维的
-        h, w = img.shape[:2]
-
-        # 索贝尔水平检测
-        sobel_horizontal = cv2.Sobel(img, cv2.CV_64F, 1, 0, ksize=5)
-
-        # 原图显示
-        # cv2.namedWindow('Original', cv2.WINDOW_NORMAL)
-        # cv2.imshow('Original', img)
-        # cv2.waitKey()
-        # 索贝尔水平
-        # cv2.namedWindow('Sobel horizontal', cv2.WINDOW_NORMAL)
-        #cv2.imshow('Sobel horizontal', sobel_horizontal)
-        cv2.imwrite('Sobel horizontal.jpg', sobel_horizontal)
-        # cv2.waitKey()
-        original_img = cv2.imread("Sobel horizontal.jpg", 1)
-
-        # canny(): 边缘检测
-        img1 = cv2.GaussianBlur(original_img, (3, 3), 0)
-        canny = cv2.Canny(img1, 50, 150)
-
-        # 形态学：边缘检测
-        _, Thr_img = cv2.threshold(original_img, 210, 255, cv2.THRESH_BINARY)  # 设定红色通道阈值210（阈值影响梯度运算效果）
-        kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (5, 5))  # 定义矩形结构元素
-        gradient = cv2.morphologyEx(Thr_img, cv2.MORPH_GRADIENT, kernel)  # 梯度
-        # cv2.namedWindow('original_img',cv2.WINDOW_NORMAL)
-        # cv2.namedWindow('gradient',cv2.WINDOW_NORMAL)
-        #cv2.namedWindow('Canny',cv2.WINDOW_NORMAL)
-        # cv2.imshow("original_img", original_img)
-        # cv2.imshow("gradient", gradient)
-        #cv2.imshow('Canny', canny)
-
-        cv2.imwrite('canny.jpg', canny)
-
-        ###        边缘检测得出x，y坐标
-        Ymax = 200
-        Ymin = 200
-        Xmax = 200
-        Xmin = 200
-        img_path = "canny.jpg"
-        # 读取文件
-        mat_img = cv2.imread(img_path)
-        mat_img2 = cv2.imread(img_path, cv2.CV_8UC1)
-
-        # 自适应分割
-        dst = cv2.adaptiveThreshold(mat_img2, 210, cv2.BORDER_REPLICATE, cv2.THRESH_BINARY_INV, 3, 10)
-        # 提取轮廓
-        contours, heridency = cv2.findContours(dst, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        # 标记轮廓
-        cv2.drawContours(mat_img, contours, -1, (255, 0, 255), 3)
-        #print(type(contours))
-        # 计算轮廓面积
-        # 计算轮廓面积
-        # area = 0
-        # for i in contours:
-        #    area += cv2.contourArea(i)
-        # print(area)
-
-        max_area = -1
-        for i in range(len(contours)):
-            area = cv2.contourArea(contours[i])
-            if area > max_area:
-                cnt = contours[i]
-                max_area = area
-            # print(max_area)
-            # print(i)
-        #print(max_area)
-
-        # 计算轮廓面积
-        Area = 0
-        for i in contours:
-            area = cv2.contourArea(i)
-            if (Area < area):
-                Area = area
-        #print(Area)
-        Hmax = 0
-        Wmax = 0
-        if len(contours) > 0:
-            # cv2.boundingRect()返回轮廓矩阵的坐标值，四个值为x, y, w, h， 其中x, y为左上角坐标，w,h为矩阵的宽和高
-            boxes = [cv2.boundingRect(c) for c in contours]
-            for box in boxes:
-                x, y, w, h = box
-                if (Hmax < h):
-                    Hmax = h
-                    Ymin = y
-                    Ymax = y + Hmax
-                if (Wmax < w):
-                    Wmax = w
-                    Xmin = x
-                    Xmax = x + Wmax
-                # 绘制矩形框对轮廓进行定位
-                cv2.rectangle(mat_img, (x, y), (x + w, y + h), (153, 153, 0), 2)
-
-        #print(Hmax)
-        #print(Wmax)
-        #print(Ymin)
-        #print(Ymax)
-        #print(Xmin)
-        #print(Xmax)
-
-        file = open(r'text1.txt', mode='a')  # 将空格写入txt文件中
-        #file.write(' ')
-        #file.write(filename)
-        file.write(' ')
-        file.write(str(Ymin))
-        file.write(' ')
-        file.write(str(Ymax))
-        file.write(' ')
-        file.write(str(Xmin))
-        file.write(' ')
-        file.write(str(Xmax))
-        file.write(' ')
-        file.write('\n')  # 将回车写入txt文件中
-        file.close()
-
-        # 图像show
-        #cv2.namedWindow('juxing',cv2.WINDOW_NORMAL)
-        #cv2.imshow("juxing",mat_img)
-        #cv2.imwrite('juxing.jpg', mat_img)
-        #cv2.waitKey(0)
-
-        ##剪原图jpg
-        img = cv2.imread(pathjpg)
-
-        #cv2.namedWindow('img', cv2.WINDOW_NORMAL)
-        #cv2.imshow("img", img)
-        # cv2.namedWindow('cut1',cv2.WINDOW_NORMAL)
-        cropped = img[Ymin:Ymax, Xmin:Xmax]  # 裁剪坐标为[y0:y1, x0:x1]
-        #cv2.namedWindow('cut1',cv2.WINDOW_NORMAL)
-        #cv2.imshow("cut1",cropped)
-
-        img_name = str(ind) + '.jpg'
-
-        ind = ind + 1
-        # '''生成图片存储的目标路径'''
-        save_path = save_dir + str(ind) + '.jpg'
-
-        # '''调用cv.2的imwrite函数保存图片'''
-        cv2.imwrite(save_path, cropped)
-        # cv2.imwrite(save_path1, cropped1)
-        #cv2.waitKey(0)
+    # ==================== 修改区域 ====================
+    DATADIR = "C:\\Users\\admin\\Desktop\\dataset\\jpg1"   # 原图片路径（请修改）
+    save_dir = "C:\\Users\\admin\\Desktop\\dataset\\jpg2"  # 裁剪后保存路径（请修改）
+    # ==================================================
+    batch_crop_images(DATADIR, save_dir)

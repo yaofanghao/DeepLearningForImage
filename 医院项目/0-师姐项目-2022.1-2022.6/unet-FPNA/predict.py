@@ -20,7 +20,7 @@ for filename in count:
     img = filename
     try:
         image = Image.open(os.path.join(str1, img))
-    except:
+    except Exception:
         print('Open Error! Try again!')
         continue
     else:

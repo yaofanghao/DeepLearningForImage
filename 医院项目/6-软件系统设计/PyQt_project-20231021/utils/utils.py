@@ -255,8 +255,9 @@ def net_flops(model, table=False, print_result=True):
             if table:
                 print('%25s | %16s | %16s | %16s | %16s | %6s | %5.4f' % (
                     name[:25], str(i_shape), str(o_shape), str(ks), str(filters), str(strides), flops))
-        except:
-            pass
+        except Exception:
+            # Skip layers that don't support FLOPs calculation
+            continue
 
     t_flops = t_flops * 2
     if print_result:

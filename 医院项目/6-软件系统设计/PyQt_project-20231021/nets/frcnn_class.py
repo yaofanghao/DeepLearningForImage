@@ -18,12 +18,12 @@ from utils.utils_bbox import BBoxUtility
 # --------------------------------------------#
 class FRCNN(object):
     #   初始化Faster-RCNN模型
-    def __init__(self, model_path, classes_path):
+    def __init__(self, model_path, classes_path, confidence=0.5, nms_iou=0.1):
         self.model_path = model_path
         self.classes_path = classes_path
         self.backbone = "resnet50"
-        self.confidence = 0.5
-        self.nms_iou = 0.1
+        self.confidence = confidence
+        self.nms_iou = nms_iou
         self.anchors_size = [128, 256, 512]
 
         #   获得种类和先验框的数量

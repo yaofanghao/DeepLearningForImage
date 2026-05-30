@@ -7,10 +7,10 @@ import tensorflow as tf
 # gpus = tf.config.experimental.list_physical_devices('GPU')
 # tf.config.experimental.set_memory_growth(gpus[0], True)
 
-f = open(r"E:\登陆系统重写\待检测文件路径.txt", 'r')
-str1 =f.read()
-f1= open(r"E:\登陆系统重写\保存文件路径.txt", 'r')
-str2 =f1.read()
+with open(r"E:\登陆系统重写\待检测文件路径.txt", 'r') as f:
+    str1 = f.read()
+with open(r"E:\登陆系统重写\保存文件路径.txt", 'r') as f1:
+    str2 = f1.read()
 
 unet = Unet()
 count = os.listdir(str1)
@@ -18,7 +18,7 @@ for filename in count:
     img = filename
     try:
         image = Image.open(os.path.join(str1, img))
-    except:
+    except Exception:
         print('Open Error! Try again!')
         continue
     else:

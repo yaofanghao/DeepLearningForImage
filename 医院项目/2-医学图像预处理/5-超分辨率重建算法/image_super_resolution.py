@@ -18,8 +18,8 @@ if __name__ == '__main__':
     try:
         print('Input mode is ' + str(mode))
         mode = int(mode)
-    except:
-        raise AssertionError('Mode is incorret!')  
+    except ValueError as e:
+        raise AssertionError('Mode is incorret!') from e
        
     if(mode==1):
         pass

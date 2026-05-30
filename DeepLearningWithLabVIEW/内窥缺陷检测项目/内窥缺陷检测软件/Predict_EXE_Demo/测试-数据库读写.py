@@ -68,7 +68,7 @@ def create_insert_table(db_file_path, table_name, name, detect_result):
         '''.format(table_name)
         cursor.execute(create_table_sql)
         print("创建完成！")
-    if table_exists(table_name, db_file_path=db_file_path):
+    else:
         print("已有表！")
 
     # 插入数据到表中
